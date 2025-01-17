@@ -15,7 +15,7 @@ export interface IFilterField {
   sort: number;
   characteristic?: ICharacteristic;
 }
-export declare enum TFilterFieldType {
+export enum TFilterFieldType {
   category = "category",
   brand = "brand",
   price = "price",

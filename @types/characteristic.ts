@@ -34,7 +34,7 @@ export interface IProductAttribute {
     }
   ];
 }
-export declare enum TCharacteristicType {
+export enum TCharacteristicType {
   checkbox = "checkbox",
   radio = "radio",
   select = "select",

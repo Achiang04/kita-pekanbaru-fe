@@ -5,7 +5,7 @@ export interface ICheckoutPostContactsData {
   receive_marketing_info?: boolean;
   register_me?: boolean;
 }
-export declare enum TCheckoutStep {
+export enum TCheckoutStep {
   contactInfo = "contact-info",
   shippingAddress = "shipping-address",
   shippingMethod = "shipping-method",
@@ -17,7 +17,7 @@ export interface ICheckoutStepper {
   currentStep: TCheckoutStep;
   steps: TCheckoutStep[];
 }
-export declare type TCheckoutRedirect = TCheckoutStep | "url";
+export type TCheckoutRedirect = TCheckoutStep | "url";
 export interface ICheckoutPostAddressData {
   order_id: string;
   first_name?: string;

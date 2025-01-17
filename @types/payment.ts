@@ -20,7 +20,7 @@ export interface ICheckoutInitData {
   stepper: ICheckoutStepper;
   total: ITotal;
 }
-export declare enum TPaymentGatewayAlias {
+export enum TPaymentGatewayAlias {
   cashOnDelivery = "cashOnDelivery",
   paypal = "paypal",
 }

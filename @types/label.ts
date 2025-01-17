@@ -1,4 +1,4 @@
-export declare enum TLabelIcon {
+export enum TLabelIcon {
   star = "star",
   flag = "flag",
   fire = "fire",

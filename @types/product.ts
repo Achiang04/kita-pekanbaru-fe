@@ -7,7 +7,7 @@ import { ILabel } from "./label";
 import { IFinalPrice } from "./price";
 import { IExtendedVariants } from "./variant";
 
-export declare enum TTaxStatus {
+export enum TTaxStatus {
   taxable = "taxable",
   none = "none",
 }
@@ -56,7 +56,7 @@ export interface IProductProps {
     [key: string]: any;
   } | null;
 }
-export declare type IProductCategory = Pick<
+export type IProductCategory = Pick<
   ICategory,
   "category_id" | "title" | "url_key"
 >;

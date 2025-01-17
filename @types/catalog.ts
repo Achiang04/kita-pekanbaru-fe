@@ -2,7 +2,7 @@ import { ICharacteristic } from "./characteristic";
 import { TFilterFieldType } from "./filter";
 import { IProductManufacturer } from "./product";
 
-export declare enum TGetProductsInStock {
+export enum TGetProductsInStock {
   inStock = "1",
   outOfStock = "0",
 }

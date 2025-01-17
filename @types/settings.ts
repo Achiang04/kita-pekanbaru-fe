@@ -1,16 +1,16 @@
 import { ICustomer } from "./customer";
 import { ICurrency } from "./system";
 
-export declare enum TCheckoutCustomerName {
+export enum TCheckoutCustomerName {
   first = "first",
   last = "last",
 }
-export declare enum TCheckoutAccountPolicy {
+export enum TCheckoutAccountPolicy {
   guestAndLogin = "guest-and-login",
   guest = "guest",
   loginRequired = "login-required",
 }
-export declare enum TCheckoutFieldStatus {
+export enum TCheckoutFieldStatus {
   optional = "optional",
   required = "required",
 }
@@ -49,7 +49,7 @@ export interface IFormatMoneyOptions {
   format: string;
   symbol: string;
 }
-export declare enum TCalculateTaxBasedOn {
+export enum TCalculateTaxBasedOn {
   storeLocation = "storeLocation",
   customerShippingAddress = "customerShippingAddress",
   customerBillingAddress = "customerBillingAddress",

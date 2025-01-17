@@ -31,12 +31,12 @@ export interface ICheckoutShippingPageData {
     country: IVWCountry[];
   };
 }
-export declare enum TDeliveryCalcMethod {
+export enum TDeliveryCalcMethod {
   byShippingService = "byShippingService",
   byOwnRates = "byOwnRates",
   single = "single",
 }
-export declare enum TShippingAlias {
+export enum TShippingAlias {
   selfPickup = "selfPickup",
 }
 export interface IVwShipping {
@@ -64,11 +64,11 @@ export interface IAddress {
   created_at: string;
   vwCountry: IVWCountry | null;
 }
-export declare enum TAddressType {
+export enum TAddressType {
   shipping = "shipping",
   billing = "billing",
 }
-export declare type IAddressFields = Pick<
+export type IAddressFields = Pick<
   IAddress,
   | "first_name"
   | "last_name"

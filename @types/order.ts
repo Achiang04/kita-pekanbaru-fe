@@ -85,11 +85,11 @@ export interface IOrderServiceDelivery {
   } | null;
   delivery?: IDelivery;
 }
-export declare enum TDiscountType {
+export enum TDiscountType {
   fixed = "fixed",
   percent = "percent",
 }
-export declare enum TDiscountSource {
+export enum TDiscountSource {
   manual = "manual",
   coupon = "coupon",
 }
@@ -102,7 +102,7 @@ export interface IOrderDiscount {
   code_id: number | null;
   created_at?: string;
 }
-export declare enum TOrderStockLocation {
+export enum TOrderStockLocation {
   inside = "inside",
   outside = "outside",
   basket = "basket",

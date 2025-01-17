@@ -38,15 +38,15 @@ export interface IImageTag {
   image_tag_id: number;
   title: string;
 }
-export declare enum TThumbMode {
+export enum TThumbMode {
   scale = "scale",
 }
-export declare enum TThumbQuality {
+export enum TThumbQuality {
   low = "low",
   normal = "normal",
   high = "high",
 }
-export declare enum TThumbRatio {
+export enum TThumbRatio {
   "1-1" = "1-1",
   "2-3" = "2-3",
   "3-2" = "3-2",
