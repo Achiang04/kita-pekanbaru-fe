@@ -1,0 +1,186 @@
+import { IProduct } from "../@types/product";
+import { IBasicSettings } from "../@types/settings";
+
+export const basicSettings: IBasicSettings = {
+  "system.locale": {
+    phone: { mask: null, placeholder: "+1(555)123-4567" },
+    money: {
+      decimal: ".",
+      thousand: ",",
+      precision: 2,
+      format: "%v %s",
+      symbol: "$",
+    },
+    date: {
+      dateShort: "MM/dd/yy",
+      dateMedium: "dd-MMM-yyyy",
+      dateLong: "MMMM d, yyyy",
+      dateTimeShort: "MM/dd/yy HH:mm",
+      dateTimeMedium: "dd-MMM-yyyy HH:mm",
+      dateTimeLong: "MMMM d, yyyy HH:mm",
+      time: "HH:mm",
+    },
+  },
+  "system.currency": {
+    currency_id: 4,
+    alias: "usd",
+    code: 840,
+    title: "US Dollar",
+  },
+};
+
+export const categoryTree = [
+  {
+    category_id: 99,
+    parent_id: null,
+    title: "iPhone cases",
+    url_key: "chekhly-na-iphone",
+    tree_sort: "00000000",
+    level: 0,
+    image: null,
+    custom_link: null,
+    children: [
+      {
+        category_id: 103,
+        parent_id: 99,
+        title: "iPhone 7",
+        url_key: "iphone-7",
+        tree_sort: "00000000.00000001",
+        level: 1,
+        image: null,
+        custom_link: null,
+      },
+      {
+        category_id: 104,
+        parent_id: 99,
+        title: "iPhone 7 Plus",
+        url_key: "iphone-7-plus",
+        tree_sort: "00000000.00000002",
+        level: 1,
+        image: null,
+        custom_link: null,
+      },
+      {
+        category_id: 105,
+        parent_id: 99,
+        title: "iPhone 6",
+        url_key: "iphone-6",
+        tree_sort: "00000000.00000003",
+        level: 1,
+        image: null,
+        custom_link: null,
+      },
+      {
+        category_id: 106,
+        parent_id: 99,
+        title: "iPhone 5/5s",
+        url_key: "iphone-5-5s",
+        tree_sort: "00000000.00000004",
+        level: 1,
+        image: null,
+        custom_link: null,
+      },
+    ],
+  },
+];
+
+export const products: IProduct[] = [
+  {
+    product_id: 165,
+    sku: "iphone-case-explorer-wanted",
+    title: "Case Explorer wanted",
+    url_key: "chekhol-explorer-wanted",
+    has_variants: true,
+    external_id: null,
+    item_id: 3595,
+    in_stock: true,
+    prices: [
+      {
+        price_id: 7,
+        value: null,
+        min: "8.99",
+        max: "8.99",
+        old: null,
+        old_min: "12.00",
+        old_max: "12.00",
+        price_alias: "selling_price",
+        currency_alias: "rub",
+      },
+    ],
+    text: {
+      description:
+        "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a posuere arcu, vitae dignissim tortor. Aliquam pharetra luctus ultrices. Suspendisse vitae dui nibh. Nam maximus tristique dolor, at porta ante gravida quis. Cras vehicula at arcu sit amet vestibulum. Aliquam vel felis viverra, mollis elit in, mollis ligula. Quisque convallis dui nec molestie bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla rhoncus felis id suscipit venenatis. Duis eget accumsan massa, vel dictum ante.</p>",
+      custom_title: null,
+      meta_description: null,
+    },
+    props: {
+      available_qty: 40,
+      reserved_qty: 0,
+      country_of_origin: null,
+      extra: null,
+      size: { weight: 0.1 },
+      attr_values: {
+        for_iphone: [615],
+        type_of_case: [605],
+        film_is_included: [610],
+        is_charging_case: [603],
+      },
+      tax_status: "taxable",
+      tax_class_id: null,
+      arbitrary_data: null,
+    },
+    manufacturer: {
+      manufacturer_id: 34,
+      title: "Anymode",
+      url_key: "anymode",
+      image: "images/90/9d/0ebaa202ce868ecafb2f4d2ed9a3.jpeg",
+    },
+    default_category: {
+      category_id: 103,
+      title: "iPhone 7",
+      url_key: "iphone-7",
+    },
+    images: [
+      {
+        image_id: 232,
+        path: "images/42/8c/fc30842678a18574925d97e9aa91.jpeg",
+        width: 1501,
+        height: 1501,
+        is_default: true,
+        description: null,
+        alt: null,
+        tags: null,
+      },
+      {
+        image_id: 233,
+        path: "images/49/54/c4db23339fc41237bab64127ff69.jpeg",
+        width: 1051,
+        height: 1051,
+        is_default: false,
+        description: null,
+        alt: null,
+        tags: null,
+      },
+    ],
+    product_type: {
+      group_id: 61,
+      title: "Default Product type",
+      is_default: true,
+      physical_products: true,
+      track_inventory: false,
+    },
+    labels: [
+      {
+        label_id: 4,
+        title: "Best choice",
+        color: "#0e8a16",
+        text_color: "#000000",
+        icon: null,
+      },
+    ],
+    status: "published",
+    deleted_at: null,
+    sort_price: "8.99",
+    sort_in_stock: 1,
+  },
+];

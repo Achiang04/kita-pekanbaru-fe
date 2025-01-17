@@ -1,7 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import ProductsList from "../components/ProductsList";
 import MainLayout from "../layouts/Main";
-import { apiClient } from "../lib/api";
 import { makeAllMenus } from "../lib/menu";
 import VerticalMenu from "../components/VerticalMenu";
 import { IMenuItem } from "../@types/components";
@@ -14,6 +13,7 @@ import bgPortraitImg from "../assets/cover-bg-portrait.jpg";
 import ProductsSliderByQuery from "../components/ProductsSliderByQuery";
 import { IBasicSettings } from "../@types/settings";
 import { IProduct } from "../@types/product";
+import { basicSettings, products, categoryTree } from "../dummy/data";
 
 export default function IndexPage({
   products,
@@ -78,18 +78,6 @@ export default function IndexPage({
 export const getServerSideProps: GetServerSideProps<
   IIndexPageProps
 > = async () => {
-  const categoryTree = await apiClient.catalog.getCategoryTree({
-    menu: "category",
-  });
-  const { products } = await apiClient.catalog.getProducts({
-    collection: ["main-page"],
-    sort: "in_collection",
-  });
-  const basicSettings = (await apiClient.system.fetchSettings([
-    "system.locale",
-    "system.currency",
-  ])) as IBasicSettings;
-
   const menus = makeAllMenus({ categoryTree });
 
   return {
