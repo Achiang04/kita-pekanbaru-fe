@@ -1,7 +1,7 @@
-import { createGetStr } from "boundless-api-client/utils";
 import { TQuery } from "../@types/common";
 import { ICategory, ICategoryItem } from "../@types/category";
 import { IProduct, IProductItem } from "../@types/product";
+import { createGetStr } from "../utils/createGetStr";
 
 const CATEGORY_PREFIX = "/category";
 const PRODUCTS_PREFIX = "/product";

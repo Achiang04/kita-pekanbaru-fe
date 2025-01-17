@@ -6,7 +6,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 import { faTag } from "@fortawesome/free-solid-svg-icons/faTag";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import clsx from "clsx";
-import { ILabel, TLabelIcon } from "../../@types/label";
+import { ILabel } from "../../@types/label";
 
 export default function ProductLabels({
   labels,
@@ -35,27 +35,27 @@ export default function ProductLabels({
 const LabelIcon = ({ icon }: { icon: string | null }) => {
   let faIcon;
   switch (icon) {
-    case TLabelIcon.star:
+    case "star":
       faIcon = faStar;
       break;
 
-    case TLabelIcon.flag:
+    case "flag":
       faIcon = faFlag;
       break;
 
-    case TLabelIcon.fire:
+    case "fire":
       faIcon = faFire;
       break;
 
-    case TLabelIcon.ok:
+    case "ok":
       faIcon = faCheck;
       break;
 
-    case TLabelIcon.tag:
+    case "tag":
       faIcon = faTag;
       break;
 
-    case TLabelIcon.heart:
+    case "heart":
       faIcon = faHeart;
       break;
   }
