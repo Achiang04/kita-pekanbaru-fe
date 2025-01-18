@@ -36,11 +36,11 @@ function ProductImages({ product }: { product: IProductItem }) {
     openLighBox(index);
   };
 
-  const images4Gallery = useMemo(
-    () =>
-      (images || []).map((image) => getProductImg(image.image, 1800, false)),
-    [images]
-  );
+  // const images4Gallery = useMemo(
+  //   () =>
+  //     (images || []).map((image) => getProductImg(image.image, 1800, false)),
+  //   [images]
+  // );
 
   if (!images || !images.length)
     return <NoImage ratio={productImgRatio || "1-1"} />;
@@ -49,7 +49,7 @@ function ProductImages({ product }: { product: IProductItem }) {
     <>
       <div className="product-gallery d-none d-md-flex">
         <ul className="product-gallery__thumbs list-unstyled">
-          {images.map((image, i) => (
+          {/* {images.map((image, i) => (
             <Item
               original={images4Gallery[i].src}
               width={images4Gallery[i].width}
@@ -85,6 +85,44 @@ function ProductImages({ product }: { product: IProductItem }) {
                 </li>
               )}
             </Item>
+          ))} */}
+          {images.map((image, i) => (
+            <Item
+              original={image.image.path}
+              width={image.image.width}
+              height={image.image.height}
+              id={image.image.image_id}
+              key={image.image.image_id}
+            >
+              {({ ref }) => (
+                <li
+                  ref={ref as React.MutableRefObject<HTMLLIElement>}
+                  className={clsx("product-gallery__thumb", {
+                    active: activeImg === i,
+                  })}
+                  key={image.image.image_id}
+                  onMouseEnter={() => setActiveImg(i)}
+                  onClick={() => setActiveImg(i)}
+                >
+                  <a
+                    href="#"
+                    className="product-gallery__thumb-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <ProductImage
+                      image={image.image}
+                      maxSize={100}
+                      alt={image.alt || product.title}
+                      preserveRatio={true}
+                    />
+                  </a>
+                  {/* <meta itemProp="image" content={getMetaImgUrl(image.image)} /> */}
+                  <meta itemProp="image" content={image.image.path} />
+                </li>
+              )}
+            </Item>
           ))}
         </ul>
         <figure className="product-gallery__big-img">
@@ -95,10 +133,11 @@ function ProductImages({ product }: { product: IProductItem }) {
               alt={images[activeImg].alt || images[activeImg].description!}
             />
           </a>
-          <meta
+          {/* <meta
             itemProp="image"
             content={getMetaImgUrl(images[activeImg].image)}
-          />
+          /> */}
+          <meta itemProp="image" content={images[activeImg].image.path} />
           <figcaption>{images[activeImg].description!}</figcaption>
         </figure>
       </div>

@@ -22,3 +22,10 @@ export enum TFilterFieldType {
   availability = "availability",
   characteristic = "characteristic",
 }
+
+// export type TFilterFieldType =
+//   | "category"
+//   | "brand"
+//   | "price"
+//   | "availability"
+//   | "characteristic";

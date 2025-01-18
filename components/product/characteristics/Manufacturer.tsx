@@ -6,10 +6,12 @@ export default function Manufacturer({
 }: {
   manufacturer: IProductItemManufacturer;
 }) {
-  const image = manufacturer.image?.path
-    ? getManufacturerImg(manufacturer.image)
-    : null;
+  // const image = manufacturer.image?.path
+  //   ? getManufacturerImg(manufacturer.image)
+  //   : null;
+  const image = manufacturer.image ? manufacturer.image.path : null;
   const title = manufacturer.title || "";
+
   return (
     <>
       <dl className="product-attrs__item product-attrs__item_brand">
@@ -18,11 +20,7 @@ export default function Manufacturer({
         </dt>
         <dd className="product-attrs__item-value">
           {image && (
-            <img
-              className="product-attrs__brand-img"
-              alt={title}
-              src={image.src}
-            />
+            <img className="product-attrs__brand-img" alt={title} src={image} />
           )}
           {title}
         </dd>

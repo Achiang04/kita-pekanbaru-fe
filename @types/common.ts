@@ -3,6 +3,8 @@ export enum TPublishingStatus {
   draft = "draft",
 }
 
+// export type TPublishingStatus = "published" | "draft";
+
 export type TQuery = {
   [key: string]: any;
 };

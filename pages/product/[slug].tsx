@@ -21,6 +21,12 @@ import { IBasicSettings } from "../../@types/settings";
 import { IGetProductsParams } from "../../@types/catalog";
 import { IProductItem } from "../../@types/product";
 import { ICategoryFlatItem } from "../../@types/category";
+import {
+  basicSettings,
+  categoryTree,
+  product,
+  products,
+} from "../../dummy/data";
 
 export default function ProductPage({
   data: { product, categoryParents, mainMenu, footerMenu, basicSettings },
@@ -60,7 +66,7 @@ export default function ProductPage({
     );
 
     if (notDefaultCat) {
-      fetchParents(categoryId);
+      // fetchParents(categoryId);
     }
   }, [category, product]);
 
@@ -135,18 +141,18 @@ export default function ProductPage({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { pagination, products } = await apiClient.catalog.getProducts({
-    "per-page": 100,
-  });
-  if (pagination.pageCount > 1) {
-    for (let page = 2; page <= pagination.pageCount; page++) {
-      const { products: newProducts } = await apiClient.catalog.getProducts({
-        "per-page": 100,
-        page,
-      });
-      products.push(...newProducts);
-    }
-  }
+  // const { pagination, products } = await apiClient.catalog.getProducts({
+  //   "per-page": 100,
+  // });
+  // if (pagination.pageCount > 1) {
+  //   for (let page = 2; page <= pagination.pageCount; page++) {
+  //     const { products: newProducts } = await apiClient.catalog.getProducts({
+  //       "per-page": 100,
+  //       page,
+  //     });
+  //     products.push(...newProducts);
+  //   }
+  // }
   const paths = products.map((product) => ({
     params: {
       slug: product.url_key || String(product.product_id),
@@ -164,31 +170,40 @@ export const getStaticProps: GetStaticProps<IProductPageProps> = async ({
 }) => {
   const { slug } = params || {};
 
-  let data = null;
-  try {
-    data = await fetchData(slug as string);
-  } catch (error: any) {
-    if (error.response?.status === 404) {
-      return {
-        notFound: true,
-      };
-    } else {
-      throw error;
-    }
-  }
+  // let data = null;
+  // try {
+  //   data = await fetchData(slug as string);
+  // } catch (error: any) {
+  //   if (error.response?.status === 404) {
+  //     return {
+  //       notFound: true,
+  //     };
+  //   } else {
+  //     throw error;
+  //   }
+  // }
 
-  if (data?.product?.url_key && data?.product?.url_key !== slug) {
-    return {
-      redirect: {
-        destination: `/product/${data?.product?.url_key}`,
-        permanent: true,
-      },
-    };
-  }
+  // if (data?.product?.url_key && data?.product?.url_key !== slug) {
+  //   return {
+  //     redirect: {
+  //       destination: `/product/${data?.product?.url_key}`,
+  //       permanent: true,
+  //     },
+  //   };
+  // }
+
+  const menus = makeAllMenus({ categoryTree });
+
+  const newData = {
+    product,
+    categoryParents: null,
+    ...menus,
+    basicSettings,
+  };
 
   return {
     props: {
-      data,
+      data: newData,
     },
   };
 };

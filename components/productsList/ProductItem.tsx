@@ -14,6 +14,7 @@ import { productImgRatio } from "../../lib/imgs";
 import { findSellingPrice } from "../../lib/product";
 import { IProduct } from "../../@types/product";
 import { TThumbRatio } from "../../@types/image";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function ProductItem({
   product,
@@ -66,7 +67,7 @@ function Product2Cart({ product }: { product: IProduct }) {
           className="btn btn-action btn-resp-size"
           onClick={onAddToCart}
         >
-          <FontAwesomeIcon icon={faCartPlus} /> Add to cart
+          <FontAwesomeIcon icon={faCartPlus as IconProp} /> Add to cart
         </button>
       ) : (
         <span className={"text-muted"}>Out of stock</span>

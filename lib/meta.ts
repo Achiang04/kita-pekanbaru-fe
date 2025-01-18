@@ -6,9 +6,10 @@ import { getCanonicalCategoryUrl, getCanonicalProductUrl } from "./urls";
 export const getProductMetaData = (product: IProductItem) => {
   return {
     canonicalUrl: getCanonicalProductUrl(product),
-    imgUrl: product.images?.length
-      ? getMetaImgUrl(product.images[0].image)
-      : null,
+    // imgUrl: product.images?.length
+    //   ? getMetaImgUrl(product.images[0].image)
+    //   : null,
+    imgUrl: product.images ? product.images[0].image.path : null,
     description: product.seo.metaDesc,
   };
 };

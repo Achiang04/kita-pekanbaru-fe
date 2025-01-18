@@ -25,6 +25,13 @@ import { IBasicSettings } from "../../@types/settings";
 import { createGetStr } from "../../utils/createGetStr";
 import { ICategoryItem } from "../../@types/category";
 import { IProduct } from "../../@types/product";
+import {
+  basicSettings,
+  category,
+  categoryTree,
+  pagination,
+  products,
+} from "../../dummy/data";
 const FilterForm = dynamic(() => import("../../components/FilterForm"), {
   ssr: false,
 });
@@ -42,12 +49,17 @@ export default function CategoryPage({
   );
 
   const onCollectionChange = async (newParams: TQuery) => {
-    const { collection, filteredQuery } = await fetchCollection(
-      category.category_id,
-      newParams
-    );
+    // This is for fetch data by on
+    const filteredQuery = filterProductsQuery(newParams);
+    // const { collection, filteredQuery } = await fetchCollection(
+    //   category.category_id,
+    //   newParams
+    // );
+
     setShowModal(false);
     setCollection(collection);
+
+    // This is for change the collection
     setProductsQuery(filteredQuery);
 
     changeUrl(router, filteredQuery);
@@ -164,33 +176,45 @@ export const getServerSideProps: GetServerSideProps<
 
   const { slug } = params || {};
 
-  let data = null;
-  try {
-    data = await fetchData(slug as string, query);
-  } catch (error: any) {
-    if (error.response?.status === 404) {
-      return {
-        notFound: true,
-      };
-    } else {
-      throw error;
-    }
-  }
+  // let data = null;
+  // try {
+  //   data = await fetchData(slug as string, query);
+  // } catch (error: any) {
+  //   if (error.response?.status === 404) {
+  //     return {
+  //       notFound: true,
+  //     };
+  //   } else {
+  //     throw error;
+  //   }
+  // }
 
-  const redirectUrl = getCategoryItemUrl(data.category);
+  // const redirectUrl = getCategoryItemUrl(data.category);
 
-  if (redirectUrl !== `/category/${slug}`) {
-    return {
-      redirect: {
-        destination: `${redirectUrl}?${queryString}`,
-        permanent: true,
-      },
-    };
-  }
+  // if (redirectUrl !== `/category/${slug}`) {
+  //   return {
+  //     redirect: {
+  //       destination: `${redirectUrl}?${queryString}`,
+  //       permanent: true,
+  //     },
+  //   };
+  // }
+  const menus = makeAllMenus({ categoryTree });
+
+  const newData = {
+    category,
+    collection: {
+      products,
+      pagination,
+    },
+    productsQuery: {},
+    ...menus,
+    basicSettings,
+  };
 
   return {
     props: {
-      data,
+      data: newData,
     },
   };
 };
