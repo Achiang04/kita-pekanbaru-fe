@@ -1,3 +1,4 @@
+import { ICategory } from "../@types/category";
 import { IProduct } from "../@types/product";
 import { IBasicSettings } from "../@types/settings";
 
@@ -29,7 +30,7 @@ export const basicSettings: IBasicSettings = {
   },
 };
 
-export const categoryTree = [
+export const categoryTree: ICategory[] = [
   {
     category_id: 99,
     parent_id: null,
