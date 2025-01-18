@@ -42,9 +42,17 @@ export enum TCharacteristicType {
   textarea = "textarea",
   wysiwyg = "wysiwyg",
 }
+
+// export type TCharacteristicType =
+//   | "checkbox"
+//   | "radio"
+//   | "select"
+//   | "text"
+//   | "textarea"
+//   | "wysiwyg";
 export interface ICharacteristicCase {
   case_id: number;
   title: string;
   sort: number;
-  products_qty: number;
+  products_qty?: number;
 }

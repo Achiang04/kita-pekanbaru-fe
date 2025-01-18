@@ -5,6 +5,7 @@ import { addPromise } from "../redux/reducers/xhr";
 import ProductsSlider from "./ProductsSlider";
 import { IGetProductsParams } from "../@types/catalog";
 import { IProduct } from "../@types/product";
+import { products as dummyData } from "../dummy/data";
 
 export default function ProductsSliderByQuery({
   query,
@@ -17,15 +18,16 @@ export default function ProductsSliderByQuery({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
 
-    const promise = apiClient.catalog
-      .getProducts(query)
-      .then(({ products }) => setProducts(products))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+    // const promise = apiClient.catalog
+    //   .getProducts(query)
+    //   .then(({ products }) => setProducts(products))
+    //   .catch((err) => console.error(err))
+    //   .finally(() => setLoading(false));
 
-    dispatch(addPromise(promise));
+    // dispatch(addPromise(promise));
+    setProducts(dummyData);
   }, [query]); //eslint-disable-line
 
   if (products && !loading && !products.length) return null;
