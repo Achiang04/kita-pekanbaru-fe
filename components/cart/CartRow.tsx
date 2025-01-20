@@ -13,7 +13,12 @@ export default function CartRow({ item, rmItem, onQtyChange }: ICartRowProps) {
   const productUrl = getProductUrl(item.vwItem.product);
 
   const imgElement = imgPath ? (
-    <img src={""} alt={item.vwItem?.product?.title} />
+    <img
+      src={item.vwItem?.image?.path}
+      width={60}
+      height={60}
+      alt={item.vwItem?.product?.title}
+    />
   ) : (
     <NoImage ratio={TThumbRatio["1-1"]} className={"bg-xs"} />
   );

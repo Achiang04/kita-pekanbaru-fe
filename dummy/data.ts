@@ -1,3 +1,4 @@
+import { ICartItem } from "../@types/cart";
 import { ICategory, ICategoryItem } from "../@types/category";
 import { IPagination } from "../@types/common";
 import { ICartProduct, IProduct, IProductItem } from "../@types/product";
@@ -1201,3 +1202,99 @@ export const addedCallOrderData: ICall2OrderData = {
     discount_amount: "3.01",
   },
 };
+
+export const cartTotalData = {
+  id: "d6872561-b339-4c4c-b452-f30024b3f9fa",
+  created_at: "2025-01-17 08:22:07.616021-05",
+  total: {
+    qty: 1,
+    total: "8.99",
+  },
+};
+
+export const cartData: ICartItem[] = [
+  {
+    basket_item_id: 546,
+    item_id: 3599,
+    qty: 1,
+    item_price_id: 599,
+    created_at: "2025-01-20 14:45:48.229802-05",
+    itemPrice: {
+      item_price_id: 599,
+      price_id: 7,
+      basic_price: "12.00",
+      final_price: "8.99",
+      discount_amount: "3.01",
+      discount_percent: null,
+    },
+    vwItem: {
+      item_id: 3599,
+      type: "variant",
+      track_inventory: false,
+      available_qty: 10,
+      reserved_qty: 0,
+      product_id: 165,
+      variant_id: 1251,
+      custom_item_id: null,
+      status: "published",
+      deleted_at: null,
+      product: {
+        product_id: 165,
+        sku: "iphone-case-explorer-wanted",
+        has_variants: true,
+        title: "Case Explorer wanted",
+        url_key: "chekhol-explorer-wanted",
+        default_category_id: 103,
+        manufacturer_id: 34,
+        tax_status: "taxable",
+        tax_class_id: null,
+      },
+      variant: {
+        variant_id: 1251,
+        sku: "iphone-case-explorer-wanted-iPhone 5/5s",
+        title: "iPhone 5/5s",
+        cases: [615],
+        size: [],
+      },
+      commodity_group: {
+        group_id: 61,
+        physical_products: true,
+        title: "Default Product type",
+        trackInventory: false,
+      },
+      image: {
+        path: "https://images.unsplash.com/photo-1736617004818-a01c44c494ee?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        width: 1501,
+        height: 1501,
+      },
+      prices: [
+        {
+          point_id: 1,
+          price_id: 7,
+          alias: "selling_price",
+          currency_id: 4,
+          currency_alias: "usd",
+          value: 8.99,
+          min: null,
+          max: null,
+          is_auto_generated: true,
+          old: 12,
+          old_min: null,
+          old_max: null,
+        },
+      ],
+      labels: [
+        {
+          label_id: 4,
+          color: "#0e8a16",
+          text_color: "#000000",
+          icon: null,
+          remove_after: null,
+          created_at: "2017-04-24 08:57:58.125999-04",
+          deleted_at: null,
+          title: "Best choice",
+        },
+      ],
+    },
+  },
+];
