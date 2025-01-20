@@ -59,24 +59,24 @@ export const addItem2Cart =
       }
 
       dispatch(setCartSubmitting(true));
-      // TODO: integrate add item to cart API
-      // const promise = apiClient.cart
-      //   .addItemToCart(cartId, itemId, qty)
-      //   .then(({ product, actionRequired, cartTotal, added }) => {
-      //     // dispatch(setCartSubmitting(false));
-      //     // if (actionRequired === "chooseVariant" && product) {
-      //     //   dispatch(showVariantModal({ product }));
-      //     // } else if (cartTotal) {
-      //     //   dispatch(setCartTotal(cartTotal));
-      //     //   if (callToOrder && added) dispatch(showCall2Order(added));
-      //     // }
-      //   });
       if (callToOrder) {
+        // TODO: integrate add item to cart API
+
+        // TODO: add error validation when failed to add item to cart
+        // if (error) {
+        //   dispatch(showErrorAlert("Error to add item to cart"));
+        // }
+
         dispatch(showCall2Order(addedCallOrderData));
+        dispatch(
+          setCartTotal({
+            qty,
+            total: "0", // TODO: adjust total price
+          })
+        );
       } else {
         dispatch(showVariantModal({ product: selectedVariantData }));
       }
-      // dispatch(setCartTotal(cartTotal));
       dispatch(setCartSubmitting(false));
     } catch (err) {
       console.error(err);

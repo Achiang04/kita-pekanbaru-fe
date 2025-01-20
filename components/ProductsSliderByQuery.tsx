@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../hooks/redux";
-import { apiClient } from "../lib/api";
-import { addPromise } from "../redux/reducers/xhr";
 import ProductsSlider from "./ProductsSlider";
 import { IGetProductsParams } from "../@types/catalog";
 import { IProduct } from "../@types/product";
@@ -13,22 +10,13 @@ export default function ProductsSliderByQuery({
   className,
   wrapperClassName,
 }: ProductsSliderByQueryProps) {
-  const dispatch = useAppDispatch();
   const [products, setProducts] = useState<IProduct[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // setLoading(true);
-
-    // const promise = apiClient.catalog
-    //   .getProducts(query)
-    //   .then(({ products }) => setProducts(products))
-    //   .catch((err) => console.error(err))
-    //   .finally(() => setLoading(false));
-
-    // dispatch(addPromise(promise));
+    // TODO: fetch get product carousel API
     setProducts(dummyData);
-  }, [query]); //eslint-disable-line
+  }, [query]);
 
   if (products && !loading && !products.length) return null;
 
@@ -39,7 +27,6 @@ export default function ProductsSliderByQuery({
         className={className}
         loading={loading}
         products={products}
-        // swiperProps={{loop: true}}
       />
     </div>
   );
