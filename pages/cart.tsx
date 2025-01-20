@@ -15,6 +15,7 @@ import { calcTotal, calcTotalPrice } from "../lib/calculator";
 import { useRouter } from "next/router";
 import { IBasicSettings } from "../@types/settings";
 import { ICartItem } from "../@types/cart";
+import { basicSettings, categoryTree } from "../dummy/data";
 
 export default function CartPage({
   mainMenu,
@@ -71,13 +72,6 @@ export default function CartPage({
 export const getServerSideProps: GetServerSideProps<
   ICartPageProps
 > = async () => {
-  const categoryTree = await apiClient.catalog.getCategoryTree({
-    menu: "category",
-  });
-  const basicSettings = (await apiClient.system.fetchSettings([
-    "system.locale",
-    "system.currency",
-  ])) as IBasicSettings;
   const { mainMenu, footerMenu } = makeAllMenus({ categoryTree });
 
   return {
