@@ -1,7 +1,11 @@
-@import '~bootstrap';
-@import 'functions/stripUnits';
-@import 'mixins/swiperSlideHeight';
-@import 'mixins/fluidType';
-@import 'components/index';
+@import "~bootstrap";
+@import "functions/stripUnits";
+@import "mixins/swiperSlideHeight";
+@import "mixins/fluidType";
+@import "components/index";
 
-@import 'themes/sample/basic';
+@import "themes/sample/basic";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
