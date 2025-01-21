@@ -7,8 +7,6 @@ import {
   useState,
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { apiClient } from "../../lib/api";
-import { addPromise } from "../../redux/reducers/xhr";
 import { RootState } from "../../redux/store";
 import debounce from "lodash/debounce";
 import CartRow from "./CartRow";
@@ -42,28 +40,19 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
     if (!cartId) return;
     if (!confirm("Are you sure?")) return;
 
-    setSubmitting(true);
-    const promise = apiClient.cart
-      .removeFromCart(cartId, [itemId])
-      .then(() => checkBgSubmits());
+    // TODO: integrate delete cart API
+    // TODO: add error validation when failed to delete item from cart
+    // if (error) {
+    //   dispatch(showErrorAlert("Error to delete item from cart"));
+    // }
 
-    submits.current.push(promise);
-    dispatch(addPromise(promise));
     setItems((prevItems) => prevItems.filter((el) => el.item_id !== itemId));
   };
 
   const submitQty = async (itemId: number, newQty: number) => {
     if (!cartId) return;
 
-    const promise = apiClient.cart
-      .setCartItemsQty(cartId, [
-        {
-          item_id: itemId,
-          qty: newQty,
-        },
-      ])
-      .then(() => checkBgSubmits());
-    submits.current.push(promise);
+    // TODO: integrate change cart item quantity  API
   };
 
   const debouncedSubmitQty = useMemo(

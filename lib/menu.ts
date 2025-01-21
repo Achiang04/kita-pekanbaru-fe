@@ -1,5 +1,4 @@
 import { getCategoryUrl } from "./urls";
-import { getCategoryImg } from "./imgs";
 import { IMenuItem } from "../@types/components";
 import { ICategory } from "../@types/category";
 
@@ -31,7 +30,11 @@ export const makeMenuByCategoryTree = ({
     }
 
     if (category.image) {
-      item.img = getCategoryImg(category.image, 21);
+      item.img = {
+        src: category.image.path,
+        width: category.image.width,
+        height: category.image.height,
+      };
     }
 
     return item;

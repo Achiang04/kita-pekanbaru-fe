@@ -1,14 +1,10 @@
 import { IProductItemManufacturer } from "../../../@types/product";
-import { getManufacturerImg } from "../../../lib/imgs";
 
 export default function Manufacturer({
   manufacturer,
 }: {
   manufacturer: IProductItemManufacturer;
 }) {
-  // const image = manufacturer.image?.path
-  //   ? getManufacturerImg(manufacturer.image)
-  //   : null;
   const image = manufacturer.image ? manufacturer.image.path : null;
   const title = manufacturer.title || "";
 

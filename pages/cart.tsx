@@ -2,9 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import CartItems from "../components/cart/CartItems";
 import { useAppDispatch } from "../hooks/redux";
 import MainLayout from "../layouts/Main";
-import { apiClient } from "../lib/api";
 import { setCartTotal, TCartInited } from "../redux/reducers/cart";
-import { addPromise } from "../redux/reducers/xhr";
 import { useCart } from "../hooks/cart";
 import { makeAllMenus } from "../lib/menu";
 import { IMenuItem } from "../@types/components";
@@ -15,6 +13,12 @@ import { calcTotal, calcTotalPrice } from "../lib/calculator";
 import { useRouter } from "next/router";
 import { IBasicSettings } from "../@types/settings";
 import { ICartItem } from "../@types/cart";
+import {
+  basicSettings,
+  cartData,
+  cartTotalData,
+  categoryTree,
+} from "../dummy/data";
 
 export default function CartPage({
   mainMenu,
@@ -71,13 +75,6 @@ export default function CartPage({
 export const getServerSideProps: GetServerSideProps<
   ICartPageProps
 > = async () => {
-  const categoryTree = await apiClient.catalog.getCategoryTree({
-    menu: "category",
-  });
-  const basicSettings = (await apiClient.system.fetchSettings([
-    "system.locale",
-    "system.currency",
-  ])) as IBasicSettings;
   const { mainMenu, footerMenu } = makeAllMenus({ categoryTree });
 
   return {
@@ -104,17 +101,9 @@ const useCartItems = () => {
   const initCartData = useCallback(
     (cartId: string) => {
       setLoading(true);
-
-      const promise = apiClient.cart
-        .getCartItems(cartId)
-        .then(({ cart, items }) => {
-          setItems(items);
-          dispatch(setCartTotal(cart.total));
-        })
-        .catch((err) => console.error(err))
-        .finally(() => setLoading(false));
-
-      dispatch(addPromise(promise));
+      setItems(cartData);
+      dispatch(setCartTotal(cartTotalData.total));
+      setLoading(false);
     },
     [dispatch]
   );

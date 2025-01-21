@@ -63,7 +63,7 @@ export default function ProductPriceAndBuy({
     const itemId = selectedVariant
       ? selectedVariant.inventoryItem.item_id
       : product.item_id;
-    dispatch(addItem2Cart(itemId, qty));
+    dispatch(addItem2Cart(itemId, qty, true));
 
     if (onAddedToCart) {
       onAddedToCart(itemId, qty);

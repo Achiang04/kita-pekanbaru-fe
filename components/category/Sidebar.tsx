@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { getCategoryImg } from "../../lib/imgs";
 import { getCategoryUrl } from "../../lib/urls";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
@@ -70,7 +69,13 @@ export default function CategorySidebar({
       >
         {categoryMenu.map((item, i) => {
           const categoryUrl = getCategoryUrl(item);
-          const image = item.image ? getCategoryImg(item.image) : null;
+          const image = item.image
+            ? {
+                src: item.image.path,
+                width: item.image.width,
+                height: item.image.height,
+              }
+            : null;
 
           return (
             <li
