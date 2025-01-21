@@ -23,6 +23,7 @@ import { IProductItem } from "../../@types/product";
 import { ICategoryFlatItem } from "../../@types/category";
 import {
   basicSettings,
+  categoryParent,
   categoryTree,
   product,
   products,
@@ -53,8 +54,11 @@ export default function ProductPage({
     [product]
   );
 
-  const fetchParents = async (categoryId: number) =>
-    setResolvedParents(await apiClient.catalog.getCategoryParents(categoryId));
+  const fetchParents = async (categoryId: number) => {
+    // TODO: Integrate to get parent data of the product (this is for showing breadcrumbs)
+    // setResolvedParents(await apiClient.catalog.getCategoryParents(categoryId));
+    setResolvedParents(categoryParent);
+  };
 
   useEffect(() => {
     const categoryId = category ? parseInt(category as string) : null;
@@ -66,7 +70,7 @@ export default function ProductPage({
     );
 
     if (notDefaultCat) {
-      // fetchParents(categoryId);
+      fetchParents(categoryId);
     }
   }, [category, product]);
 
@@ -196,7 +200,7 @@ export const getStaticProps: GetStaticProps<IProductPageProps> = async ({
 
   const newData = {
     product,
-    categoryParents: null,
+    categoryParents: categoryParent,
     ...menus,
     basicSettings,
   };
@@ -209,18 +213,22 @@ export const getStaticProps: GetStaticProps<IProductPageProps> = async ({
 };
 
 const fetchData = async (slug: string) => {
+  // TODO: integrate api to get product
   const product = await apiClient.catalog.getProduct(slug as string);
 
   const categoryId = product.categoryRels.find((cat) => cat.is_default === true)
     ?.category.category_id;
   let categoryParents = null;
   if (categoryId) {
+    // TODO: integrate api to get category parent (This is for breadcrumb and left navigation)
     categoryParents = await apiClient.catalog.getCategoryParents(categoryId);
   }
 
+  // TODO: integrate api to get category for header and footer
   const categoryTree = await apiClient.catalog.getCategoryTree({
     menu: "category",
   });
+  // TODO: integrate api to get basicSettings
   const basicSettings = (await apiClient.system.fetchSettings([
     "system.locale",
     "system.currency",

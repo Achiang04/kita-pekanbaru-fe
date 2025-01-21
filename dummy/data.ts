@@ -1,5 +1,13 @@
 import { ICartItem } from "../@types/cart";
-import { ICategory, ICategoryItem } from "../@types/category";
+import {
+  IFilterFieldRange,
+  IFilterFieldsRangesResponse,
+} from "../@types/catalog";
+import {
+  ICategory,
+  ICategoryFlatItem,
+  ICategoryItem,
+} from "../@types/category";
 import { IPagination } from "../@types/common";
 import { ICartProduct, IProduct, IProductItem } from "../@types/product";
 import { IBasicSettings } from "../@types/settings";
@@ -1296,5 +1304,35 @@ export const cartData: ICartItem[] = [
         },
       ],
     },
+  },
+];
+
+export const filterRange: IFilterFieldsRangesResponse = {
+  ranges: [
+    {
+      type: "price",
+      range: {
+        min: "7.00",
+        max: "900.00",
+        finalPrices: [],
+      },
+    },
+  ],
+  totalProducts: 16,
+};
+
+export const categoryParent: ICategoryFlatItem[] = [
+  {
+    category_id: 99,
+    parent_id: null,
+    lang_id: 1,
+    title: "iPhone cases",
+    url_key: "chekhly-na-iphone",
+    tree_sort: "00000000",
+    level: 0,
+    deleted_at: null,
+    custom_link: null,
+    status: "published",
+    image_id: null,
   },
 ];

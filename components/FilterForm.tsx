@@ -1,6 +1,5 @@
 import { TQuery } from "../@types/common";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { apiClient } from "../lib/api";
 import PriceRangeField from "./filterForm/PriceRange";
 import _debounce from "lodash/debounce";
 import _omit from "lodash/omit";
@@ -15,6 +14,7 @@ import { filterKeys, filterProductsQuery } from "../lib/category";
 import { IFilterFieldRange } from "../@types/catalog";
 import { IFilterField, TFilterFieldType } from "../@types/filter";
 import { TCharacteristicType } from "../@types/characteristic";
+import { filterRange } from "../dummy/data";
 
 const DEFAULT_DISPLAY_LIMIT = 3;
 
@@ -227,12 +227,9 @@ const fetchRanges = async (
     type,
     characteristic_id,
   }));
-  const data = await apiClient.catalog.getFilterFieldsRanges({
-    filter_fields,
-    values,
-  });
+  // TODO: Integrate API to get Filter list Data
 
-  return data;
+  return filterRange;
 };
 
 const getSubmitLabel = (

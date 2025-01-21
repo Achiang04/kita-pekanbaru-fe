@@ -49,7 +49,7 @@ export default function CategoryPage({
   );
 
   const onCollectionChange = async (newParams: TQuery) => {
-    // This is for fetch data by on
+    // TODO: Integrate to get data by sortby filter and pagination changes
     const filteredQuery = filterProductsQuery(newParams);
     // const { collection, filteredQuery } = await fetchCollection(
     //   category.category_id,
@@ -176,6 +176,7 @@ export const getServerSideProps: GetServerSideProps<
 
   const { slug } = params || {};
 
+  // TODO: Integrate to get category and product data
   // let data = null;
   // try {
   //   data = await fetchData(slug as string, query);
@@ -199,6 +200,7 @@ export const getServerSideProps: GetServerSideProps<
   //     },
   //   };
   // }
+
   const menus = makeAllMenus({ categoryTree });
 
   const newData = {
@@ -220,6 +222,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const fetchData = async (slug: string, params: TQuery) => {
+  // TODO: Integrate api to get category
   const category = await apiClient.catalog.getCategoryItem(slug, {
     with_children: 1,
     with_parents: 1,
@@ -231,6 +234,8 @@ const fetchData = async (slug: string, params: TQuery) => {
     category.category_id,
     params
   );
+
+  // TODO: Integrate api to get category on footer and header menu
   const categoryTree = await apiClient.catalog.getCategoryTree({
     menu: "category",
   });
@@ -239,6 +244,7 @@ const fetchData = async (slug: string, params: TQuery) => {
     activeCategoryId: category.category_id,
   });
 
+  // TODO: Integrate api to get basic settings
   const basicSettings = (await apiClient.system.fetchSettings([
     "system.locale",
     "system.currency",
@@ -257,6 +263,7 @@ const fetchData = async (slug: string, params: TQuery) => {
 
 const fetchCollection = async (categoryId: number, params: TQuery) => {
   const filteredQuery = filterProductsQuery(params);
+  // TODO: Integrate api to get product
   const collection = await apiClient.catalog.getProducts({
     category: [categoryId],
     sort: "in_category,-in_stock,price",

@@ -9,7 +9,6 @@ import {
 } from "../reducers/cart";
 import { AppThunk } from "../store";
 import Cookie from "js-cookie";
-import { apiClient } from "../../lib/api";
 import { showErrorAlert } from "../reducers/alert";
 import { addedCallOrderData, selectedVariantData } from "../../dummy/data";
 
@@ -22,13 +21,17 @@ export const initCart = (): AppThunk => async (dispatch, getState) => {
   dispatch(setInitStatus(TCartInited.processing));
   try {
     const cartInfo = await getCartByCookieOrRetrieve();
-    Cookie.set("boundless_cart_id", cartInfo.id, {
-      expires: 365,
-      sameSite: "None",
-      secure: true,
-    });
+    // Cookie.set("boundless_cart_id", cartInfo.id, {
+    //   expires: 365,
+    //   sameSite: "None",
+    //   secure: true,
+    // });
 
-    dispatch(setCartInited(cartInfo));
+    if (cartInfo) {
+      dispatch(setCartInited(cartInfo));
+    } else {
+      throw new Error("No Item on Cart");
+    }
   } catch (err) {
     console.error(err);
     dispatch(setInitStatus(TCartInited.no));
@@ -36,16 +39,9 @@ export const initCart = (): AppThunk => async (dispatch, getState) => {
 };
 
 export const getCartByCookieOrRetrieve = async () => {
-  const cartId = Cookie.get("boundless_cart_id");
-  if (cartId) {
-    try {
-      return await apiClient.cart.getCartInfo(cartId);
-    } catch (e) {
-      //
-    }
-  }
+  // TODO: Integrate  get user cart information
 
-  return await apiClient.cart.retrieveCart();
+  return null;
 };
 
 export const addItem2Cart =

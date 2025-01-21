@@ -33,19 +33,23 @@ export default function Header({ companyTitle }: { companyTitle?: string }) {
               />
             </Link>
           </div>
-          <Link href={"/login"}>
-            <button>Login</button>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href={"/login"}>
+              <button type="button" className="btn btn-action btn-resp-size">
+                Login
+              </button>
+            </Link>
 
-          <div className={"page-header__right-blocks"}>
-            <HeaderCart />
-            <button
-              type={"button"}
-              className={"btn btn-outline-secondary page-header__hamburger"}
-              onClick={onHamburgerBtnClicked}
-            >
-              <FontAwesomeIcon icon={faBars as IconProp} />
-            </button>
+            <div className={"page-header__right-blocks"}>
+              <HeaderCart />
+              <button
+                type={"button"}
+                className={"btn btn-outline-secondary page-header__hamburger"}
+                onClick={onHamburgerBtnClicked}
+              >
+                <FontAwesomeIcon icon={faBars as IconProp} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
