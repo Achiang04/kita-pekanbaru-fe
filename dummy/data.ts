@@ -9,9 +9,17 @@ import {
   ICategoryItem,
 } from "../@types/category";
 import { IPagination } from "../@types/common";
+import { IOrder } from "../@types/order";
 import { ICartProduct, IProduct, IProductItem } from "../@types/product";
-import { IBasicSettings } from "../@types/settings";
+import {
+  IBasicSettings,
+  ICheckoutPageSettings,
+  ISystemTax,
+  TCalculateTaxBasedOn,
+} from "../@types/settings";
 import { ICall2OrderData } from "../redux/reducers/cart";
+import { ITotal } from "../@types/total";
+import { ICheckoutStepper } from "../@types/checkout";
 
 export const basicSettings: IBasicSettings = {
   "system.locale": {
@@ -1336,3 +1344,220 @@ export const categoryParent: ICategoryFlatItem[] = [
     image_id: null,
   },
 ];
+
+export const cartOrder: IOrder = {
+  id: "949b54ab-94d5-4231-af84-33a5e65ecbd9",
+  service_total_price: "4.90",
+  payment_mark_up: "0.00",
+  total_price: "13.89",
+  discount_for_order: "0.00",
+  tax_amount: null,
+  paid_at: null,
+  status: null,
+  customer: {
+    id: "76cfe94f-4548-4908-8e16-bac298f8a505",
+    email: "hr@yopmail.com",
+    created_at: "2025-01-21 04:02:26.684286-05",
+    first_name: "asd",
+    last_name: "asd",
+    phone: null,
+    receive_marketing_info: true,
+    custom_attrs: null,
+    addresses: [
+      {
+        id: "51d32863-733c-4296-83ee-4a5110ffd73a",
+        type: "shipping",
+        is_default: true,
+        first_name: "asd",
+        last_name: "asd",
+        company: "asd",
+        address_line_1: "asd",
+        address_line_2: null,
+        city: "asd",
+        state: "asdasd",
+        country_id: 22,
+        zip: "123",
+        phone: "123123",
+        created_at: "2025-01-21 04:02:49.03751-05",
+        vwCountry: {
+          country_id: 22,
+          code: "be",
+          title: "Belgium",
+        },
+      },
+      {
+        id: "4d61e569-b281-466c-88da-2ec3418ed4bd",
+        type: "billing",
+        is_default: false,
+        first_name: "asd",
+        last_name: "asd",
+        company: "asd",
+        address_line_1: "asd",
+        address_line_2: null,
+        city: "asd",
+        state: "asdasd",
+        country_id: 22,
+        zip: "123",
+        phone: "123123",
+        created_at: "2025-01-21 04:02:49.07075-05",
+        vwCountry: {
+          country_id: 22,
+          code: "be",
+          title: "Belgium",
+        },
+      },
+    ],
+  },
+  discounts: [],
+  paymentMethod: null,
+  services: [
+    {
+      order_service_id: 549,
+      service_id: null,
+      qty: 1,
+      total_price: "4.90",
+      item_price_id: 4141,
+      is_delivery: true,
+      serviceDelivery: {
+        delivery_id: 23,
+        title: null,
+        text_info: null,
+        data: null,
+        delivery: {
+          delivery_id: 23,
+          title: "US Shipping",
+          description: "Fast shipping in 2-days. Promise!",
+          alias: null,
+          img: null,
+          shipping_id: null,
+          shipping_config: {
+            price: 4.9,
+          },
+          free_shipping_from: null,
+          calc_method: "single",
+          created_at: "2022-04-09 10:37:45.21814-04",
+          shipping: null,
+        },
+      },
+    },
+  ],
+  client_comment: null,
+  custom_attrs: null,
+  tax_calculations: {
+    itemsSubTotal: {
+      price: 8.99,
+      qty: 1,
+    },
+    price: "13.89",
+    discount: "0",
+    paymentMarkup: "0",
+    tax: {
+      totalTaxAmount: null,
+      itemsWithTax: [
+        {
+          id: 3596,
+          price: "8.99",
+          qty: 1,
+          taxStatus: "taxable",
+          taxClassId: null,
+          taxBase: "8.990000",
+        },
+      ],
+      mode: null,
+    },
+    servicesSubTotal: {
+      price: 4.9,
+      qty: 1,
+    },
+  },
+  publishing_status: "draft",
+  created_at: "2025-01-21 01:27:05.78328-05",
+};
+
+export const cartCheckoutTotalDummy: ITotal = {
+  itemsSubTotal: {
+    price: 23.98,
+    qty: 2,
+  },
+  price: "28.88",
+  discount: "0",
+  paymentMarkup: "0",
+  tax: {
+    totalTaxAmount: null,
+    itemsWithTax: [
+      {
+        id: 3596,
+        price: "8.99",
+        qty: 1,
+        taxStatus: "taxable",
+        taxClassId: null,
+        taxBase: "8.990000",
+      },
+      {
+        id: 3628,
+        price: "14.99",
+        qty: 1,
+        taxStatus: "taxable",
+        taxClassId: null,
+        taxBase: "14.990000",
+      },
+    ],
+    mode: null,
+  },
+  taxSettings: {
+    turnedOn: false,
+    pricesEnteredWithTax: false,
+    calculateTaxBasedOn: "storeLocation",
+    taxTitle: "Tax",
+  },
+  servicesSubTotal: {
+    price: 4.9,
+    qty: 1,
+  },
+  calcByAPI: true,
+};
+
+export const taxSettingsDummy: ISystemTax = {
+  turnedOn: false,
+  pricesEnteredWithTax: true,
+  calculateTaxBasedOn: TCalculateTaxBasedOn.customerBillingAddress,
+  taxTitle: "none",
+};
+
+export const stepperDummy: ICheckoutStepper = {
+  steps: ["contact-info", "shipping-address", "payment-method"],
+  filledSteps: ["contact-info", "shipping-address"],
+  currentStep: "contact-info",
+};
+
+export const checkoutPageSettings: ICheckoutPageSettings = {
+  contactFields: {
+    phone: {
+      show: false,
+      required: false,
+    },
+    email: {
+      show: true,
+      required: true,
+    },
+  },
+  logo: null,
+  accountPolicy: "guest-and-login",
+  customerNameRequired: ["last"],
+  addressLine2: "hidden",
+  companyName: "optional",
+  footerLinks: [
+    {
+      title: "Refund policy",
+      url: "/page/refund-policy",
+    },
+    {
+      title: "Privacy policy",
+      url: "/page/privacy-policy",
+    },
+    {
+      title: "Terms of service",
+      url: "/page/terms-of-service",
+    },
+  ],
+};
