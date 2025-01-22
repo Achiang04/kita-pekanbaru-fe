@@ -20,6 +20,8 @@ import {
 import { ICall2OrderData } from "../redux/reducers/cart";
 import { ITotal } from "../@types/total";
 import { ICheckoutStepper } from "../@types/checkout";
+import { ICheckoutShippingPageData } from "../@types/delivery";
+import { ICheckoutPaymentPageData } from "../@types/payment";
 
 export const basicSettings: IBasicSettings = {
   "system.locale": {
@@ -1558,6 +1560,157 @@ export const checkoutPageSettings: ICheckoutPageSettings = {
     {
       title: "Terms of service",
       url: "/page/terms-of-service",
+    },
+  ],
+};
+
+export const checkoutShippingDummy: ICheckoutShippingPageData = {
+  shippingAddress: null,
+  billingAddress: null,
+  orderServiceDelivery: null,
+  person: {
+    id: "06550b5f-104a-4520-9038-a7bb3c8fa1b0",
+    email: "juanfrederick@yopmail.com",
+    created_at: "2025-01-21 08:49:11.56456-05",
+    first_name: null,
+    last_name: null,
+    phone: null,
+    receive_marketing_info: true,
+    custom_attrs: null,
+    addresses: [],
+    groups: [],
+  },
+  options: {
+    delivery: [
+      {
+        delivery_id: 20,
+        title: "Self-pickup from the store",
+        description: null,
+        alias: null,
+        img: null,
+        shipping_id: 2,
+        shipping_config: {
+          address:
+            "1 infinite loop, <br>Cupertino, CA 95014 <br>9:00am &mdash; 6:00pm",
+        },
+        free_shipping_from: null,
+        calc_method: "byShippingService",
+        created_at: "2016-07-13 11:56:36.032345-04",
+        shipping: {
+          shipping_id: 2,
+          shipping_title: "Self pickup",
+          alias: "selfPickup",
+          settings: null,
+        },
+      },
+      {
+        delivery_id: 23,
+        title: "US Shipping",
+        description: "Fast shipping in 2-days. Promise!",
+        alias: null,
+        img: null,
+        shipping_id: null,
+        shipping_config: {
+          price: 4.9,
+        },
+        free_shipping_from: null,
+        calc_method: "single",
+        created_at: "2022-04-09 10:37:45.21814-04",
+        shipping: null,
+      },
+      {
+        delivery_id: 24,
+        title: "Worldwide shipping",
+        description: "Your order will be fulfilled and sent to USPS in 1 day.",
+        alias: null,
+        img: null,
+        shipping_id: null,
+        shipping_config: {
+          price: 9.9,
+        },
+        free_shipping_from: null,
+        calc_method: "single",
+        created_at: "2022-04-09 10:38:23.923214-04",
+        shipping: null,
+      },
+    ],
+    country: [
+      {
+        country_id: 1,
+        code: "af",
+        title: "Afghanistan",
+      },
+      {
+        country_id: 3,
+        code: "al",
+        title: "Albania",
+      },
+      {
+        country_id: 4,
+        code: "dz",
+        title: "Algeria",
+      },
+      {
+        country_id: 5,
+        code: "as",
+        title: "American Samoa",
+      },
+    ],
+  },
+};
+
+export const paymentDataDummy: ICheckoutPaymentPageData = {
+  paymentMethods: [
+    {
+      payment_method_id: 1,
+      title: "Cash on delivery",
+      for_all_delivery: true,
+      mark_up: "0.000",
+      sort: 10,
+      gateway_alias: "cashOnDelivery",
+    },
+  ],
+  billingAddress: {
+    id: "27459306-11ca-412b-a167-a20d0f0f1aaf",
+    type: "billing",
+    is_default: true,
+    first_name: "asd",
+    last_name: "asdasd",
+    company: "asasd",
+    address_line_1: "asda",
+    address_line_2: null,
+    city: "asda",
+    state: "sdasd",
+    country_id: 6,
+    zip: "sdasd",
+    phone: null,
+    created_at: "2025-01-22 02:20:50.216121-05",
+    vwCountry: {
+      country_id: 6,
+      code: "ad",
+      title: "Andorra",
+    },
+  },
+  countries: [
+    {
+      country_id: 1,
+      code: "af",
+      title: "Afghanistan",
+    },
+    {
+      country_id: 3,
+      code: "al",
+      title: "Albania",
+    },
+    {
+      country_id: 4,
+      code: "dz",
+      title: "Algeria",
+    },
+    {
+      country_id: 5,
+      code: "as",
+      title: "American Samoa",
     },
   ],
 };

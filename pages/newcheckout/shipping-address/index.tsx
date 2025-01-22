@@ -1,5 +1,15 @@
 import React from "react";
+import CheckoutLayout from "../../../layouts/CheckoutLayout";
+import CheckoutShippingForm from "../../../components/checkoutComponents/CheckoutShippingForm";
+import { checkoutShippingDummy } from "../../../dummy/data";
+import { ICheckoutShippingPageData } from "../../../@types/delivery";
 
 export default function ShippingAddressPage() {
-  return <div>ShippingAddressPage</div>;
+  // TODO: Integrate with real data
+  const shippingPage: ICheckoutShippingPageData = checkoutShippingDummy;
+  return (
+    <CheckoutLayout>
+      <CheckoutShippingForm shippingPage={shippingPage} />
+    </CheckoutLayout>
+  );
 }
