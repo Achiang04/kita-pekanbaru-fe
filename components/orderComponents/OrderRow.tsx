@@ -1,8 +1,8 @@
 import React from "react";
-import { IOrderItem } from "boundless-api-client";
 import currency from "currency.js";
 import Grid from "@mui/material/Grid2";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
+import { IOrderItem } from "../../@types/order";
 
 export default function OrderRow({ item }: { item: IOrderItem }) {
   const { formatCurrency } = useFormatCurrency();

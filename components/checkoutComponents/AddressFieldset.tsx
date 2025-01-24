@@ -1,16 +1,15 @@
 import React from "react";
-
+import {
+  ICheckoutPageSettings,
+  TCheckoutCustomerName,
+  TCheckoutFieldStatus,
+} from "../../@types/settings";
 import Grid from "@mui/material/Grid2";
 import { FormikProps, useFormikContext } from "formik";
 import TextField from "@mui/material/TextField";
 import { IFieldAttrs } from "../../utils/formUtils";
 import { IAddressSubForm, IShippingFormValues } from "../../@types/shipping";
 import { checkoutPageSettings } from "../../dummy/data";
-import {
-  ICheckoutPageSettings,
-  TCheckoutCustomerName,
-  TCheckoutFieldStatus,
-} from "../../@types/settings";
 import { IVWCountry } from "../../@types/delivery";
 
 export default function AddressFieldset({
