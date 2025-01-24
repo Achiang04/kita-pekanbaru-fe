@@ -1,8 +1,7 @@
 import { Step, StepButton, Stepper } from "@mui/material";
-import { TCheckoutStep } from "boundless-api-client";
 import React, { useMemo } from "react";
 import { getPathByStep, getStepByPath } from "../../utils/routeUtils";
-import { ICheckoutStepper } from "../../@types/checkout";
+import { ICheckoutStepper, TCheckoutStep } from "../../@types/checkout";
 import { stepperDummy } from "../../dummy/data";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";

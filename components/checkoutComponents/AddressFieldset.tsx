@@ -1,17 +1,17 @@
 import React from "react";
-import {
-  IVWCountry,
-  TCheckoutCustomerName,
-  TCheckoutFieldStatus,
-} from "boundless-api-client";
+
 import Grid from "@mui/material/Grid2";
 import { FormikProps, useFormikContext } from "formik";
 import TextField from "@mui/material/TextField";
 import { IFieldAttrs } from "../../utils/formUtils";
 import { IAddressSubForm, IShippingFormValues } from "../../@types/shipping";
-import { useTranslation } from "react-i18next";
 import { checkoutPageSettings } from "../../dummy/data";
-import { ICheckoutPageSettings } from "../../@types/settings";
+import {
+  ICheckoutPageSettings,
+  TCheckoutCustomerName,
+  TCheckoutFieldStatus,
+} from "../../@types/settings";
+import { IVWCountry } from "../../@types/delivery";
 
 export default function AddressFieldset({
   countries,

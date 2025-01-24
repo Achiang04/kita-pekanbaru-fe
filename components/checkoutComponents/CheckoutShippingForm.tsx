@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  IAddress,
-  IAddressFields,
-  ICheckoutShippingPageData,
-  IOrder,
-  ISetAddressesData,
-  TAddressType,
-} from "boundless-api-client";
+
 import { Form, Formik, FormikHelpers } from "formik";
 import ExtraErrors from "./ExtraErrors";
 import { Button, Typography } from "@mui/material";
@@ -18,6 +11,14 @@ import CheckoutAddressesFields from "./CheckoutAddressField";
 import { isPickUpDelivery } from "../../lib/shipping";
 import { cartOrder } from "../../dummy/data";
 import { useRouter } from "next/navigation";
+import {
+  IAddress,
+  IAddressFields,
+  ICheckoutShippingPageData,
+  ISetAddressesData,
+  TAddressType,
+} from "../../@types/delivery";
+import { IOrder } from "../../@types/order";
 
 export default function CheckoutShippingForm({
   shippingPage,

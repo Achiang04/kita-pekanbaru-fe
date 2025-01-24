@@ -7,7 +7,6 @@ import CheckoutCartItems from "./CheckoutCartItems";
 import CheckoutCartFooter from "./CheckoutCartFooter";
 import CheckoutCartDiscountForm from "./CheckoutCartDiscountForm";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
-import { useTranslation } from "react-i18next";
 import { IOrder } from "../../@types/order";
 import { ITotal } from "../../@types/total";
 import { cartCheckoutTotalDummy, cartOrder } from "../../dummy/data";
@@ -20,7 +19,6 @@ export default function CheckoutCart() {
 
   const [fullOpened, setFullOpened] = useState(false);
   const { formatCurrency } = useFormatCurrency();
-  const { t } = useTranslation();
 
   const hasDisounts = order?.discounts && order?.discounts?.length > 0;
 
@@ -36,12 +34,12 @@ export default function CheckoutCart() {
           <ShoppingCartIcon sx={{ fontSize: 16 }} />
           {fullOpened ? (
             <>
-              {t("cart.hideOrderSummary")}
+              Hide order summary
               <ExpandLess fontSize="small" />
             </>
           ) : (
             <>
-              {t("cart.showOrderSummary")}
+              Show order summary
               <ExpandMore fontSize="small" />
             </>
           )}

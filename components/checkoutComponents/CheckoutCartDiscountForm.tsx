@@ -9,7 +9,6 @@ import {
   InputLabel,
 } from "@mui/material";
 import { fieldAttrs } from "../../utils/formUtils";
-import { useTranslation } from "react-i18next";
 import { cartOrder } from "../../dummy/data";
 
 export default function CheckoutCartDiscountForm() {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormikContext } from "formik";
 import { IShippingFormValues } from "../../@types/shipping";
-import { ICheckoutShippingPageData } from "boundless-api-client";
+import { ICheckoutShippingPageData } from "../../@types/delivery";
 import { isPickUpDelivery } from "../../lib/shipping";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
