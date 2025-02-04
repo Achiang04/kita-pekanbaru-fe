@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
 import { IProductItem } from "../../@types/product";
 import { IVariant } from "../../@types/variant";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function ProductPriceAndBuy({
   product,
@@ -127,7 +128,7 @@ export default function ProductPriceAndBuy({
               className={"btn btn-action btn-anim btn-lg"}
               onClick={onBuyBtnClicked}
             >
-              <FontAwesomeIcon icon={faCartPlus} /> Buy
+              <FontAwesomeIcon icon={faCartPlus as IconProp} /> Buy
             </button>
           </div>
         </div>
@@ -173,7 +174,7 @@ const PriceAndBuyQty = ({
         className={"btn btn-outline-secondary text-center"}
         onClick={onBtnClicked.bind(null, -1)}
       >
-        <FontAwesomeIcon icon={faMinus} />
+        <FontAwesomeIcon icon={faMinus as IconProp} />
       </button>
       <input
         type={"number"}
@@ -187,7 +188,7 @@ const PriceAndBuyQty = ({
         className={"btn btn-outline-secondary text-center"}
         onClick={onBtnClicked.bind(null, 1)}
       >
-        <FontAwesomeIcon icon={faPlus} />
+        <FontAwesomeIcon icon={faPlus as IconProp} />
       </button>
     </div>
   );

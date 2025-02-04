@@ -7,12 +7,12 @@ import ProductLabels from "../product/Labels";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons/faCartPlus";
 import NoImage from "../NoImage";
-import { productImgRatio } from "../../lib/imgs";
 import ProductPrice from "../productsList/ProductPrice";
 import ProductListImage from "../productsList/ProductImage";
 import { findSellingPrice } from "../../lib/product";
 import { IProduct } from "../../@types/product";
 import { TThumbRatio } from "../../@types/image";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function SliderProductItem({ product }: { product: IProduct }) {
   const productUrl = getProductUrl(product);
@@ -48,7 +48,7 @@ function Product2Cart({ product }: { product: IProduct }) {
     <div className="products-slider__to-cart">
       {product.in_stock ? (
         <button type="button" className="btn btn-action" onClick={onAddToCart}>
-          <FontAwesomeIcon icon={faCartPlus} /> Add to cart
+          <FontAwesomeIcon icon={faCartPlus as IconProp} /> Add to cart
         </button>
       ) : (
         <span className={"text-muted"}>Out of stock</span>
@@ -75,7 +75,7 @@ function ProductImage({
           maxSize={500}
         />
       ) : (
-        <NoImage ratio={productImgRatio || TThumbRatio["1-1"]} />
+        <NoImage ratio={TThumbRatio["1-1"]} />
       )}
       <ProductLabels
         labels={product.labels!}

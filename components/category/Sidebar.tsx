@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import { useMemo } from "react";
 import { ICategoryFlatItem, ICategoryItem } from "../../@types/category";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function CategorySidebar({
   category,
@@ -53,7 +54,10 @@ export default function CategorySidebar({
                 <strong>{item.title}</strong>
               ) : (
                 <Link href={getCategoryUrl(item)}>
-                  <FontAwesomeIcon icon={faChevronLeft} size={"xs"} />{" "}
+                  <FontAwesomeIcon
+                    icon={faChevronLeft as IconProp}
+                    size={"xs"}
+                  />{" "}
                   {item.title}
                 </Link>
               )}

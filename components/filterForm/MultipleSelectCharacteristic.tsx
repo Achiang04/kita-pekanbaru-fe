@@ -20,7 +20,7 @@ export default function MultipleSelectCharacteristic({
   useEffect(() => {
     const { cases } = field.characteristic!;
     if (!cases) return;
-    const inStockCases = cases.filter((el) => el.products_qty > 0);
+    const inStockCases = cases.filter((el) => el.products_qty! > 0);
     const outOfStockCases = cases.filter((el) => !el.products_qty);
     const result = [...inStockCases, ...outOfStockCases];
     setVisibleCases(result.slice(0, displayLimit));

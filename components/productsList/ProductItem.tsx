@@ -10,7 +10,6 @@ import ProductLabels from "../product/Labels";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons/faCartPlus";
 import NoImage from "../NoImage";
-import { productImgRatio } from "../../lib/imgs";
 import { findSellingPrice } from "../../lib/product";
 import { IProduct } from "../../@types/product";
 import { TThumbRatio } from "../../@types/image";
@@ -90,7 +89,7 @@ function ProductImage({
       {img ? (
         <ProductListImage image={img} alt={img.alt || product.title} />
       ) : (
-        <NoImage ratio={productImgRatio || TThumbRatio["1-1"]} />
+        <NoImage ratio={TThumbRatio["1-1"]} />
       )}
       <ProductLabels
         labels={product.labels!}

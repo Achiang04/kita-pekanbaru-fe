@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ICartItem } from "../@types/cart";
 import {
   IFilterFieldRange,

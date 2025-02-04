@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import ProductImage from "./ProductImage";
-import { productImgRatio } from "../../lib/imgs";
 import NoImage from "../NoImage";
 import dynamic from "next/dynamic";
 import { Item, Gallery, useGallery } from "react-photoswipe-gallery";
 
 import "photoswipe/dist/photoswipe.css";
 import { IProductItem } from "../../@types/product";
+import { TThumbRatio } from "../../@types/image";
 
 const ImagesSlider = dynamic(() => import("./ImagesSlider"), {
   ssr: false,
@@ -36,8 +36,7 @@ function ProductImages({ product }: { product: IProductItem }) {
     openLighBox(index);
   };
 
-  if (!images || !images.length)
-    return <NoImage ratio={productImgRatio || "1-1"} />;
+  if (!images || !images.length) return <NoImage ratio={TThumbRatio["1-1"]} />;
 
   return (
     <>

@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
 import { TThumbRatio } from "../../@types/image";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function CallToOrder() {
   const dispatch = useAppDispatch();
@@ -88,7 +89,7 @@ export default function CallToOrder() {
           )}
           <div className="text-end">
             <Link href="/cart" className="btn btn-action btn-anim">
-              <FontAwesomeIcon icon={faCheck} />
+              <FontAwesomeIcon icon={faCheck as IconProp} />
               Place an order
             </Link>
           </div>

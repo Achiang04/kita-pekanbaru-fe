@@ -1,6 +1,6 @@
 const url = process.env.API_URL;
 
-const postUserRegister = async (name: string, phoneNumber: string) => {
+export const postUserRegister = async (name: string, phoneNumber: string) => {
   const data = { name, gsm: phoneNumber };
 
   return fetch(`${url}/api/v1/users`, {
@@ -15,7 +15,7 @@ const postUserRegister = async (name: string, phoneNumber: string) => {
     .catch((err) => err);
 };
 
-const postUserLogin = async (phoneNumber: string) => {
+export const postUserLogin = async (phoneNumber: string) => {
   const data = { gsm: phoneNumber };
 
   return fetch(`${url}/api/v1/auth/login`, {
@@ -30,7 +30,7 @@ const postUserLogin = async (phoneNumber: string) => {
     .catch((err) => err);
 };
 
-const postVerifyUser = async (phoneNumber: string, otp: string) => {
+export const postVerifyUser = async (phoneNumber: string, otp: string) => {
   const data = { gsm: phoneNumber, otp };
 
   return fetch(`${url}/api/v1/auth/login/verify`, {

@@ -1,3 +1,4 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons/faTwitter";
@@ -14,7 +15,10 @@ export default function SocialButtons() {
             target="_blank"
             href="https://fb.com"
           >
-            <FontAwesomeIcon className="social-icon" icon={faFacebook} />
+            <FontAwesomeIcon
+              className="social-icon"
+              icon={faFacebook as IconProp}
+            />
           </a>
         </div>
         <div className="page-footer__social-button">
@@ -23,7 +27,10 @@ export default function SocialButtons() {
             target="_blank"
             href="https://instagram.com"
           >
-            <FontAwesomeIcon className="social-icon" icon={faInstagram} />
+            <FontAwesomeIcon
+              className="social-icon"
+              icon={faInstagram as IconProp}
+            />
           </a>
         </div>
         <div className="page-footer__social-button">
@@ -32,7 +39,10 @@ export default function SocialButtons() {
             target="_blank"
             href="https://twitter.com"
           >
-            <FontAwesomeIcon className="social-icon" icon={faTwitter} />
+            <FontAwesomeIcon
+              className="social-icon"
+              icon={faTwitter as IconProp}
+            />
           </a>
         </div>
       </div>

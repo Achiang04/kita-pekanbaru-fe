@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/faShoppingCart";
 import { useRouter } from "next/router";
 import { ICartItem } from "../../@types/cart";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function CartItems({ items, setItems, total }: ICartItemsProps) {
   const dispatch = useAppDispatch();
@@ -122,7 +123,8 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
           disabled={submitting}
           onClick={() => router.push("/checkout")}
         >
-          Proceed to checkout <FontAwesomeIcon icon={faShoppingCart} />
+          Proceed to checkout{" "}
+          <FontAwesomeIcon icon={faShoppingCart as IconProp} />
         </button>
       </div>
     </>

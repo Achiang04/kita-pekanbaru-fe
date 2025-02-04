@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 import { IProduct } from "../@types/product";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function ProductsSlider({
   products,
@@ -68,10 +69,10 @@ export default function ProductsSlider({
             ))}
       </Swiper>
       <a href="#" className="products-slider__prev">
-        <FontAwesomeIcon icon={faChevronLeft} size={"lg"} />
+        <FontAwesomeIcon icon={faChevronLeft as IconProp} size={"lg"} />
       </a>
       <a href="#" className="products-slider__next">
-        <FontAwesomeIcon icon={faChevronRight} size={"lg"} />
+        <FontAwesomeIcon icon={faChevronRight as IconProp} size={"lg"} />
       </a>
     </div>
   );

@@ -1,31 +1,36 @@
-import React from 'react';
-import Modal from 'react-bootstrap/Modal';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons/faArrowLeft';
+import React from "react";
+import Modal from "react-bootstrap/Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-export default function FiltersModal({show, setShow, children}: FiltersModalProps) {
-	const onBackClick = (e: React.MouseEvent) => {
-		e.preventDefault();
-		setShow(false);
-	};
+export default function FiltersModal({
+  show,
+  setShow,
+  children,
+}: FiltersModalProps) {
+  const onBackClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShow(false);
+  };
 
-	return (
-		<Modal show={show} onHide={() => setShow(false)}>
-			<Modal.Header>
-				<Modal.Title><a href={'#'} className='close-filter' onClick={onBackClick}>
-					<FontAwesomeIcon className='me-2' icon={faArrowLeft} />
-					Back to products
-				</a></Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				{children}
-			</Modal.Body>
-		</Modal>
-	);
+  return (
+    <Modal show={show} onHide={() => setShow(false)}>
+      <Modal.Header>
+        <Modal.Title>
+          <a href={"#"} className="close-filter" onClick={onBackClick}>
+            <FontAwesomeIcon className="me-2" icon={faArrowLeft as IconProp} />
+            Back to products
+          </a>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{children}</Modal.Body>
+    </Modal>
+  );
 }
 
 interface FiltersModalProps {
-	show: boolean;
-	setShow: (show: boolean) => void;
-	children: React.ReactNode[] | React.ReactNode;
+  show: boolean;
+  setShow: (show: boolean) => void;
+  children: React.ReactNode[] | React.ReactNode;
 }

@@ -7,6 +7,7 @@ import { faTag } from "@fortawesome/free-solid-svg-icons/faTag";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import clsx from "clsx";
 import { ILabel, TLabelIcon } from "../../@types/label";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function ProductLabels({
   labels,
@@ -62,5 +63,5 @@ const LabelIcon = ({ icon }: { icon: string | null }) => {
 
   if (!faIcon) return null;
 
-  return <FontAwesomeIcon icon={faIcon} />;
+  return <FontAwesomeIcon icon={faIcon as IconProp} />;
 };
