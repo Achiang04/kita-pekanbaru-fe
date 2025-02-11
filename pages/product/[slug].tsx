@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import MainLayout from "../../layouts/Main";
-import { apiClient } from "../../lib/api";
 import { useRouter } from "next/router";
 import BreadCrumbs from "../../components/BreadCrumbs";
 import ProductImages from "../../components/product/Images";
@@ -56,7 +55,6 @@ export default function ProductPage({
 
   const fetchParents = async (categoryId: number) => {
     // TODO: Integrate to get parent data of the product (this is for showing breadcrumbs)
-    // setResolvedParents(await apiClient.catalog.getCategoryParents(categoryId));
     setResolvedParents(categoryParent);
   };
 
@@ -102,7 +100,7 @@ export default function ProductPage({
         <div className="product-page" itemScope itemType="//schema.org/Product">
           <div className="row">
             <div className="col-md-7">
-              <h1 className="product-page__header mb-4" itemProp="name">
+              <h1 className="mb-4 product-page__header" itemProp="name">
                 {product.title}
               </h1>
               <ProductLabels labels={product.labels} className={"mb-3"} />
@@ -145,18 +143,6 @@ export default function ProductPage({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const { pagination, products } = await apiClient.catalog.getProducts({
-  //   "per-page": 100,
-  // });
-  // if (pagination.pageCount > 1) {
-  //   for (let page = 2; page <= pagination.pageCount; page++) {
-  //     const { products: newProducts } = await apiClient.catalog.getProducts({
-  //       "per-page": 100,
-  //       page,
-  //     });
-  //     products.push(...newProducts);
-  //   }
-  // }
   const paths = products.map((product) => ({
     params: {
       slug: product.url_key || String(product.product_id),
@@ -172,30 +158,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<IProductPageProps> = async ({
   params,
 }) => {
-  const { slug } = params || {};
-
-  // let data = null;
-  // try {
-  //   data = await fetchData(slug as string);
-  // } catch (error: any) {
-  //   if (error.response?.status === 404) {
-  //     return {
-  //       notFound: true,
-  //     };
-  //   } else {
-  //     throw error;
-  //   }
-  // }
-
-  // if (data?.product?.url_key && data?.product?.url_key !== slug) {
-  //   return {
-  //     redirect: {
-  //       destination: `/product/${data?.product?.url_key}`,
-  //       permanent: true,
-  //     },
-  //   };
-  // }
-
   const menus = makeAllMenus({ categoryTree });
 
   const newData = {
@@ -209,37 +171,6 @@ export const getStaticProps: GetStaticProps<IProductPageProps> = async ({
     props: {
       data: newData,
     },
-  };
-};
-
-const fetchData = async (slug: string) => {
-  // TODO: integrate api to get product
-  const product = await apiClient.catalog.getProduct(slug as string);
-
-  const categoryId = product.categoryRels.find((cat) => cat.is_default === true)
-    ?.category.category_id;
-  let categoryParents = null;
-  if (categoryId) {
-    // TODO: integrate api to get category parent (This is for breadcrumb and left navigation)
-    categoryParents = await apiClient.catalog.getCategoryParents(categoryId);
-  }
-
-  // TODO: integrate api to get category for header and footer
-  const categoryTree = await apiClient.catalog.getCategoryTree({
-    menu: "category",
-  });
-  // TODO: integrate api to get basicSettings
-  const basicSettings = (await apiClient.system.fetchSettings([
-    "system.locale",
-    "system.currency",
-  ])) as IBasicSettings;
-  const menus = makeAllMenus({ categoryTree });
-
-  return {
-    product,
-    categoryParents,
-    basicSettings,
-    ...menus,
   };
 };
 

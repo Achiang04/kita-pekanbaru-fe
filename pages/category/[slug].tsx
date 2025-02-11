@@ -3,9 +3,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { NextRouter, useRouter } from "next/router";
 import { useAppSelector } from "../../hooks/redux";
 import dynamic from "next/dynamic";
-import qs from "qs";
-import { apiClient } from "../../lib/api";
-import { getCategoryItemUrl } from "../../lib/urls";
 import { filterProductsQuery } from "../../lib/category";
 import { getCategoryMetaData } from "../../lib/meta";
 import { makeAllMenus } from "../../lib/menu";
@@ -108,7 +105,7 @@ export default function CategoryPage({
           </div>
           <div className="col-md-8 col-lg-9">
             <BreadCrumbs items={breadcrumbItems} />
-            <h1 className="page-heading page-heading_h1  page-heading_m-h1">
+            <h1 className="page-heading page-heading_h1 page-heading_m-h1">
               {category.title}
             </h1>
             {category.text?.description_top && (
@@ -170,37 +167,6 @@ export default function CategoryPage({
 export const getServerSideProps: GetServerSideProps<
   ICategoryPageProps
 > = async ({ req, params }) => {
-  const url = new URL(`http://host${req.url!}`);
-  const queryString = url.search.replace(/^\?/, "");
-  const query = qs.parse(queryString);
-
-  const { slug } = params || {};
-
-  // TODO: Integrate to get category and product data
-  // let data = null;
-  // try {
-  //   data = await fetchData(slug as string, query);
-  // } catch (error: any) {
-  //   if (error.response?.status === 404) {
-  //     return {
-  //       notFound: true,
-  //     };
-  //   } else {
-  //     throw error;
-  //   }
-  // }
-
-  // const redirectUrl = getCategoryItemUrl(data.category);
-
-  // if (redirectUrl !== `/category/${slug}`) {
-  //   return {
-  //     redirect: {
-  //       destination: `${redirectUrl}?${queryString}`,
-  //       permanent: true,
-  //     },
-  //   };
-  // }
-
   const menus = makeAllMenus({ categoryTree });
 
   const newData = {
@@ -218,62 +184,6 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       data: newData,
     },
-  };
-};
-
-const fetchData = async (slug: string, params: TQuery) => {
-  // TODO: Integrate api to get category
-  const category = await apiClient.catalog.getCategoryItem(slug, {
-    with_children: 1,
-    with_parents: 1,
-    with_siblings: 1,
-    with_filter: 1,
-  });
-
-  const { collection, filteredQuery: productsQuery } = await fetchCollection(
-    category.category_id,
-    params
-  );
-
-  // TODO: Integrate api to get category on footer and header menu
-  const categoryTree = await apiClient.catalog.getCategoryTree({
-    menu: "category",
-  });
-  const menus = makeAllMenus({
-    categoryTree,
-    activeCategoryId: category.category_id,
-  });
-
-  // TODO: Integrate api to get basic settings
-  const basicSettings = (await apiClient.system.fetchSettings([
-    "system.locale",
-    "system.currency",
-  ])) as IBasicSettings;
-
-  const out = {
-    category,
-    collection,
-    productsQuery,
-    basicSettings,
-    ...menus,
-  };
-
-  return out;
-};
-
-const fetchCollection = async (categoryId: number, params: TQuery) => {
-  const filteredQuery = filterProductsQuery(params);
-  // TODO: Integrate api to get product
-  const collection = await apiClient.catalog.getProducts({
-    category: [categoryId],
-    sort: "in_category,-in_stock,price",
-    ...filteredQuery,
-    ...{ "per-page": 12 },
-  });
-
-  return {
-    filteredQuery,
-    collection,
   };
 };
 
