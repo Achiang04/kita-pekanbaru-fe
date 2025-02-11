@@ -165,7 +165,7 @@ const useSaveShippingForm = ({
       .then(({ order, total }) => {
         // TODO: Change order and total state
 
-        router.push("/newcheckout/payment");
+        router.push("/checkout/payment");
       })
       .catch(({ response: { data } }) => setErrors(apiErrors2Formik(data)))
       .finally(() => setSubmitting(false));

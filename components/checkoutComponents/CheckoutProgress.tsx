@@ -18,7 +18,7 @@ export default function CheckoutProgress() {
 
   const handleStepChange = (step: TCheckoutStep) => {
     const url = getPathByStep(step);
-    if (url) router.push(`/newcheckout${url}`);
+    if (url) router.push(`/checkout${url}`);
   };
 
   const checkoutStepTitles = useMemo(() => {

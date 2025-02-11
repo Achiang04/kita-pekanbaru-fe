@@ -155,7 +155,7 @@ const useSaveContactInfo = () => {
     const nextUrl = stepper!.steps.includes(TCheckoutStep.shippingAddress)
       ? "/shipping-address"
       : "/payment";
-    router.push(`/newcheckout${nextUrl}`);
+    router.push(`/checkout${nextUrl}`);
     setSubmitting(false);
   };
 
