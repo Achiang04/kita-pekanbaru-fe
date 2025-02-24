@@ -1,9 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../../components/newComponent/auth/InputField";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import {
+  resetError,
+  userLogin,
+  userValidate,
+} from "../../redux/reducers/userAuth";
+import { useSelector } from "react-redux";
+import OTPModal from "../../components/OTPModal";
+import ErrorSnackbar from "../../components/ErrorSnackbar";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [phoneValue, setPhoneValue] = useState<string>("");
+  const [otpValue, setOtpValue] = useState("");
+
+  const { isLoading, isShowOTPModal, error, isLogin } = useSelector(
+    (state: RootState) => state.userAuth
+  );
+
+  const router = useRouter();
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (isLogin) {
+      router.push("/");
+    }
+  }, [isLogin]);
 
   const phoneInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numericValue = e.target.value.replace(/\D/g, "");
@@ -12,6 +38,16 @@ const LoginPage = () => {
 
   const formOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(userLogin({ phoneNumber: phoneValue }));
+  };
+
+  const otpInputHandler = (value: string) => {
+    setOtpValue(value);
+  };
+
+  const otpOnSubmit = () => {
+    const data = { phoneNumber: phoneValue, otp: otpValue };
+    dispatch(userValidate(data));
   };
 
   return (
@@ -38,8 +74,9 @@ const LoginPage = () => {
             </div>
 
             <button
-              className="w-full py-3 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-600 focus:ring-4 focus:ring-purple-100 bg-purple-500 mb-2"
+              className="w-full py-3 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-600 focus:ring-4 focus:ring-purple-100 bg-purple-500 mb-2 disabled:bg-gray-400"
               type="submit"
+              disabled={isLoading}
             >
               Sign In
             </button>
@@ -53,6 +90,16 @@ const LoginPage = () => {
           </form>
         </div>
       </div>
+      <OTPModal
+        isOpen={isShowOTPModal}
+        value={otpValue}
+        onChange={otpInputHandler}
+        handleSubmit={otpOnSubmit}
+        handleResendButton={() =>
+          dispatch(userLogin({ phoneNumber: phoneValue }))
+        }
+      />
+      <ErrorSnackbar error={error} onClose={() => dispatch(resetError())} />
     </div>
   );
 };

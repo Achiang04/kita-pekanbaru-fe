@@ -13,6 +13,9 @@ import { findSellingPrice } from "../../lib/product";
 import { IProduct } from "../../@types/product";
 import { TThumbRatio } from "../../@types/image";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useRouter } from "next/navigation";
 
 export default function SliderProductItem({ product }: { product: IProduct }) {
   const productUrl = getProductUrl(product);
@@ -41,8 +44,18 @@ export default function SliderProductItem({ product }: { product: IProduct }) {
 }
 
 function Product2Cart({ product }: { product: IProduct }) {
+  const { isLogin } = useSelector((state: RootState) => state.userAuth);
+
   const dispatch = useAppDispatch();
-  const onAddToCart = () => dispatch(addItem2Cart(product.item_id, 1));
+  const router = useRouter();
+
+  const onAddToCart = () => {
+    if (isLogin) {
+      dispatch(addItem2Cart(product.item_id, 1));
+    } else {
+      router.push("/login");
+    }
+  };
 
   return (
     <div className="products-slider__to-cart">

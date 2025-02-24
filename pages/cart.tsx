@@ -19,6 +19,7 @@ import {
   cartTotalData,
   categoryTree,
 } from "../dummy/data";
+import ProtectedLayout from "../layouts/ProtectedLayout";
 
 export default function CartPage({
   mainMenu,
@@ -30,45 +31,47 @@ export default function CartPage({
   const { items, setItems, loading, total } = useCartItems();
 
   return (
-    <MainLayout
-      mainMenu={mainMenu}
-      footerMenu={footerMenu}
-      basicSettings={basicSettings}
-      noIndex
-    >
-      <div className="container">
-        <div className="cart-page row">
-          <div className="col-lg-8 offset-lg-2">
-            {router.query.error && (
-              <div className={"alert alert-danger"} role={"alert"}>
-                {router.query.error}
-              </div>
-            )}
-            <h1 className="page-heading page-heading_h1  page-heading_m-h1">
-              Shopping cart
-            </h1>
-            <div className="cart-page__content">
-              {loading || cartInited === TCartInited.processing ? (
-                <CartLoader />
-              ) : items.length > 0 ? (
-                <CartItems items={items} setItems={setItems} total={total} />
-              ) : (
-                <>
-                  <p className="cart-page__warning">
-                    Your shopping cart is empty.
-                  </p>
-                  <p className="cart-page__warning">
-                    <Link href="/" className="btn btn-success">
-                      Go shopping!
-                    </Link>
-                  </p>
-                </>
+    <ProtectedLayout>
+      <MainLayout
+        mainMenu={mainMenu}
+        footerMenu={footerMenu}
+        basicSettings={basicSettings}
+        noIndex
+      >
+        <div className="container">
+          <div className="cart-page row">
+            <div className="col-lg-8 offset-lg-2">
+              {router.query.error && (
+                <div className={"alert alert-danger"} role={"alert"}>
+                  {router.query.error}
+                </div>
               )}
+              <h1 className="page-heading page-heading_h1  page-heading_m-h1">
+                Shopping cart
+              </h1>
+              <div className="cart-page__content">
+                {loading || cartInited === TCartInited.processing ? (
+                  <CartLoader />
+                ) : items.length > 0 ? (
+                  <CartItems items={items} setItems={setItems} total={total} />
+                ) : (
+                  <>
+                    <p className="cart-page__warning">
+                      Your shopping cart is empty.
+                    </p>
+                    <p className="cart-page__warning">
+                      <Link href="/" className="btn btn-success">
+                        Go shopping!
+                      </Link>
+                    </p>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </ProtectedLayout>
   );
 }
 

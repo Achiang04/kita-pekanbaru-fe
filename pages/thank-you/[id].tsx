@@ -5,6 +5,7 @@ import { makeAllMenus } from "../../lib/menu";
 import { IMenuItem } from "../../@types/components";
 import { categoryTree } from "../../dummy/data";
 import OrderInfo from "../../components/orderComponents/OrderInfo";
+import ProtectedLayout from "../../layouts/ProtectedLayout";
 
 export default function ThankYouPage({ mainMenu, footerMenu }: IProps) {
   const router = useRouter();
@@ -14,19 +15,21 @@ export default function ThankYouPage({ mainMenu, footerMenu }: IProps) {
   }
 
   return (
-    <MainLayout
-      title={"Thank you for your order!"}
-      mainMenu={mainMenu}
-      footerMenu={footerMenu}
-      noIndex
-    >
-      <div className={"container"}>
-        <h1 className="page-heading page-heading_h1  page-heading_m-h1">
-          Thank you for your order!
-        </h1>
-        <OrderInfo orderId={`${router.query.id}`} />
-      </div>
-    </MainLayout>
+    <ProtectedLayout>
+      <MainLayout
+        title={"Thank you for your order!"}
+        mainMenu={mainMenu}
+        footerMenu={footerMenu}
+        noIndex
+      >
+        <div className={"container"}>
+          <h1 className="page-heading page-heading_h1  page-heading_m-h1">
+            Thank you for your order!
+          </h1>
+          <OrderInfo orderId={`${router.query.id}`} />
+        </div>
+      </MainLayout>
+    </ProtectedLayout>
   );
 }
 

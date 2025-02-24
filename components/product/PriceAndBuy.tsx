@@ -16,6 +16,9 @@ import useFormatCurrency from "../../hooks/useFormatCurrency";
 import { IProductItem } from "../../@types/product";
 import { IVariant } from "../../@types/variant";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useRouter } from "next/navigation";
 
 export default function ProductPriceAndBuy({
   product,
@@ -26,6 +29,8 @@ export default function ProductPriceAndBuy({
   const dispatch = useAppDispatch();
   const [qty, setQty] = useState<number>(1);
   const { formatCurrency } = useFormatCurrency();
+  const { isLogin } = useSelector((state: RootState) => state.userAuth);
+  const router = useRouter();
 
   const { price, benefit, isInStock } = useMemo(() => {
     let price: IPriceForTpl | undefined,
@@ -61,13 +66,17 @@ export default function ProductPriceAndBuy({
       return;
     }
 
-    const itemId = selectedVariant
-      ? selectedVariant.inventoryItem.item_id
-      : product.item_id;
-    dispatch(addItem2Cart(itemId, qty, true));
+    if (isLogin) {
+      const itemId = selectedVariant
+        ? selectedVariant.inventoryItem.item_id
+        : product.item_id;
+      dispatch(addItem2Cart(itemId, qty, true));
 
-    if (onAddedToCart) {
-      onAddedToCart(itemId, qty);
+      if (onAddedToCart) {
+        onAddedToCart(itemId, qty);
+      }
+    } else {
+      router.push("/login");
     }
   };
 

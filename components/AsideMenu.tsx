@@ -15,6 +15,7 @@ import AsideMenuList from "./asideMenu/MenuList";
 import { DragGesture } from "@use-gesture/vanilla";
 import { IMenuItem } from "../@types/components";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { useSelector } from "react-redux";
 
 export default function AsideMenu({ menuList }: { menuList?: IMenuItem[] }) {
   const rootEl = useRef(null);
@@ -24,6 +25,7 @@ export default function AsideMenu({ menuList }: { menuList?: IMenuItem[] }) {
   const isRouteChanging = useAppSelector(
     (state: RootState) => state.app.isRouteChanging
   );
+  const { isLogin } = useSelector((state: RootState) => state.userAuth);
   const dispatch = useAppDispatch();
   const gesture = useRef<DragGesture | null>(null);
 
@@ -104,8 +106,14 @@ export default function AsideMenu({ menuList }: { menuList?: IMenuItem[] }) {
       ref={rootEl}
     >
       <div className="aside-menu__header">
-        <HeaderCart className={"cart-header cart-header_horizontal"} />
-        <button className="btn" onClick={closeIfOpened}>
+        {isLogin && (
+          <HeaderCart className={"cart-header cart-header_horizontal"} />
+        )}
+        <button
+          className="btn"
+          onClick={closeIfOpened}
+          style={{ marginLeft: isLogin ? 0 : "auto" }}
+        >
           <FontAwesomeIcon icon={faTimes as IconProp} />
         </button>
       </div>

@@ -8,9 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppDispatch } from "../hooks/redux";
 import { setIsOpened } from "../redux/reducers/asideMenu";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 export default function Header({ companyTitle }: { companyTitle?: string }) {
   const dispatch = useAppDispatch();
+
+  const { isLogin } = useSelector((state: RootState) => state.userAuth);
 
   const onHamburgerBtnClicked = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -33,23 +37,29 @@ export default function Header({ companyTitle }: { companyTitle?: string }) {
               />
             </Link>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href={"/login"}>
-              <button type="button" className="btn btn-action btn-resp-size">
-                Login
-              </button>
-            </Link>
-
-            <div className={"page-header__right-blocks"}>
-              <HeaderCart />
-              <button
-                type={"button"}
-                className={"btn btn-outline-secondary page-header__hamburger"}
-                onClick={onHamburgerBtnClicked}
-              >
-                <FontAwesomeIcon icon={faBars as IconProp} />
-              </button>
-            </div>
+          <div className="flex items-center gap-2">
+            {!isLogin ? (
+              <Link href={"/login"}>
+                <button
+                  type="button"
+                  className="btn btn-action btn-resp-size"
+                  style={{ marginTop: "14px", marginBottom: "14px" }}
+                >
+                  Login
+                </button>
+              </Link>
+            ) : (
+              <div className={"page-header__right-blocks"}>
+                <HeaderCart />
+              </div>
+            )}
+            <button
+              type={"button"}
+              className={"btn btn-outline-secondary page-header__hamburger"}
+              onClick={onHamburgerBtnClicked}
+            >
+              <FontAwesomeIcon icon={faBars as IconProp} />
+            </button>
           </div>
         </div>
       </div>
