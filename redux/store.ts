@@ -51,7 +51,7 @@ export const reduxStorage: Storage = {
 const persistConfig = {
   key: `${PERSIST_KEY}-root`,
   storage: reduxStorage,
-  whitelist: ["user", "chat", "collection", "moncAir", "suggestions"],
+  whitelist: [],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
