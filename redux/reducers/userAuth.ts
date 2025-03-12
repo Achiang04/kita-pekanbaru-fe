@@ -63,6 +63,7 @@ interface InitialState {
   isLogin: boolean;
   name: string;
   phoneNumber: string;
+  userId: string;
   isLoading: boolean;
   isShowOTPModal: boolean;
   error: {
@@ -75,6 +76,7 @@ const initialState: InitialState = {
   isLogin: false,
   name: "",
   phoneNumber: "",
+  userId: "",
   isLoading: false,
   isShowOTPModal: false,
   error: {
@@ -95,6 +97,13 @@ const userAuthSlice = createSlice({
     },
     setIsLogin: (state, action) => {
       state.isLogin = action.payload;
+    },
+    setUserInfo: (state, action) => {
+      const { name, phoneNumber, userId } = action.payload;
+
+      state.name = name;
+      state.phoneNumber = phoneNumber;
+      state.userId = userId;
     },
   },
   extraReducers: (builder) => {
@@ -166,4 +175,4 @@ const userAuthSlice = createSlice({
 });
 
 export default userAuthSlice.reducer;
-export const { resetError, setIsLogin } = userAuthSlice.actions;
+export const { resetError, setIsLogin, setUserInfo } = userAuthSlice.actions;

@@ -10,6 +10,7 @@ import { setIsOpened } from "../redux/reducers/asideMenu";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header({ companyTitle }: { companyTitle?: string }) {
   const dispatch = useAppDispatch();
@@ -49,8 +50,16 @@ export default function Header({ companyTitle }: { companyTitle?: string }) {
                 </button>
               </Link>
             ) : (
-              <div className={"page-header__right-blocks"}>
-                <HeaderCart />
+              <div className="flex gap-4">
+                <Link
+                  href={"/settings"}
+                  className={"page-header__right-blocks"}
+                >
+                  <FontAwesomeIcon icon={faUser as IconProp} size="2x" />
+                </Link>
+                <div className={"page-header__right-blocks"}>
+                  <HeaderCart />
+                </div>
               </div>
             )}
             <button

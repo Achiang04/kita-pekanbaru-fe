@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { setIsLogin } from "../redux/reducers/userAuth";
+import { setIsLogin, setUserInfo } from "../redux/reducers/userAuth";
 
 interface Props {
   children: React.ReactNode;
@@ -15,8 +15,6 @@ function AuthLayout({ children }: Props) {
   };
 
   useEffect(() => {
-    console.log("cek ini 1");
-
     const token = localStorage.getItem("access_token");
 
     if (token) {
@@ -29,6 +27,14 @@ function AuthLayout({ children }: Props) {
       } else {
         console.log("Login");
         dispatch(setIsLogin(true));
+        dispatch(
+          setUserInfo({
+            name: decodeJwt.customerName,
+            phoneNumber: decodeJwt.customerPhone,
+            userId: decodeJwt.customerId,
+          })
+        );
+        console.log(decodeJwt);
       }
     } else {
       console.log("Logout");
