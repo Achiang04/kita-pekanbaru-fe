@@ -15,6 +15,8 @@ import { IBasicSettings } from "../@types/settings";
 import { IProduct } from "../@types/product";
 import { basicSettings, products, categoryTree } from "../dummy/data";
 import { useGetNotificationsQuery } from "../services/media";
+import { Category, ListProdutData } from "../@types/newTypes/newTypes";
+import { getProductsData } from "../lib/apiFunction";
 
 export default function IndexPage({
   products,
@@ -45,13 +47,13 @@ export default function IndexPage({
             <ProductsList products={products} query={{}} />
           </div>
         </div>
-        <div className="container">
+        {/* <div className="container">
           <h2 className="page-heading page-heading_h1 page-heading_m-h1">
             Cover example:
           </h2>
-        </div>
+        </div> */}
       </div>
-      <CoverTextInCenter
+      {/* <CoverTextInCenter
         showChevronDown
         img={bgImg.src}
         imgPortrait={bgPortraitImg.src}
@@ -65,8 +67,8 @@ export default function IndexPage({
           backgroundColor: "#000",
         }}
         link={"http://google.com"}
-      />
-      <div className="container">
+      /> */}
+      {/* <div className="container">
         <h2 className="page-heading page-heading_h1 page-heading_m-h1">
           Products carousel:
         </h2>
@@ -75,7 +77,7 @@ export default function IndexPage({
           title={"Collection title"}
           wrapperClassName="page-block"
         />
-      </div>
+      </div> */}
     </MainLayout>
   );
 }
@@ -83,7 +85,16 @@ export default function IndexPage({
 export const getServerSideProps: GetServerSideProps<
   IIndexPageProps
 > = async () => {
-  const menus = makeAllMenus({ categoryTree });
+  const menus = await makeAllMenus({ categoryTree });
+
+  const response = await getProductsData({});
+  let products: ListProdutData[];
+
+  if (response.responseCode === "SUCCESS") {
+    products = response.data.products;
+  } else {
+    products = [];
+  }
 
   return {
     props: {
@@ -95,8 +106,8 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 interface IIndexPageProps {
-  products: IProduct[];
-  mainMenu: IMenuItem[];
+  products: ListProdutData[];
+  mainMenu: Category[];
   footerMenu: IMenuItem[];
   basicSettings: IBasicSettings;
 }

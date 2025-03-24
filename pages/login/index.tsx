@@ -39,14 +39,15 @@ const LoginPage = () => {
 
   const formOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await mutation({
-      phoneNumber: phoneValue,
-    });
-    if ("error" in result) {
-      // TODO: handle error
-    } else {
-      // TODO: handle success
-    }
+    dispatch(userLogin({ phoneNumber: phoneValue }));
+    // const result = await mutation({
+    //   phoneNumber: phoneValue,
+    // });
+    // if ("error" in result) {
+    //   // TODO: handle error
+    // } else {
+    //   // TODO: handle success
+    // }
   };
 
   const otpInputHandler = (value: string) => {

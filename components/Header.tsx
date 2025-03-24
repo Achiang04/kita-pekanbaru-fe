@@ -38,7 +38,7 @@ export default function Header({ companyTitle }: { companyTitle?: string }) {
               />
             </Link>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 py-1">
             {!isLogin ? (
               <Link href={"/login"}>
                 <button

@@ -7,8 +7,12 @@ import { IMenuItem } from "../../@types/components";
 import { useAppSelector } from "../../hooks/redux";
 import { RootState } from "../../redux/store";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { Category } from "../../@types/newTypes/newTypes";
+import { useRouter } from "next/router";
 
-export default function AsideMenuList({ menuList }: { menuList: IMenuItem[] }) {
+export default function AsideMenuList({ menuList }: { menuList: Category[] }) {
+  const router = useRouter();
+
   const isRouting = useAppSelector(
     (state: RootState) => state.app.isRouteChanging
   );
@@ -17,8 +21,8 @@ export default function AsideMenuList({ menuList }: { menuList: IMenuItem[] }) {
   useEffect(() => {
     if (isRouting) return;
 
-    const index = menuList.findIndex((el) => el.isActive);
-    if (index !== -1) setOpened([index]);
+    // const index = menuList.findIndex((el) => el.isActive);
+    // if (index !== -1) setOpened([index]);
   }, [isRouting]); //eslint-disable-line
 
   const toggleOpen = (index: number) => {
@@ -36,18 +40,21 @@ export default function AsideMenuList({ menuList }: { menuList: IMenuItem[] }) {
         itemType="//schema.org/ItemList"
       >
         {menuList.map((item, i) => {
-          const hasChildren = item.children && item.children.length > 0;
+          // const hasChildren =  item.length > 0;
+          const hasChildren = false;
+          const isActive = router.query.slug === item.id;
+
           const collapsibleProps = { onClick: () => toggleOpen(i) };
           const open = hasChildren && opened.includes(i);
 
           return (
             <li
               className={clsx("aside-menu__root-element", {
-                active: item.isActive,
+                active: isActive,
                 "has-children": hasChildren,
                 open,
               })}
-              key={item.title + i}
+              key={item.id}
               {...(hasChildren ? collapsibleProps : {})}
             >
               <div
@@ -57,7 +64,7 @@ export default function AsideMenuList({ menuList }: { menuList: IMenuItem[] }) {
               >
                 <ListElement item={item} position={i} open={open} />
               </div>
-              {hasChildren && <ChildList children={item.children!} />}
+              {/* {hasChildren && <ChildList children={item.children!} />} */}
             </li>
           );
         })}
@@ -66,17 +73,19 @@ export default function AsideMenuList({ menuList }: { menuList: IMenuItem[] }) {
   );
 }
 
-function ChildList({ children }: { children: IMenuItem[] }) {
+function ChildList({ children }: { children: Category[] }) {
+  const router = useRouter();
   return (
     <ul className="aside-menu__child-list list-unstyled">
-      {children.map((childItem, j) => (
-        <li
-          key={childItem.title + j}
-          className={clsx({ active: childItem.isActive })}
-        >
-          <ListElement item={childItem} />
-        </li>
-      ))}
+      {children.map((childItem, j) => {
+        const isActive = router.query.slug === childItem.id;
+
+        return (
+          <li key={childItem.name + j} className={clsx({ active: isActive })}>
+            <ListElement item={childItem} />
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -86,42 +95,33 @@ function ListElement({
   position,
   open,
 }: {
-  item: IMenuItem;
+  item: Category;
   position?: number;
   open?: boolean;
 }) {
-  const image = item.img || null;
-  const hasChildren = item.children && item.children.length > 0;
+  const router = useRouter();
+  // const hasChildren = item.length > 0;
+  const hasChildren = false;
   const isRootElem = position !== undefined;
+  const isActive = router.query.slug === item.id;
 
   const rootProps = { onClick: (e: React.MouseEvent) => e.preventDefault() };
 
-  const imageElem = image ? (
-    <img
-      src={image.src}
-      className="me-2"
-      alt={item.title}
-      width={image.width}
-      height={image.height}
-    />
-  ) : null;
-
-  if (item.url && (isRootElem || !item.isActive))
+  if (isRootElem || !isActive)
     return (
       <>
         <Link
-          href={item.url}
+          href={`/category/${item.id}`}
           className={clsx(
             "aside-menu__element is-link",
             isRootElem ? "is-root" : "is-child",
-            { active: item.isActive }
+            { active: isActive }
           )}
-          {...(isRootElem ? rootProps : {})}
+          {...(!isRootElem ? rootProps : {})}
         >
           <span>
-            {image && <span className="img-link">{imageElem}</span>}
             <span {...(isRootElem ? { itemProp: "name" } : {})}>
-              {item.title}
+              {item.name}
             </span>
           </span>
           {isRootElem && hasChildren && (
@@ -136,7 +136,7 @@ function ListElement({
         {isRootElem && (
           <meta itemProp="position" content={String(position + 1)} />
         )}
-        {!isRootElem && hasChildren && <ChildList children={item.children!} />}
+        {/* {!isRootElem && hasChildren && <ChildList children={item.children!} />} */}
       </>
     );
 
@@ -146,13 +146,10 @@ function ListElement({
         className={clsx(
           "aside-menu__element",
           isRootElem ? "is-root" : "is-child",
-          { active: item.isActive }
+          { active: isActive }
         )}
       >
-        <span>
-          {image && imageElem}
-          {item.title}
-        </span>
+        <span>{item.name}</span>
         {isRootElem && hasChildren && (
           <FontAwesomeIcon
             className="ms-2"
@@ -160,7 +157,7 @@ function ListElement({
           />
         )}
       </div>
-      {!isRootElem && hasChildren && <ChildList children={item.children!} />}
+      {/* {!isRootElem && hasChildren && <ChildList children={item.children!} />} */}
     </>
   );
 }

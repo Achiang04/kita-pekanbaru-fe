@@ -1,5 +1,6 @@
 import Image from "next/legacy/image";
 import { IImagePartial } from "../../lib/imgs";
+import { Media } from "../../@types/newTypes/newTypes";
 
 export default function ProductImage({
   image,
@@ -9,9 +10,9 @@ export default function ProductImage({
   return (
     <>
       <Image
-        src={image.path}
-        width={maxSize ? maxSize : image.width!}
-        height={maxSize ? maxSize : image.height!}
+        src={image.fileUrl}
+        width={maxSize}
+        height={maxSize}
         quality={100}
         alt={alt}
         priority
@@ -21,7 +22,7 @@ export default function ProductImage({
 }
 
 interface IProductImageProps {
-  image: IImagePartial;
+  image: Media;
   alt: string;
   maxSize?: number;
   preserveRatio?: boolean;

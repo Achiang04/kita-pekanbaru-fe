@@ -2,6 +2,7 @@ import { TQuery } from "../@types/common";
 import { ICategory, ICategoryItem } from "../@types/category";
 import { IProduct, IProductItem } from "../@types/product";
 import { createGetStr } from "../utils/createGetStr";
+import { Category, ListProdutData } from "../@types/newTypes/newTypes";
 
 const CATEGORY_PREFIX = "/category";
 const PRODUCTS_PREFIX = "/product";
@@ -53,12 +54,12 @@ export const getProductItemUrl = (product: IProductItem, params?: TQuery) => {
   return `${basePath}${queryStr}`;
 };
 
-export const getCanonicalProductUrl = (product: IProductItem) => {
-  return `${shopBaseUrl}${getProductItemUrl(product)}`;
+export const getCanonicalProductUrl = (product: ListProdutData) => {
+  return `${shopBaseUrl}${product.name}`;
 };
 
-export const getCanonicalCategoryUrl = (category: ICategoryItem) => {
-  return `${shopBaseUrl}${getCategoryItemUrl(category)}`;
+export const getCanonicalCategoryUrl = (category: Category) => {
+  return `${shopBaseUrl}${category.name}`;
 };
 
 type IProductUrlProps = Pick<IProduct, "url_key" | "product_id">;

@@ -6,9 +6,11 @@ import asideMenuReducers from "./reducers/asideMenu";
 import userAuthReducers from "./reducers/userAuth";
 
 import {
+  Action,
   combineReducers,
   configureStore,
   createListenerMiddleware,
+  ThunkAction,
 } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { persistReducer, persistStore, Storage } from "redux-persist";
@@ -77,5 +79,12 @@ export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 setupListeners(store.dispatch);
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;
 
 export { store, persistor };

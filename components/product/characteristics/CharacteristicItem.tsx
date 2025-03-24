@@ -1,23 +1,36 @@
 import { IProductAttribute } from "../../../@types/characteristic";
+import { ListPrice } from "../../../@types/newTypes/newTypes";
+import useFormatCurrency from "../../../hooks/useFormatCurrency";
 
 export default function CharacteristicItem({
-  characteristic,
+  title,
+  value,
+  priceList,
 }: {
-  characteristic: IProductAttribute;
+  title: string;
+  value?: string;
+  priceList?: ListPrice[];
 }) {
+  const { formatRupiah } = useFormatCurrency();
   return (
     <>
       <dl className="product-attrs__item">
         <dt className="product-attrs__item-name-wrapper">
-          <span className="product-attrs__item-name">
-            {characteristic.title}
-          </span>
+          <span className="product-attrs__item-name">{title}</span>
         </dt>
+        {value && (
+          <dd className="product-attrs__item-value">
+            <div>{value}</div>
+          </dd>
+        )}
+
         <dd className="product-attrs__item-value">
-          {characteristic.value && <div>{characteristic.value}</div>}
-          {characteristic.cases?.map((caseItem) => (
-            <div key={caseItem.id}>{caseItem.title}</div>
-          ))}
+          {priceList &&
+            priceList.map((val) => (
+              <div>
+                min Qty {val.minQty} for {formatRupiah(val.price)}
+              </div>
+            ))}
         </dd>
       </dl>
       <div
@@ -25,14 +38,8 @@ export default function CharacteristicItem({
         itemScope
         itemType="//schema.org/PropertyValue"
       >
-        <meta itemProp="name" content={characteristic.title} />
-        <meta
-          itemProp="value"
-          content={
-            characteristic.value ||
-            characteristic.cases?.map((el) => el.title).join(", ")
-          }
-        />
+        <meta itemProp="name" content={title} />
+        <meta itemProp="value" content={value} />
       </div>
     </>
   );

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ICartTotal } from "../../@types/cart";
 import { ICartProduct } from "../../@types/product";
 import { IVwItem } from "../../@types/inventoryItem";
+import { ListProdutData } from "../../@types/newTypes/newTypes";
 
 export interface CartState {
   cartId: string | null;
@@ -85,10 +86,11 @@ export const {
 export default cartSlice.reducer;
 
 export interface IVariantModalData {
-  product?: ICartProduct;
+  product?: ListProdutData;
 }
 
 export interface ICall2OrderData {
   qty?: number;
-  item?: IVwItem;
+  item?: ListProdutData;
+  price?: number;
 }

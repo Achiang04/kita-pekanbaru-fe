@@ -38,3 +38,37 @@ export const postValidateUser = async (phoneNumber: string, otp: string) => {
     .then((res) => res)
     .catch((err) => err);
 };
+
+// Product
+export const getProductsData = async ({
+  categoryId,
+}: {
+  categoryId?: string;
+}) => {
+  return api
+    .get(`/api/v1/products?${categoryId ? `&category=${categoryId}` : ""}`)
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
+export const getProductDataById = async (id: string) => {
+  return api
+    .get(`/api/v1/products/${id}`)
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
+// Category
+export const getCategoriesData = async () => {
+  return api
+    .get(`/api/v1/products/categories`)
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
+export const getCategoriesDataById = async (id: string) => {
+  return api
+    .get(`/api/v1/products/categories/${id}`)
+    .then((res) => res.data)
+    .catch((err) => err);
+};

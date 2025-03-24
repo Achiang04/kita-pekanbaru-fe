@@ -6,7 +6,7 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 
-export const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+export const baseUrl = process.env.API_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
@@ -35,6 +35,6 @@ const baseQueryWithInterceptor: BaseQueryFn<
 
 export const api = createApi({
   baseQuery: baseQueryWithInterceptor,
-  tagTypes: ["Auth", "Medias"],
+  tagTypes: ["Auth", "Medias", "Cart"],
   endpoints: () => ({}),
 });

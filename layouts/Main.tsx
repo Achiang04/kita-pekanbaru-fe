@@ -18,6 +18,7 @@ import { IBasicSettings } from "../@types/settings";
 import { useDispatch } from "react-redux";
 import { setBasicSettings } from "../redux/reducers/app";
 import { useSelector } from "react-redux";
+import { Category } from "../@types/newTypes/newTypes";
 
 const shopBaseUrl = process.env.BOUNDLESS_BASE_URL || "";
 
@@ -121,7 +122,7 @@ interface IMainLayoutProps {
   children: ReactNode | ReactNode[];
   title?: string;
   metaData?: IMetaData;
-  mainMenu: IMenuItem[];
+  mainMenu: Category[];
   footerMenu: IMenuItem[];
   noIndex?: boolean;
   basicSettings?: IBasicSettings;

@@ -17,6 +17,8 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useRouter } from "next/navigation";
+import { ListProdutData } from "../../@types/newTypes/newTypes";
+import { IImagePartial } from "../../lib/imgs";
 
 export default function ProductItem({
   product,
@@ -24,31 +26,34 @@ export default function ProductItem({
   categoryId,
 }: IProductItemProps) {
   const params = { ...query };
-  if (categoryId && categoryId !== product.default_category?.category_id) {
-    Object.assign(params, { category: categoryId });
-  }
-  const productUrl = getProductUrl(product, params);
-  const sellingPrice = findSellingPrice(product.prices);
+  // if (categoryId && categoryId !== product.default_category?.category_id) {
+  //   Object.assign(params, { category: categoryId });
+  // }
+  // const productUrl = getProductUrl(product, params);
+  // const sellingPrice = findSellingPrice(product.prices);
 
   return (
     <li
       className={clsx("products__item", {
-        "in-stock": product.in_stock,
-        "out-of-stock": !product.in_stock,
+        "in-stock": true,
+        // "out-of-stock": !product.in_stock,
       })}
-      data-id={product.product_id}
+      data-id={product.id}
       itemScope
       itemType="//schema.org/Product"
     >
       <div className="products__item-wrapper">
-        <ProductImage product={product} productUrl={productUrl} />
+        <ProductImage
+          product={product}
+          productUrl={product.medias[0].fileUrl}
+        />
         <h4 className="products__title">
-          <Link href={productUrl} itemProp="url">
-            <span itemProp="name">{product.title}</span>
+          <Link href={`/product/${product.id}`} itemProp="url">
+            <span itemProp="name">{product.name}</span>
           </Link>
         </h4>
         <div className="products__offer">
-          {sellingPrice && <ProductPrice price={sellingPrice} />}
+          <ProductPrice price={product.priceLists[0]} />
         </div>
         <Product2Cart product={product} />
       </div>
@@ -57,7 +62,7 @@ export default function ProductItem({
   );
 }
 
-function Product2Cart({ product }: { product: IProduct }) {
+function Product2Cart({ product }: { product: ListProdutData }) {
   const { isLogin } = useSelector((state: RootState) => state.userAuth);
 
   const dispatch = useAppDispatch();
@@ -65,7 +70,7 @@ function Product2Cart({ product }: { product: IProduct }) {
 
   const onAddToCart = () => {
     if (isLogin) {
-      dispatch(addItem2Cart(product.item_id, 1));
+      dispatch(addItem2Cart(product.id));
     } else {
       router.push("/login");
     }
@@ -73,17 +78,17 @@ function Product2Cart({ product }: { product: IProduct }) {
 
   return (
     <div className="products__to-cart">
-      {product.in_stock ? (
-        <button
-          type="button"
-          className="btn btn-action btn-resp-size"
-          onClick={onAddToCart}
-        >
-          <FontAwesomeIcon icon={faCartPlus as IconProp} /> Add to cart
-        </button>
-      ) : (
+      {/* {product.in_stock ? ( */}
+      <button
+        type="button"
+        className="btn btn-action btn-resp-size"
+        onClick={onAddToCart}
+      >
+        <FontAwesomeIcon icon={faCartPlus as IconProp} /> Add to cart
+      </button>
+      {/* ) : (
         <span className={"text-muted"}>Out of stock</span>
-      )}
+      )} */}
     </div>
   );
 }
@@ -92,68 +97,45 @@ function ProductImage({
   product,
   productUrl,
 }: {
-  product: IProduct;
+  product: ListProdutData;
   productUrl: string;
 }) {
-  const img = product.images!.find(({ is_default }) => is_default);
+  const img: IImagePartial = { path: productUrl };
 
   return (
-    <Link href={productUrl} className={"products__image"}>
-      {img ? (
-        <ProductListImage image={img} alt={img.alt || product.title} />
-      ) : (
-        <NoImage ratio={TThumbRatio["1-1"]} />
-      )}
-      <ProductLabels
-        labels={product.labels!}
+    <Link href={`/product/${product.id}`} className={"products__image"}>
+      <ProductListImage image={img} alt={product.name} />
+
+      {/* <ProductLabels
+        labels={product.name}
         className={"product__labels_small product__labels_column"}
-      />
+      /> */}
     </Link>
   );
 }
 
-function ProductSchemaOrgMarkup({ product }: { product: IProduct }) {
-  const schemaAvailability = product.in_stock
-    ? "//schema.org/InStock"
-    : "//schema.org/OutOfStock";
-  const sellingPrice = findSellingPrice(product.prices);
+function ProductSchemaOrgMarkup({ product }: { product: ListProdutData }) {
+  const schemaAvailability = "//schema.org/InStock";
+
+  // const sellingPrice = findSellingPrice(product.prices);
 
   return (
     <>
-      <meta itemProp="productID" content={String(product.product_id)} />
-      <meta itemProp="brand" content={product.manufacturer?.title || ""} />
-      <meta itemProp="sku" content={product.sku || ""} />
-      {sellingPrice &&
-        (sellingPrice?.min ? (
-          <div
-            itemProp="offers"
-            itemScope
-            itemType="//schema.org/AggregateOffer"
-          >
-            <meta itemProp="lowPrice" content={String(sellingPrice.min)} />
-            <meta itemProp="highPrice" content={String(sellingPrice.max)} />
-            <meta
-              itemProp="priceCurrency"
-              content={sellingPrice.currency_alias?.toUpperCase()}
-            />
-            <link itemProp="availability" href={schemaAvailability} />
-          </div>
-        ) : (
-          <div itemProp="offers" itemScope itemType="//schema.org/Offer">
-            <meta itemProp="price" content={String(sellingPrice.value)} />
-            <meta
-              itemProp="priceCurrency"
-              content={sellingPrice.currency_alias?.toUpperCase()}
-            />
-            <link itemProp="availability" href={schemaAvailability} />
-          </div>
-        ))}
+      <meta itemProp="productID" content={String(product.id)} />
+      <meta itemProp="brand" content={product.name || ""} />
+
+      <div itemProp="offers" itemScope itemType="//schema.org/AggregateOffer">
+        <meta itemProp="price" content={String(product.priceLists[0].price)} />
+        {/* <meta itemProp="highPrice" content={String(sellingPrice.max)} /> */}
+        <meta itemProp="priceCurrency" content="rupiah" />
+        <link itemProp="availability" href={schemaAvailability} />
+      </div>
     </>
   );
 }
 
 interface IProductItemProps {
-  product: IProduct;
+  product: ListProdutData;
   query: TQuery;
-  categoryId?: number;
+  categoryId?: string;
 }

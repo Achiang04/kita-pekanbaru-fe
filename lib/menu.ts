@@ -1,6 +1,8 @@
 import { getCategoryUrl } from "./urls";
 import { IMenuItem } from "../@types/components";
 import { ICategory } from "../@types/category";
+import { getCategoriesData } from "./apiFunction";
+import { Category } from "../@types/newTypes/newTypes";
 
 export const makeMenuByCategoryTree = ({
   categoryTree,
@@ -43,18 +45,26 @@ export const makeMenuByCategoryTree = ({
   return menu;
 };
 
-export const makeAllMenus = ({
+export const makeAllMenus = async ({
   categoryTree,
   activeCategoryId,
 }: {
   categoryTree: ICategory[];
   activeCategoryId?: number;
-}): IMenus => {
-  const mainMenu = makeMenuByCategoryTree({
-    categoryTree,
-    isActiveClb: (category) =>
-      Boolean(activeCategoryId && activeCategoryId == category.category_id),
-  });
+}): Promise<IMenus> => {
+  // const mainMenu = makeMenuByCategoryTree({
+  //   categoryTree,
+  //   isActiveClb: (category) =>
+  //     Boolean(activeCategoryId && activeCategoryId == category.category_id),
+  // });
+  const response = await getCategoriesData();
+  let mainMenu: Category[];
+
+  if (response.responseCode === "SUCCESS") {
+    mainMenu = response.data;
+  } else {
+    mainMenu = [];
+  }
 
   const footerMenu = makeMenuByCategoryTree({
     categoryTree: categoryTree.filter(({ level }) => level === 0),
@@ -67,6 +77,6 @@ export const makeAllMenus = ({
 };
 
 interface IMenus {
-  mainMenu: IMenuItem[];
+  mainMenu: Category[];
   footerMenu: IMenuItem[];
 }
