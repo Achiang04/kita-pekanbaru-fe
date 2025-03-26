@@ -18,7 +18,7 @@ export const cartApi = api.injectEndpoints({
         return {
           url: "/api/v1/carts",
           method: "POST",
-          body: { productId: body.productId },
+          body: { productId: body.productId, qty: body.qty },
         };
       },
       invalidatesTags: ["Cart"],
@@ -42,6 +42,17 @@ export const cartApi = api.injectEndpoints({
       },
       invalidatesTags: ["Cart"],
     }),
+    postCheckout: build.mutation<any, { cart: string[] }>({
+      query: (body) => {
+        return {
+          url: "/api/v1/carts/checkout",
+          method: "POST",
+          body: { cartIDs: body.cart },
+        };
+      },
+      invalidatesTags: ["Cart"],
+      transformResponse: (response: any) => response.data,
+    }),
   }),
   overrideExisting: true,
 });
@@ -51,4 +62,5 @@ export const {
   usePostCartItemMutation,
   usePutCartItemMutation,
   useRemoveCartItemMutation,
+  usePostCheckoutMutation,
 } = cartApi;

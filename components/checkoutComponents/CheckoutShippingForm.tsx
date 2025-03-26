@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Form, Formik, FormikHelpers } from "formik";
 import ExtraErrors from "./ExtraErrors";
 import { Button, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { IShippingFormValues } from "../../@types/shipping";
 import CheckoutDeliverySelector from "./CheckoutDeliverySelector";
 import { apiErrors2Formik } from "../../utils/formUtils";
@@ -19,42 +19,48 @@ import {
   TAddressType,
 } from "../../@types/delivery";
 import { IOrder } from "../../@types/order";
+import AddressForm from "../AddressForm/AddressForm";
+import { useGetShippingAddressQuery } from "../../services/address";
+import AddressSelection from "../AddressForm/AddressSelection";
 
-export default function CheckoutShippingForm({
-  shippingPage,
-}: {
-  shippingPage: ICheckoutShippingPageData;
-}) {
-  const { onSubmit } = useSaveShippingForm({ shippingPage });
+export default function CheckoutShippingForm({}: {}) {
+  const { data } = useGetShippingAddressQuery(undefined);
+  const [isAddAddress, setIsAddAddress] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState("");
 
   return (
-    <Formik
-      initialValues={getFormInitialValues(shippingPage)}
-      onSubmit={onSubmit}
-    >
-      {(formikProps) => (
-        <Form className={"bdl-shipping-form"}>
-          {/* {Object.keys(formikProps.errors).length > 0 &&
-					<ExtraErrors excludedFields={...Object.keys(formikProps.initialValues)} errors={formikProps.errors} />} */}
-          <Typography variant="h5" mb={2}>
-            Delivery method
-          </Typography>
-          <CheckoutDeliverySelector options={shippingPage.options} />
-          <CheckoutAddressesFields shippingPage={shippingPage} />
-          <Box textAlign={"end"}>
-            <Button
-              variant="contained"
-              type={"submit"}
-              disabled={
-                formikProps.isSubmitting || !formikProps.values.delivery_id
-              }
-            >
-              Continue to payment
-            </Button>
-          </Box>
-        </Form>
+    <div>
+      <Typography variant="h5" mb={2}>
+        Address
+      </Typography>
+      <AddressSelection
+        address={data ? data : []}
+        selectedAddress={selectedAddress}
+        setSelectedAddress={setSelectedAddress}
+      />
+      <Stack direction="column" alignItems="center" sx={{ paddingTop: "16px" }}>
+        <Button
+          onClick={() => setIsAddAddress(!isAddAddress)}
+          color={!isAddAddress ? "primary" : "error"}
+        >
+          {!isAddAddress ? "Add New Address" : "Close Form"}
+        </Button>
+      </Stack>
+      {isAddAddress && (
+        <Box sx={{ paddingTop: "16px", paddingBottom: "16px" }}>
+          <AddressForm />
+        </Box>
       )}
-    </Formik>
+      <Stack sx={{ paddingTop: "16px" }}>
+        <Button
+          onClick={() => setIsAddAddress(!isAddAddress)}
+          variant="contained"
+          disabled={selectedAddress.length === 0}
+        >
+          Create Orders
+        </Button>
+      </Stack>
+    </div>
   );
 }
 

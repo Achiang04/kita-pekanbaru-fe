@@ -18,7 +18,7 @@ export default function CheckoutLayout({
       <CheckoutHeader />
       <main className={"bdl-checkout-layout__main"}>
         <Container className={"bdl-checkout-layout__container"}>
-          <CheckoutProgress />
+          {/* <CheckoutProgress /> */}
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 8, md: 9 }} order={{ xs: 2, sm: 1 }}>
               {children}

@@ -10,12 +10,15 @@ import {
 } from "../../dummy/data";
 import { ITotal } from "../../@types/total";
 
-export default function CheckoutCartFooter({ open }: ICartFooterProps) {
+export default function CheckoutCartFooter({
+  open,
+  totalPay,
+}: ICartFooterProps) {
   // TODO: Change dummy data to real data
   const order: IOrder = cartOrder;
   const total: ITotal = cartCheckoutTotalDummy;
   const taxSettings: ISystemTax = taxSettingsDummy;
-  const { formatCurrency } = useFormatCurrency();
+  const { formatRupiah } = useFormatCurrency();
 
   const handleRmDiscount = (e: React.MouseEvent) => {
     // TODO: handler for remove dicount voucher
@@ -29,7 +32,7 @@ export default function CheckoutCartFooter({ open }: ICartFooterProps) {
 
   return (
     <div className={clsx("bdl-cart__footer", { open })}>
-      {(hasShipping || hasDiscount || hasTax) && (
+      {/* {(hasShipping || hasDiscount || hasTax) && (
         <div className="bdl-cart__footer-row">
           <h5 className="bdl-cart__footer-title">
             Subtotal
@@ -61,9 +64,9 @@ export default function CheckoutCartFooter({ open }: ICartFooterProps) {
             </span>
           </h5>
         </div>
-      )}
+      )} */}
 
-      {hasTax && (
+      {/* {hasTax && (
         <div className="bdl-cart__footer-row">
           <h5 className="bdl-cart__footer-title">
             {taxSettings?.taxTitle}:
@@ -73,12 +76,10 @@ export default function CheckoutCartFooter({ open }: ICartFooterProps) {
             </span>
           </h5>
         </div>
-      )}
+      )} */}
       <h4 className="bdl-cart__footer-row bdl-cart__footer-row_total">
-        Total
-        <span className="bdl-cart__footer-value">
-          {formatCurrency(total.price)}
-        </span>
+        Total:{" "}
+        <span className="bdl-cart__footer-value">{formatRupiah(totalPay)}</span>
       </h4>
 
       {hasDiscount && (
@@ -100,4 +101,5 @@ export default function CheckoutCartFooter({ open }: ICartFooterProps) {
 
 interface ICartFooterProps {
   open: boolean;
+  totalPay: number;
 }

@@ -15,9 +15,14 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/faShoppingCart
 import { useRouter } from "next/router";
 import { ICartItem } from "../../@types/cart";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { GetCartResponse } from "../../@types/newTypes/newTypes";
+import {
+  CheckoutItemType,
+  GetCartResponse,
+} from "../../@types/newTypes/newTypes";
 import { Checkbox } from "@mui/material";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
+import { usePostCheckoutMutation } from "../../services/cart";
+import { setCheckoutItem } from "../../redux/reducers/cart";
 
 export default function CartItems({ items, setItems, total }: ICartItemsProps) {
   const dispatch = useAppDispatch();
@@ -29,6 +34,7 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
     { id: string; qty: number; total: number }[]
   >([]);
   const { formatRupiah } = useFormatCurrency();
+  const [checkoutMutation] = usePostCheckoutMutation();
   const router = useRouter();
 
   const checkBgSubmits = () => {
@@ -130,8 +136,26 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
         <button
           className="btn btn-action btn-lg btn-anim"
           disabled={selectedItem.length === 0}
-          onClick={() => {
-            // router.push("/checkout");
+          onClick={async () => {
+            const result = await checkoutMutation({
+              cart: selectedItem.map((val) => val.id),
+            });
+            if ("error" in result) {
+              // TODO: handle error
+            } else {
+              // TODO: handle success
+              const data = result.data;
+
+              const checkoutData: CheckoutItemType = {
+                id: data.id,
+                orderItems: data.orderItems,
+                total: data.total,
+              };
+
+              await dispatch(setCheckoutItem(checkoutData));
+
+              router.push("/checkout/shipping-address");
+            }
           }}
         >
           Proceed to checkout{" "}

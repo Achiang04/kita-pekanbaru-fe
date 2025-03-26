@@ -38,10 +38,18 @@ export default function CartRow({
   const { price } = useMemo(() => {
     let price;
 
-    for (const element of itemData.product.priceLists) {
-      if (itemData.qty >= element.minQty) {
-        price = element.price;
-        break;
+    if (itemData) {
+      console.log("cek ", itemData.product.priceLists);
+
+      const priceList = [...itemData.product.priceLists].sort(
+        (a, b) => b.minQty - a.minQty
+      );
+
+      for (const element of priceList) {
+        if (itemData.qty >= element.minQty) {
+          price = element.price;
+          break;
+        }
       }
     }
 
@@ -100,13 +108,13 @@ export default function CartRow({
           href={`/product/${itemData.product.id}`}
           className="cart-item__img-link"
         >
-          {/* <img
-      src={item.vwItem?.image?.path}
-      width={60}
-      height={60}
-      alt={item.vwItem?.product?.title}
-    /> */}
-          <NoImage ratio={TThumbRatio["1-1"]} className={"bg-xs"} />
+          <img
+            src={item.product.medias[0].fileUrl}
+            width={60}
+            height={60}
+            alt={item.product.name}
+          />
+          {/* <NoImage ratio={TThumbRatio["1-1"]} className={"bg-xs"} /> */}
         </Link>
         <div className="cart-item__title">
           <div>
@@ -208,6 +216,7 @@ export default function CartRow({
             <button
               className="btn btn-sm btn-outline-success"
               onClick={updateItem}
+              disabled={!price}
             >
               Update
             </button>

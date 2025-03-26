@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { setBasicSettings } from "../redux/reducers/app";
 import { useSelector } from "react-redux";
 import { Category } from "../@types/newTypes/newTypes";
+import { removeCheckoutItem } from "../redux/reducers/cart";
 
 const shopBaseUrl = process.env.BOUNDLESS_BASE_URL || "";
 
@@ -43,6 +44,10 @@ export default function MainLayout({
       dispatch(setBasicSettings(basicSettings));
     }
   }, [dispatch, basicSettings]);
+
+  useEffect(() => {
+    dispatch(removeCheckoutItem());
+  }, []);
 
   return (
     <>

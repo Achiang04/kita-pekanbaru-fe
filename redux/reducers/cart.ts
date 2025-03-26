@@ -2,7 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ICartTotal } from "../../@types/cart";
 import { ICartProduct } from "../../@types/product";
 import { IVwItem } from "../../@types/inventoryItem";
-import { ListProdutData } from "../../@types/newTypes/newTypes";
+import {
+  CheckoutItemType,
+  ListProdutData,
+} from "../../@types/newTypes/newTypes";
 
 export interface CartState {
   cartId: string | null;
@@ -13,6 +16,7 @@ export interface CartState {
   call2OrderData: ICall2OrderData;
   submitting: boolean;
   cartInited: TCartInited;
+  checkoutItem: CheckoutItemType;
 }
 
 export enum TCartInited {
@@ -30,6 +34,7 @@ const initialState: CartState = {
   call2OrderData: {},
   submitting: false,
   cartInited: TCartInited.no,
+  checkoutItem: { id: "", orderItems: [], total: 0 },
 };
 
 export const cartSlice = createSlice({
@@ -69,6 +74,14 @@ export const cartSlice = createSlice({
       state.total = action.payload.total;
       state.cartInited = TCartInited.yes;
     },
+    removeCheckoutItem: (state) => {
+      state.checkoutItem = { id: "", orderItems: [], total: 0 };
+      localStorage.removeItem("checkout_item");
+    },
+    setCheckoutItem: (state, action: PayloadAction<CheckoutItemType>) => {
+      state.checkoutItem = action.payload;
+      localStorage.setItem("checkout_item", JSON.stringify(action.payload));
+    },
   },
 });
 
@@ -81,6 +94,8 @@ export const {
   setCartSubmitting,
   setInitStatus,
   setCartInited,
+  removeCheckoutItem,
+  setCheckoutItem,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

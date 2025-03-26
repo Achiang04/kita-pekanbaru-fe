@@ -11,7 +11,7 @@ export default function ShippingAddressPage() {
   return (
     <ProtectedLayout>
       <CheckoutLayout>
-        <CheckoutShippingForm shippingPage={shippingPage} />
+        <CheckoutShippingForm />
       </CheckoutLayout>
     </ProtectedLayout>
   );

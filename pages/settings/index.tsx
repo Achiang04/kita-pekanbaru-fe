@@ -17,6 +17,8 @@ import { RootState } from "../../redux/store";
 import { ICheckoutShippingPageData } from "../../@types/delivery";
 import { Formik, useFormikContext } from "formik";
 import { IShippingFormValues } from "../../@types/shipping";
+import { Category } from "../../@types/newTypes/newTypes";
+import CheckoutShippingForm from "../../components/checkoutComponents/CheckoutShippingForm";
 
 export default function SettingsPage({
   mainMenu,
@@ -73,7 +75,7 @@ export default function SettingsPage({
             </Grid>
           </Grid>
         </Box>
-        <Formik
+        {/* <Formik
           initialValues={{
             shipping_address: {
               first_name: "",
@@ -100,7 +102,8 @@ export default function SettingsPage({
               />
             </Box>
           )}
-        </Formik>
+        </Formik> */}
+        <CheckoutShippingForm />
       </div>
     </MainLayout>
   );
@@ -109,7 +112,7 @@ export default function SettingsPage({
 export const getServerSideProps: GetServerSideProps<
   ISettingsPageProps
 > = async () => {
-  const { mainMenu, footerMenu } = makeAllMenus({ categoryTree });
+  const { mainMenu, footerMenu } = await makeAllMenus({ categoryTree });
 
   return {
     props: {
@@ -121,7 +124,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 interface ISettingsPageProps {
-  mainMenu: IMenuItem[];
+  mainMenu: Category[];
   footerMenu: IMenuItem[];
   basicSettings: IBasicSettings;
 }
