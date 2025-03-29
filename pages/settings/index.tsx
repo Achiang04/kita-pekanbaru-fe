@@ -9,7 +9,7 @@ import {
   checkoutShippingDummy,
 } from "../../dummy/data";
 import MainLayout from "../../layouts/Main";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import AddressFieldset from "../../components/checkoutComponents/AddressFieldset";
 import { useSelector } from "react-redux";
@@ -19,6 +19,10 @@ import { Formik, useFormikContext } from "formik";
 import { IShippingFormValues } from "../../@types/shipping";
 import { Category } from "../../@types/newTypes/newTypes";
 import CheckoutShippingForm from "../../components/checkoutComponents/CheckoutShippingForm";
+import { useDispatch } from "react-redux";
+import { setIsLogin } from "../../redux/reducers/userAuth";
+import { removeCheckoutItem } from "../../redux/reducers/cart";
+import ProtectedLayout from "../../layouts/ProtectedLayout";
 
 export default function SettingsPage({
   mainMenu,
@@ -35,77 +39,68 @@ export default function SettingsPage({
     (state: RootState) => state.userAuth
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setNameValue(name);
     setPhoneValue(phoneNumber);
   }, [name, phoneNumber]);
 
   return (
-    <MainLayout
-      mainMenu={mainMenu}
-      footerMenu={footerMenu}
-      basicSettings={basicSettings}
-      noIndex
-    >
-      <div className="container">
-        <Box className="" mb={2} sx={{ px: "100px" }}>
-          <Typography variant="h6" mb={2}>
-            User
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                label={"Name"}
-                variant={"standard"}
-                required={true}
-                fullWidth
-                value={nameValue}
-                onChange={(e) => setNameValue(e.target.value)}
-              />
+    <ProtectedLayout>
+      <MainLayout
+        mainMenu={mainMenu}
+        footerMenu={footerMenu}
+        basicSettings={basicSettings}
+        noIndex
+      >
+        <div className="container">
+          <Box className="" mb={2} sx={{ px: { md: "100px" } }}>
+            <Typography variant="h5" mb={2}>
+              User
+            </Typography>
+            <Grid container spacing={2} sx={{ paddingBottom: "16px" }}>
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  label={"Name"}
+                  variant={"standard"}
+                  required={true}
+                  fullWidth
+                  value={nameValue}
+                  onChange={(e) => setNameValue(e.target.value)}
+                  disabled
+                />
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  label={"Phone Number"}
+                  variant={"standard"}
+                  required={true}
+                  fullWidth
+                  value={phoneValue}
+                  onChange={(e) => setPhoneValue(e.target.value)}
+                  disabled
+                />
+              </Grid>
             </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                label={"Phone Number"}
-                variant={"standard"}
-                required={true}
-                fullWidth
-                value={phoneValue}
-                onChange={(e) => setPhoneValue(e.target.value)}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-        {/* <Formik
-          initialValues={{
-            shipping_address: {
-              first_name: "",
-              last_name: "",
-              company: "",
-              address_line_1: "",
-              address_line_2: "",
-              city: "",
-              state: "",
-              country_id: 0,
-              zip: "",
-              phone: "",
-            },
-          }}
-          onSubmit={() => {}}
-        >
-          {() => (
-            <Box className="" mt={4} mb={2} sx={{ px: "100px" }}>
-              <Typography variant="h6">Shipping address</Typography>
-              <AddressFieldset
-                countries={shippingPage.options.country}
-                keyPrefix={"shipping_address"}
-                showPhone
-              />
-            </Box>
-          )}
-        </Formik> */}
-        <CheckoutShippingForm />
-      </div>
-    </MainLayout>
+            <CheckoutShippingForm isSetting />
+            <Stack sx={{ paddingTop: "16px" }}>
+              <Button
+                color="error"
+                variant="contained"
+                onClick={() => {
+                  dispatch(setIsLogin(false));
+                  localStorage.removeItem("access_token");
+                  dispatch(removeCheckoutItem());
+                }}
+              >
+                Logout
+              </Button>
+            </Stack>
+          </Box>
+        </div>
+      </MainLayout>
+    </ProtectedLayout>
   );
 }
 

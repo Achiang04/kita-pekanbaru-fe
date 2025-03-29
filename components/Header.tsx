@@ -10,7 +10,7 @@ import { setIsOpened } from "../redux/reducers/asideMenu";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header({ companyTitle }: { companyTitle?: string }) {
   const dispatch = useAppDispatch();
@@ -56,6 +56,12 @@ export default function Header({ companyTitle }: { companyTitle?: string }) {
                   className={"page-header__right-blocks"}
                 >
                   <FontAwesomeIcon icon={faUser as IconProp} size="2x" />
+                </Link>
+                <Link
+                  href={"/my-purchase"}
+                  className={"page-header__right-blocks"}
+                >
+                  <FontAwesomeIcon icon={faMoneyBill as IconProp} size="2x" />
                 </Link>
                 <div className={"page-header__right-blocks"}>
                   <HeaderCart />

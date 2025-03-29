@@ -34,7 +34,7 @@ const initialState: CartState = {
   call2OrderData: {},
   submitting: false,
   cartInited: TCartInited.no,
-  checkoutItem: { id: "", orderItems: [], total: 0 },
+  checkoutItem: { id: "", orderItems: [], total: 0, cartId: [] },
 };
 
 export const cartSlice = createSlice({
@@ -75,7 +75,7 @@ export const cartSlice = createSlice({
       state.cartInited = TCartInited.yes;
     },
     removeCheckoutItem: (state) => {
-      state.checkoutItem = { id: "", orderItems: [], total: 0 };
+      state.checkoutItem = { id: "", orderItems: [], total: 0, cartId: [] };
       localStorage.removeItem("checkout_item");
     },
     setCheckoutItem: (state, action: PayloadAction<CheckoutItemType>) => {

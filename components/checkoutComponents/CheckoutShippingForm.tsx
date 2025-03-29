@@ -22,11 +22,41 @@ import { IOrder } from "../../@types/order";
 import AddressForm from "../AddressForm/AddressForm";
 import { useGetShippingAddressQuery } from "../../services/address";
 import AddressSelection from "../AddressForm/AddressSelection";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { usePostCreateOrderMutation } from "../../services/cart";
+import { removeCheckoutItem } from "../../redux/reducers/cart";
+import { useDispatch } from "react-redux";
 
-export default function CheckoutShippingForm({}: {}) {
-  const { data } = useGetShippingAddressQuery(undefined);
+export default function CheckoutShippingForm({
+  isSetting,
+}: {
+  isSetting?: boolean;
+}) {
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState("");
+
+  const { checkoutItem } = useSelector((state: RootState) => state.cart);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const { data } = useGetShippingAddressQuery(undefined);
+  const [mutation] = usePostCreateOrderMutation();
+
+  const orderButtonHandler = async () => {
+    const result = await mutation({
+      cart: checkoutItem.cartId,
+      shippingId: selectedAddress,
+    });
+    if ("error" in result) {
+      // TODO: handle error
+    } else {
+      // TODO: handle success
+      dispatch(removeCheckoutItem());
+      window.open(result.data.redirectUrl, "_self");
+    }
+  };
 
   return (
     <div>
@@ -48,18 +78,20 @@ export default function CheckoutShippingForm({}: {}) {
       </Stack>
       {isAddAddress && (
         <Box sx={{ paddingTop: "16px", paddingBottom: "16px" }}>
-          <AddressForm />
+          <AddressForm setIsAddAddress={setIsAddAddress} />
         </Box>
       )}
-      <Stack sx={{ paddingTop: "16px" }}>
-        <Button
-          onClick={() => setIsAddAddress(!isAddAddress)}
-          variant="contained"
-          disabled={selectedAddress.length === 0}
-        >
-          Create Orders
-        </Button>
-      </Stack>
+      {!isSetting && (
+        <Stack sx={{ paddingTop: "16px" }}>
+          <Button
+            variant="contained"
+            disabled={selectedAddress.length === 0}
+            onClick={orderButtonHandler}
+          >
+            Create Orders
+          </Button>
+        </Stack>
+      )}
     </div>
   );
 }

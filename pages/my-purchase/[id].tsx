@@ -6,13 +6,17 @@ import { IMenuItem } from "../../@types/components";
 import { categoryTree } from "../../dummy/data";
 import OrderInfo from "../../components/orderComponents/OrderInfo";
 import ProtectedLayout from "../../layouts/ProtectedLayout";
+import { Category } from "../../@types/newTypes/newTypes";
+import { useGetOrderItemByIdQuery } from "../../services/cart";
 
-export default function ThankYouPage({ mainMenu, footerMenu }: IProps) {
+export default function DetailsPurchasePage({ mainMenu, footerMenu }: IProps) {
   const router = useRouter();
 
   if (!router.query.id) {
     return null;
   }
+
+  const { data } = useGetOrderItemByIdQuery({ id: router.query.id as string });
 
   return (
     <ProtectedLayout>
@@ -24,9 +28,11 @@ export default function ThankYouPage({ mainMenu, footerMenu }: IProps) {
       >
         <div className={"container"}>
           <h1 className="page-heading page-heading_h1  page-heading_m-h1">
-            Thank you for your order!
+            {data?.status === "DONE" && "Thank you for your order!"}
+            {data?.status === "WAITING_PAYMENT" && "Please pay your item"}
+            {data?.status === "POSTED" && "Your payment on process"}
           </h1>
-          <OrderInfo orderId={`${router.query.id}`} />
+          <OrderInfo orderId={`${router.query.id}`} data={data} />
         </div>
       </MainLayout>
     </ProtectedLayout>
@@ -35,7 +41,7 @@ export default function ThankYouPage({ mainMenu, footerMenu }: IProps) {
 
 export const getServerSideProps: GetServerSideProps<IProps> = async () => {
   // TODO: Integrate get menu data
-  const { mainMenu, footerMenu } = makeAllMenus({ categoryTree });
+  const { mainMenu, footerMenu } = await makeAllMenus({ categoryTree });
 
   return {
     props: {
@@ -46,6 +52,6 @@ export const getServerSideProps: GetServerSideProps<IProps> = async () => {
 };
 
 interface IProps {
-  mainMenu: IMenuItem[];
+  mainMenu: Category[];
   footerMenu: IMenuItem[];
 }

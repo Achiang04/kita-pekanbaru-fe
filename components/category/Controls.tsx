@@ -17,7 +17,7 @@ export default function CaregoryControls({
           onClick={onMobileShow}
         >
           <FontAwesomeIcon className="me-2" icon={faSlidersH as IconProp} />
-          Filters
+          Menu
         </button>
       </div>
       <SortButtons

@@ -92,6 +92,7 @@ export interface OrderItem {
     name: string;
     createdAt: string;
     updatedAt: string;
+    medias: Media[];
   };
   price: number;
   qty: number;
@@ -102,4 +103,42 @@ export interface CheckoutItemType {
   id: string;
   orderItems: OrderItem[];
   total: number;
+  cartId: string[];
+}
+
+export interface OrderListItemType {
+  orderItems: OrderItem[];
+  id: string;
+  redirectUrl: string;
+  total: string;
+  status: string;
+}
+
+export interface OrderItemType {
+  id: string;
+  customer: {
+    id: string;
+    name: string;
+    gsm: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  orderItems: OrderItem[];
+  shippingAddress: {
+    id: string;
+    name: string;
+    fullAddress: string;
+    provinceId: string;
+    regencyId: string;
+    districtId: string;
+    subDistrictId: string;
+    postalCode: string;
+  };
+  subTotal: number;
+  shippingCost: number;
+  total: number;
+  status: string;
+  redirectUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }

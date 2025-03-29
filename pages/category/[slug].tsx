@@ -46,21 +46,31 @@ export default function CategoryPage({
     (state: RootState) => state.app.isRouteChanging
   );
 
+  const filterData: (
+    productData: ListProdutData[],
+    sort: any
+  ) => ListProdutData[] = (productData: ListProdutData[], sort: any) => {
+    switch (sort) {
+      case "title":
+        return productData.sort((a, b) => a.name.localeCompare(b.name));
+      case "-title":
+        return productData.sort((a, b) => b.name.localeCompare(a.name));
+      case "price":
+        return productData.sort(
+          (a, b) => a.priceLists[0].price - b.priceLists[0].price
+        );
+      case "-price":
+        return productData.sort(
+          (a, b) => b.priceLists[0].price - a.priceLists[0].price
+        );
+      default:
+        return data.collection.products;
+    }
+  };
+
   const onCollectionChange = async (newParams: TQuery) => {
-    // TODO: Integrate to get data by sortby filter and pagination changes
-    const filteredQuery = filterProductsQuery(newParams);
-    // const { collection, filteredQuery } = await fetchCollection(
-    //   category.category_id,
-    //   newParams
-    // );
-
-    setShowModal(false);
-    setCollection(collection);
-
-    // This is for change the collection
-    setProductsQuery(filteredQuery);
-
-    changeUrl(router, filteredQuery);
+    const filteredData = filterData(collection.products, newParams.sort);
+    setCollection({ ...collection, products: filteredData });
   };
 
   useEffect(() => {
@@ -71,14 +81,6 @@ export default function CategoryPage({
     setCollection(data.collection);
     setProductsQuery(data.productsQuery);
   }, [data]);
-
-  // const breadcrumbItems = useMemo(
-  //   () =>
-  //     makeBreadCrumbsFromCats(category.parents!, ({ category_id }) => ({
-  //       isActive: category_id === category.category_id,
-  //     })),
-  //   [category.parents, category.category_id]
-  // );
 
   return (
     <MainLayout
@@ -130,11 +132,11 @@ export default function CategoryPage({
                   query={productsQuery}
                   categoryId={category.id}
                 />
-                <Pagination
+                {/* <Pagination
                   pagination={collection.pagination}
                   params={productsQuery}
                   onChange={onCollectionChange}
-                />
+                /> */}
               </>
             )}
             {/* {category.text?.description_bottom && (

@@ -4,6 +4,8 @@ import CheckoutContactInformationForm from "../../../components/checkoutComponen
 import ProtectedLayout from "../../../layouts/ProtectedLayout";
 
 export default function CheckoutInfoPage() {
+  return null;
+
   return (
     <ProtectedLayout>
       <CheckoutLayout>

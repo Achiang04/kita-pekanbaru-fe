@@ -8,6 +8,8 @@ import ProtectedLayout from "../../../layouts/ProtectedLayout";
 export default function CheckoutPaymentPage() {
   const paymentData: ICheckoutPaymentPageData = paymentDataDummy;
 
+  return null;
+
   return (
     <ProtectedLayout>
       <CheckoutLayout>

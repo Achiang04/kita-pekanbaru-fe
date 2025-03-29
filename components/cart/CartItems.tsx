@@ -150,6 +150,7 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
                 id: data.id,
                 orderItems: data.orderItems,
                 total: data.total,
+                cartId: data.cartIDs,
               };
 
               await dispatch(setCheckoutItem(checkoutData));

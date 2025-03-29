@@ -8,6 +8,8 @@ import Loading from "./Loading";
 import { detailedCartOrder } from "../../dummy/data";
 import { IDetailedOrder } from "../../@types/order";
 import { TPaymentGatewayAlias } from "../../@types/payment";
+import { useGetOrderItemByIdQuery } from "../../services/cart";
+import { OrderItemType } from "../../@types/newTypes/newTypes";
 
 export default function OrderInfo({ ...restProps }: BoundlessOrderInfoProps) {
   return <OrderInfoComponent {...restProps} />;
@@ -19,51 +21,47 @@ export interface BoundlessOrderInfoProps {
   showStatus?: boolean;
   showPayButton?: boolean;
   onError?: (error: any) => void;
+  data: OrderItemType | undefined;
 }
 
 const OrderInfoComponent = ({
   orderId,
-  showItems = true,
-  showPayButton = true,
-  showStatus = true,
-  onError,
+  data,
 }: Omit<BoundlessOrderInfoProps, "api">) => {
   const isInited = true;
-  const [order, setOrder] = useState<IDetailedOrder | null>(null);
-  // const dispatch = useAppDispatch();
+  const [order, setOrder] = useState<OrderItemType | null>(null);
 
   useEffect(() => {
-    if (isInited) {
-      // TODO: Integrate get order detail with orderId
-      setOrder(detailedCartOrder);
+    if (data) {
+      setOrder(data);
     }
-  }, [isInited, onError, orderId]);
+  }, [isInited, data]);
 
   if (!order || !isInited) return <Loading />;
 
   return (
     <div className="bdl-order-summary">
-      {showPayButton &&
-        !order.paid_at &&
-        order.paymentMethod?.gateway_alias === TPaymentGatewayAlias.paypal && (
-          <PayButton orderId={orderId} onError={onError} />
-        )}
-      {showStatus && (
-        <div>
-          <Typography variant="subtitle1" gutterBottom>
-            Order ID: {orderId}
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Order status: {order.status?.title}
-          </Typography>
-          {order.paid_at && (
-            <Typography variant="subtitle1" gutterBottom>
-              Payment status: Paid
-            </Typography>
-          )}
-        </div>
+      {order.status === "WAITING_PAYMENT" && (
+        <PayButton url={order.redirectUrl} />
       )}
-      <Paper>{showItems && <OrderItems order={order} />}</Paper>
+
+      <div>
+        <Typography variant="subtitle1" gutterBottom>
+          Order ID: {orderId}
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          Order status: {order.status}
+        </Typography>
+        {order.status === "DONE" && (
+          <Typography variant="subtitle1" gutterBottom>
+            Payment status: Paid
+          </Typography>
+        )}
+      </div>
+
+      <Paper>
+        <OrderItems order={order} />
+      </Paper>
     </div>
   );
 };

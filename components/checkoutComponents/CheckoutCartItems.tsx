@@ -30,8 +30,12 @@ export default function CheckoutCartItems({ checkoutItem }: Props) {
         <li className="bdl-cart-item" key={item.product.id}>
           {item.product ? (
             <div className="bdl-cart-item__img">
-              {/* <img src={item.product.} width={200} height={200} /> */}
-              <NoImage ratio={TThumbRatio["1-1"]} className={"bg-xs"} />
+              <img
+                src={item.product.medias[0].fileUrl}
+                width={200}
+                height={200}
+              />
+              {/* <NoImage ratio={TThumbRatio["1-1"]} className={"bg-xs"} /> */}
             </div>
           ) : (
             <div className="bdl-cart-item__img no-image" />

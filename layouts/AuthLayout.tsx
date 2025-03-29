@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { setIsLogin, setUserInfo } from "../redux/reducers/userAuth";
+import { removeCheckoutItem } from "../redux/reducers/cart";
 
 interface Props {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ function AuthLayout({ children }: Props) {
         dispatch(setIsLogin(false));
         console.log("Logout");
         localStorage.removeItem("access_token");
+        dispatch(removeCheckoutItem());
       } else {
         console.log("Login");
         dispatch(setIsLogin(true));
@@ -40,6 +42,7 @@ function AuthLayout({ children }: Props) {
       console.log("Logout");
       dispatch(setIsLogin(false));
       localStorage.removeItem("access_token");
+      dispatch(removeCheckoutItem());
     }
   }, [children]);
 

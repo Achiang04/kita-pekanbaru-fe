@@ -1,4 +1,4 @@
-import { GetCartResponse } from "../../@types/newTypes/newTypes";
+import { GetCartResponse, OrderItemType } from "../../@types/newTypes/newTypes";
 import { product } from "../../dummy/data";
 import { api } from "../api";
 
@@ -50,7 +50,40 @@ export const cartApi = api.injectEndpoints({
           body: { cartIDs: body.cart },
         };
       },
-      invalidatesTags: ["Cart"],
+      transformResponse: (response: any) => response.data,
+    }),
+    postCreateOrder: build.mutation<
+      any,
+      { cart: string[]; shippingId: string }
+    >({
+      query: (body) => {
+        return {
+          url: "/api/v1/orders",
+          method: "POST",
+          body: {
+            cartIDs: body.cart,
+            shippingAddress: {
+              id: body.shippingId,
+            },
+          },
+        };
+      },
+      invalidatesTags: ["Cart", "Orders"],
+      transformResponse: (response: any) => response.data,
+    }),
+    getOrderItem: build.query<any[], undefined>({
+      query: () => ({
+        url: "api/v1/orders",
+        method: "GET",
+      }),
+      providesTags: ["Orders"],
+      transformResponse: (response: any) => response.data,
+    }),
+    getOrderItemById: build.query<OrderItemType, { id: string }>({
+      query: (body) => ({
+        url: `api/v1/orders/${body.id}`,
+        method: "GET",
+      }),
       transformResponse: (response: any) => response.data,
     }),
   }),
@@ -63,4 +96,7 @@ export const {
   usePutCartItemMutation,
   useRemoveCartItemMutation,
   usePostCheckoutMutation,
+  usePostCreateOrderMutation,
+  useGetOrderItemQuery,
+  useGetOrderItemByIdQuery,
 } = cartApi;

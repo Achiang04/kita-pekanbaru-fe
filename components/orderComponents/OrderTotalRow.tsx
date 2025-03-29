@@ -11,7 +11,7 @@ export default function OrderTotalRow({
   qty: string | number;
   isSubTotal?: boolean;
 }) {
-  const { formatCurrency } = useFormatCurrency();
+  const { formatRupiah } = useFormatCurrency();
 
   return (
     <Grid container className="bdl-order-items__total-row">
@@ -27,7 +27,7 @@ export default function OrderTotalRow({
       </Grid>
       <Grid size={{ xs: 12, sm: 2 }} className="bdl-order-items__total-cell">
         <span className="bdl-order-items__label">Price:</span>
-        <span className="bdl-order-items__value">{formatCurrency(price)}</span>
+        <span className="bdl-order-items__value">{formatRupiah(+price)}</span>
       </Grid>
     </Grid>
   );

@@ -24,10 +24,6 @@ export default function IndexPage({
   footerMenu,
   basicSettings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // query sample, remove this after development
-  const { data } = useGetNotificationsQuery(undefined);
-  console.log("🚀 ~ data:", data);
-
   return (
     <MainLayout
       mainMenu={mainMenu}

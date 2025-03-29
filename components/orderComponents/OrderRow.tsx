@@ -3,9 +3,10 @@ import currency from "currency.js";
 import Grid from "@mui/material/Grid2";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
 import { IOrderItem } from "../../@types/order";
+import { OrderItem } from "../../@types/newTypes/newTypes";
 
-export default function OrderRow({ item }: { item: IOrderItem }) {
-  const { formatCurrency } = useFormatCurrency();
+export default function OrderRow({ item }: { item: OrderItem }) {
+  const { formatRupiah } = useFormatCurrency();
 
   return (
     <>
@@ -14,28 +15,19 @@ export default function OrderRow({ item }: { item: IOrderItem }) {
           className="bdl-order-item__description-col"
           size={{ sm: 6, xs: 12 }}
         >
-          {item.vwItem.image ? (
+          {item.product.medias ? (
             <div className="bdl-order-item__img">
-              <img src={item.vwItem.image.path} width={200} height={200} />
+              <img
+                src={item.product.medias[0].fileUrl}
+                width={200}
+                height={200}
+              />
             </div>
           ) : (
             <div className="bdl-order-item__img no-image" />
           )}
           <div className="bdl-order-item__title">
-            <div className="bdl-order-item__title-row">
-              {item.vwItem?.product?.title || ""}
-            </div>
-            {item.vwItem.type === "variant" && (
-              <div className="bdl-order-item__title-row bdl-order-item__title-row_muted">
-                {item.vwItem?.variant?.title || ""}
-              </div>
-            )}
-            {(item.vwItem.product?.sku || item.vwItem.variant?.sku) && (
-              <div className="bdl-order-item__title-row bdl-order-item__title-row_muted">
-                SKU:
-                {item.vwItem.variant?.sku || item.vwItem.product?.sku}
-              </div>
-            )}
+            <div className="bdl-order-item__title-row">{item.product.name}</div>
           </div>
         </Grid>
         <Grid className="bdl-order-item__col" size={{ sm: 2, xs: 12 }}>
@@ -43,8 +35,7 @@ export default function OrderRow({ item }: { item: IOrderItem }) {
             <strong>Price: </strong>
           </span>
           <span className="bdl-order-items__value">
-            {item.itemPrice.final_price !== null &&
-              formatCurrency(item.itemPrice.final_price)}
+            {formatRupiah(item.price)}
           </span>
         </Grid>
         <Grid className="bdl-order-item__col" size={{ sm: 2, xs: 12 }}>
@@ -58,12 +49,7 @@ export default function OrderRow({ item }: { item: IOrderItem }) {
             <strong>Total: </strong>
           </span>
           <span className="bdl-order-items__value">
-            {item.itemPrice.final_price !== null &&
-              formatCurrency(
-                currency(item.itemPrice.final_price)
-                  .multiply(item.qty)
-                  .toString()
-              )}
+            {formatRupiah(item.price * item.qty)}
           </span>
         </Grid>
       </Grid>

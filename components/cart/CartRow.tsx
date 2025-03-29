@@ -39,8 +39,6 @@ export default function CartRow({
     let price;
 
     if (itemData) {
-      console.log("cek ", itemData.product.priceLists);
-
       const priceList = [...itemData.product.priceLists].sort(
         (a, b) => b.minQty - a.minQty
       );
@@ -214,7 +212,7 @@ export default function CartRow({
               Remove
             </button>
             <button
-              className="btn btn-sm btn-outline-success"
+              className="btn btn-sm btn-outline-success mb-2"
               onClick={updateItem}
               disabled={!price}
             >

@@ -29,6 +29,7 @@ interface TFProps {
   options?: Address[];
   isSelect?: boolean;
   disable?: boolean;
+  isPostal?: boolean;
 }
 
 const MemoizedTextField = React.memo(
@@ -40,6 +41,7 @@ const MemoizedTextField = React.memo(
     options = [],
     isSelect = false,
     disable,
+    isPostal,
   }: TFProps) => (
     <TextField
       fullWidth
@@ -50,6 +52,7 @@ const MemoizedTextField = React.memo(
       required
       select={isSelect}
       disabled={disable}
+      slotProps={{ htmlInput: { maxLength: isPostal ? 6 : undefined } }}
     >
       {isSelect &&
         options.map((option) => (
@@ -65,9 +68,15 @@ interface Props {
   isEdit?: boolean;
   address?: AddressGetData;
   setIsEdit?: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAddAddress?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AddressForm = ({ isEdit, address, setIsEdit }: Props) => {
+const AddressForm = ({
+  isEdit,
+  address,
+  setIsEdit,
+  setIsAddAddress,
+}: Props) => {
   const [name, setName] = useState("");
   const [fullAddress, setFullAddress] = useState("");
   const [provinceId, setProvinceId] = useState("");
@@ -84,7 +93,8 @@ const AddressForm = ({ isEdit, address, setIsEdit }: Props) => {
       regencyId.length === 0 ||
       districtId.length === 0 ||
       subDistrictId.length === 0 ||
-      postalCode.length === 0
+      postalCode.length === 0 ||
+      postalCode.length > 5
     );
   }, [
     name,
@@ -218,6 +228,7 @@ const AddressForm = ({ isEdit, address, setIsEdit }: Props) => {
       setProvinceId("");
       setRegencyId("");
       setSubDistrictId("");
+      if (setIsAddAddress) setIsAddAddress(false);
     }
   };
 
@@ -293,6 +304,7 @@ const AddressForm = ({ isEdit, address, setIsEdit }: Props) => {
             name="postalCode"
             value={postalCode}
             onChange={handleChangePostalCode}
+            isPostal
           />
         </Grid2>
       </Grid2>
