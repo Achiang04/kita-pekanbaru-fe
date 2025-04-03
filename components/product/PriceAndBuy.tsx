@@ -189,6 +189,15 @@ export default function ProductPriceAndBuy({
           )}
         </>
       )} */}
+      <p
+        className={clsx("price-and-buy__stock", {
+          in: product.stock > 0,
+          out: product.stock === 0,
+        })}
+      >
+        {product.stock > 0 && `In stock: ${product.stock}`}
+        {product.stock === 0 && "Out of stock"}
+      </p>
 
       <div className={"price-and-buy__2-cart"}>
         <PriceAndBuyQty qty={qty} setQty={setQty} />
@@ -197,7 +206,7 @@ export default function ProductPriceAndBuy({
             type={"button"}
             className={"btn btn-action btn-anim btn-lg"}
             onClick={onBuyBtnClicked}
-            disabled={!price}
+            disabled={!price || product.stock === 0 || qty > product.stock}
           >
             <FontAwesomeIcon icon={faCartPlus as IconProp} /> Buy
           </button>

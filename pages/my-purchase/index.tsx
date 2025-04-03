@@ -13,6 +13,7 @@ import { Paper, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import OrderRow from "../../components/orderComponents/OrderRow";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
+import StatusChip from "../../components/newComponent/StatusChip";
 
 export default function DetailsPurchasePage({ mainMenu, footerMenu }: IProps) {
   const [orderData, setOrderData] = useState<OrderListItemType[]>([]);
@@ -179,7 +180,7 @@ export default function DetailsPurchasePage({ mainMenu, footerMenu }: IProps) {
                           size={{ sm: 3, xs: 12 }}
                         >
                           <span className="">
-                            <strong>Status: {val.status}</strong>
+                            <StatusChip label={val.status} />
                           </span>
                         </Grid>
                         <Grid

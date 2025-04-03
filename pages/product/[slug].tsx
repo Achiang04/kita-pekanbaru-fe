@@ -142,6 +142,7 @@ const fetchProductData = async (id: string) => {
       },
       priceLists: [],
       medias: [],
+      stock: 0,
     };
   }
 

@@ -23,6 +23,7 @@ export type ListProdutData = {
   };
   priceLists: ListPrice[];
   medias: Media[];
+  stock: number;
 };
 
 export interface Category {
@@ -114,6 +115,32 @@ export interface OrderListItemType {
   status: string;
 }
 
+export interface NewShipping {
+  id: string;
+  name: string;
+  fullAddress: string;
+  province: {
+    id: string;
+    name: string;
+  };
+  regency: {
+    id: string;
+    provinceId: string;
+    name: string;
+  };
+  district: {
+    id: string;
+    regencyId: string;
+    name: string;
+  };
+  subDistrict: {
+    id: string;
+    distritcId: string;
+    name: string;
+  };
+  postalCode: string;
+}
+
 export interface OrderItemType {
   id: string;
   customer: {
@@ -124,16 +151,7 @@ export interface OrderItemType {
     updatedAt: string;
   };
   orderItems: OrderItem[];
-  shippingAddress: {
-    id: string;
-    name: string;
-    fullAddress: string;
-    provinceId: string;
-    regencyId: string;
-    districtId: string;
-    subDistrictId: string;
-    postalCode: string;
-  };
+  shippingAddress: NewShipping;
   subTotal: number;
   shippingCost: number;
   total: number;

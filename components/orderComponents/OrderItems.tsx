@@ -82,7 +82,7 @@ export default function OrderItems({ order }: { order: OrderItemType }) {
         {order.paymentMethod && <OrderPayment order={order} />}
         {hasTaxes && <OrderTaxes order={order} />} */}
         {total && <OrderTotalRow price={total} qty={totalQty} />}
-        {/* <OrderShipping services={order.services} customer={order.customer} /> */}
+        <OrderShipping order={order} />
       </div>
     </>
   );
