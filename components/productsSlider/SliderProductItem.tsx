@@ -35,7 +35,7 @@ export default function SliderProductItem({ product }: { product: IProduct }) {
           <Link href={productUrl}>{product.title}</Link>
         </h4>
         <div className="products-slider__product-offer">
-          {sellingPrice && <ProductPrice price={sellingPrice} />}
+          {/* {sellingPrice && <ProductPrice price={sellingPrice} />} */}
         </div>
         <Product2Cart product={product} />
       </div>
@@ -51,7 +51,7 @@ function Product2Cart({ product }: { product: IProduct }) {
 
   const onAddToCart = () => {
     if (isLogin) {
-      dispatch(addItem2Cart(product.item_id, 1));
+      // dispatch(addItem2Cart(product.item_id, 1));
     } else {
       router.push("/login");
     }

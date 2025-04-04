@@ -46,7 +46,7 @@ function AuthLayout({ children }: Props) {
     }
   }, [children]);
 
-  return children;
+  return <>{children}</>;
 }
 
 export default AuthLayout;

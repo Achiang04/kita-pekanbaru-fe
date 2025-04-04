@@ -9,6 +9,8 @@ const StatusChip = ({ label }: { label: string }) => {
       return <Chip size="small" color="info" label="Payment on Process" />;
     case "DONE":
       return <Chip size="small" color="success" label="Payed" />;
+    default:
+      return null;
   }
 };
 

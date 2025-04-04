@@ -36,7 +36,7 @@ const ProtectedLayout = ({ children }: Props) => {
   }, [isLogin]);
 
   if (!load && loginStatus) {
-    return children;
+    return <>{children}</>;
   } else if (!load && !loginStatus) {
     return <Navigate />;
   } else {
