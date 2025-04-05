@@ -20,13 +20,16 @@ import "@fortawesome/fontawesome-free/css/svg-with-js.css";
 import { AppProps } from "next/app";
 import RouterListener from "../components/RouterListener";
 import LoadingLine from "../components/LoadingLine";
+import AuthLayout from "../layouts/AuthLayout";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <RouterListener />
-      <LoadingLine />
-      <Component {...pageProps} />
+      <AuthLayout>
+        <RouterListener />
+        <LoadingLine />
+        <Component {...pageProps} />
+      </AuthLayout>
     </Provider>
   );
 }

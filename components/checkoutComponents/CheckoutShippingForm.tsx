@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Form, Formik, FormikHelpers } from "formik";
 import ExtraErrors from "./ExtraErrors";
 import { Button, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import { IShippingFormValues } from "../../@types/shipping";
 import CheckoutDeliverySelector from "./CheckoutDeliverySelector";
 import { apiErrors2Formik } from "../../utils/formUtils";
@@ -19,42 +19,80 @@ import {
   TAddressType,
 } from "../../@types/delivery";
 import { IOrder } from "../../@types/order";
+import AddressForm from "../AddressForm/AddressForm";
+import { useGetShippingAddressQuery } from "../../services/address";
+import AddressSelection from "../AddressForm/AddressSelection";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { usePostCreateOrderMutation } from "../../services/cart";
+import { removeCheckoutItem } from "../../redux/reducers/cart";
+import { useDispatch } from "react-redux";
 
 export default function CheckoutShippingForm({
-  shippingPage,
+  isSetting,
 }: {
-  shippingPage: ICheckoutShippingPageData;
+  isSetting?: boolean;
 }) {
-  const { onSubmit } = useSaveShippingForm({ shippingPage });
+  const [isAddAddress, setIsAddAddress] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState("");
+
+  const { checkoutItem } = useSelector((state: RootState) => state.cart);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const { data } = useGetShippingAddressQuery(undefined);
+  const [mutation] = usePostCreateOrderMutation();
+
+  const orderButtonHandler = async () => {
+    const result = await mutation({
+      cart: checkoutItem.cartId,
+      shippingId: selectedAddress,
+    });
+    if ("error" in result) {
+      // TODO: handle error
+    } else {
+      // TODO: handle success
+      dispatch(removeCheckoutItem());
+      window.open(result.data.redirectUrl, "_self");
+    }
+  };
 
   return (
-    <Formik
-      initialValues={getFormInitialValues(shippingPage)}
-      onSubmit={onSubmit}
-    >
-      {(formikProps) => (
-        <Form className={"bdl-shipping-form"}>
-          {/* {Object.keys(formikProps.errors).length > 0 &&
-					<ExtraErrors excludedFields={...Object.keys(formikProps.initialValues)} errors={formikProps.errors} />} */}
-          <Typography variant="h5" mb={2}>
-            Delivery method
-          </Typography>
-          <CheckoutDeliverySelector options={shippingPage.options} />
-          <CheckoutAddressesFields shippingPage={shippingPage} />
-          <Box textAlign={"end"}>
-            <Button
-              variant="contained"
-              type={"submit"}
-              disabled={
-                formikProps.isSubmitting || !formikProps.values.delivery_id
-              }
-            >
-              Continue to payment
-            </Button>
-          </Box>
-        </Form>
+    <div>
+      <Typography variant="h5" mb={2}>
+        Address
+      </Typography>
+      <AddressSelection
+        address={data ? data : []}
+        selectedAddress={selectedAddress}
+        setSelectedAddress={setSelectedAddress}
+      />
+      <Stack direction="column" alignItems="center" sx={{ paddingTop: "16px" }}>
+        <Button
+          onClick={() => setIsAddAddress(!isAddAddress)}
+          color={!isAddAddress ? "primary" : "error"}
+        >
+          {!isAddAddress ? "Add New Address" : "Close Form"}
+        </Button>
+      </Stack>
+      {isAddAddress && (
+        <Box sx={{ paddingTop: "16px", paddingBottom: "16px" }}>
+          <AddressForm setIsAddAddress={setIsAddAddress} />
+        </Box>
       )}
-    </Formik>
+      {!isSetting && (
+        <Stack sx={{ paddingTop: "16px" }}>
+          <Button
+            variant="contained"
+            disabled={selectedAddress.length === 0}
+            onClick={orderButtonHandler}
+          >
+            Create Orders
+          </Button>
+        </Stack>
+      )}
+    </div>
   );
 }
 

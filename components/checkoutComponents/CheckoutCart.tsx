@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -10,11 +10,33 @@ import useFormatCurrency from "../../hooks/useFormatCurrency";
 import { IOrder } from "../../@types/order";
 import { ITotal } from "../../@types/total";
 import { cartCheckoutTotalDummy, cartOrder } from "../../dummy/data";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { setCheckoutItem } from "../../redux/reducers/cart";
+import { CheckoutItemType } from "../../@types/newTypes/newTypes";
+import { useRouter } from "next/router";
 
 export default function CheckoutCart() {
   // TODO : integrate with real data
   const order: IOrder = cartOrder;
   const total: ITotal = cartCheckoutTotalDummy;
+  const { checkoutItem } = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (checkoutItem.id.length === 0) {
+      const data = localStorage.getItem("checkout_item");
+
+      if (data) {
+        dispatch(setCheckoutItem(JSON.parse(data)));
+      } else {
+        router.push("/cart");
+      }
+    }
+  }, [checkoutItem]);
+
   const hasCouponCampaigns = false;
 
   const [fullOpened, setFullOpened] = useState(false);
@@ -49,14 +71,14 @@ export default function CheckoutCart() {
         </h4>
       </div>
       <div className={clsx("bdl-cart__full", { open: fullOpened })}>
-        <CheckoutCartItems />
+        <CheckoutCartItems checkoutItem={checkoutItem} />
       </div>
-      {hasCouponCampaigns && !hasDisounts && (
+      {/* {hasCouponCampaigns && !hasDisounts && (
         <div className="bdl-cart__discount">
           <CheckoutCartDiscountForm />
         </div>
-      )}
-      <CheckoutCartFooter open={fullOpened} />
+      )} */}
+      <CheckoutCartFooter open={fullOpened} totalPay={checkoutItem.total} />
     </div>
   );
 }

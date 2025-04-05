@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { CSSTransition } from "react-transition-group";
 import { IVariant } from "../../@types/variant";
 import { IProductItem } from "../../@types/product";
+import { ListProdutData } from "../../@types/newTypes/newTypes";
 
 export default function ProductVariantAndBuy({
   product,
@@ -26,7 +27,7 @@ export default function ProductVariantAndBuy({
 
   return (
     <div className={"variant-and-buy"}>
-      {product.has_variants && (
+      {/* {product.has_variants && (
         <div
           className={clsx("variant-and-buy__variants", { "has-error": error })}
         >
@@ -46,7 +47,7 @@ export default function ProductVariantAndBuy({
           {error && <div className={"variant-and-buy__error"}>{error}</div>}
           <hr className="variant-and-buy__hr" />
         </div>
-      )}
+      )} */}
       <ProductPriceAndBuy
         product={product}
         selectedVariant={selectedVariant}
@@ -58,14 +59,6 @@ export default function ProductVariantAndBuy({
 }
 
 interface IProductVariantAndBuyProps {
-  product: Pick<
-    IProductItem,
-    | "prices"
-    | "has_variants"
-    | "in_stock"
-    | "item_id"
-    | "extendedVariants"
-    | "sku"
-  >;
+  product: ListProdutData;
   onAddedToCart?: (itemId: number, qty: number) => void;
 }

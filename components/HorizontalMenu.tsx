@@ -6,14 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { IMenuItem } from "../@types/components";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { Category } from "../@types/newTypes/newTypes";
+import { useRouter, withRouter } from "next/router";
 
-export default class HorizontalMenu extends React.Component<
-  HorizontalMenuProps,
+class HorizontalMenu extends React.Component<
+  HorizontalMenuProps & { router: any },
   HorizontalMenuState
 > {
   protected hideTimeout: number | null = null;
 
-  constructor(props: HorizontalMenuProps) {
+  constructor(props: HorizontalMenuProps & { router: any }) {
     super(props);
 
     this.state = {
@@ -44,8 +46,11 @@ export default class HorizontalMenu extends React.Component<
   }
 
   render(): React.ReactNode {
-    const { menuList } = this.props;
+    const { menuList, router } = this.props;
     const { visiblePopup } = this.state;
+
+    const slug = router.query.slug;
+    const currentId = Array.isArray(slug) ? slug[slug.length - 1] : slug;
 
     return (
       <nav className="horizontal-menu">
@@ -56,15 +61,18 @@ export default class HorizontalMenu extends React.Component<
             itemType="//schema.org/ItemList"
           >
             {menuList.map((item, i) => {
-              const hasChildren = item.children && item.children.length > 0;
+              // const hasChildren = item.length > 0;
+              const hasChildren = false;
+              const isActive = currentId === String(item.id);
+
               return (
                 <li
                   className={clsx("horizontal-menu__root-element", {
-                    active: item.isActive,
+                    active: isActive,
                     "has-children": hasChildren,
-                    open: hasChildren && item.isActive,
+                    open: hasChildren && isActive,
                   })}
-                  key={item.title + i}
+                  key={item.id + i}
                   onMouseOver={this.handleShow.bind(this, i)}
                   onMouseOut={this.handleHide.bind(this, i)}
                 >
@@ -73,13 +81,9 @@ export default class HorizontalMenu extends React.Component<
                     itemScope
                     itemType="//schema.org/ListItem"
                   >
-                    <ListElement
-                      item={item}
-                      position={i}
-                      hasChildren={hasChildren}
-                    />
+                    <ListElement item={item} position={i} hasChildren={false} />
                   </div>
-                  {item.children && item.children.length > 0 && (
+                  {/* {item.children && item.children.length > 0 && (
                     <CSSTransition
                       in={visiblePopup === i}
                       timeout={600}
@@ -106,7 +110,7 @@ export default class HorizontalMenu extends React.Component<
                         ))}
                       </ul>
                     </CSSTransition>
-                  )}
+                  )} */}
                 </li>
               );
             })}
@@ -118,7 +122,7 @@ export default class HorizontalMenu extends React.Component<
 }
 
 interface HorizontalMenuProps {
-  menuList: IMenuItem[];
+  menuList: Category[];
 }
 
 interface HorizontalMenuState {
@@ -130,48 +134,39 @@ function ListElement({
   position,
   hasChildren,
 }: {
-  item: IMenuItem;
+  item: Category;
   position?: number;
   hasChildren?: boolean;
 }) {
-  const image = item.img || null;
   const isRootElem = position !== undefined;
+  const router = useRouter();
 
-  const imageElem = image ? (
-    <img
-      src={image.src}
-      className="me-2"
-      alt={item.title}
-      width={image.width}
-      height={image.height}
-    />
-  ) : null;
+  const isActive = router.query.slug === String(item.id);
 
   const titleWithIcon = hasChildren ? (
     <>
-      {item.title}
+      {item.name}
       {hasChildren && (
         <FontAwesomeIcon className="ms-2" icon={faCaretDown as IconProp} />
       )}
     </>
   ) : (
-    item.title
+    item.name
   );
 
-  if (item.url && (!item.isActive || isRootElem))
+  if (true && (!isActive || isRootElem))
     return (
       <>
         <Link
-          href={item.url}
+          href={`/category/${item.id}`}
           className={clsx(
             "horizontal-menu__element is-link",
             isRootElem ? "is-root" : "is-child",
-            { active: item.isActive }
+            { active: isActive }
           )}
         >
-          {image && <span className="img-link">{imageElem}</span>}
           <span className="title" {...(isRootElem ? { itemProp: "name" } : {})}>
-            {isRootElem ? titleWithIcon : item.title}
+            {isRootElem ? titleWithIcon : item.name}
           </span>
         </Link>
         {isRootElem && (
@@ -185,11 +180,12 @@ function ListElement({
       className={clsx(
         "horizontal-menu__element",
         isRootElem ? "is-root" : "is-child",
-        { active: item.isActive }
+        { active: isActive }
       )}
     >
-      {image && imageElem}
       <span className="horizontal-menu__text-title">{titleWithIcon}</span>
     </div>
   );
 }
+
+export default withRouter(HorizontalMenu);

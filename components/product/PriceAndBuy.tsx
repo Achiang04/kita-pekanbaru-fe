@@ -1,4 +1,4 @@
-import { useState, useMemo, ChangeEvent, MouseEvent } from "react";
+import { useState, useMemo, ChangeEvent, MouseEvent, useEffect } from "react";
 import clsx from "clsx";
 import { useAppDispatch } from "../../hooks/redux";
 import { addItem2Cart } from "../../redux/actions/cart";
@@ -16,6 +16,13 @@ import useFormatCurrency from "../../hooks/useFormatCurrency";
 import { IProductItem } from "../../@types/product";
 import { IVariant } from "../../@types/variant";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useRouter } from "next/navigation";
+import { ListPrice, ListProdutData } from "../../@types/newTypes/newTypes";
+import { usePostCartItemMutation } from "../../services/cart";
+import { hideVariantModal, showCall2Order } from "../../redux/reducers/cart";
+import { showErrorAlert } from "../../redux/reducers/alert";
 
 export default function ProductPriceAndBuy({
   product,
@@ -25,9 +32,24 @@ export default function ProductPriceAndBuy({
 }: IPriceAndBuyProps) {
   const dispatch = useAppDispatch();
   const [qty, setQty] = useState<number>(1);
-  const { formatCurrency } = useFormatCurrency();
+  const [priceList, setPriceList] = useState<ListPrice[]>([]);
+  const { formatCurrency, formatRupiah } = useFormatCurrency();
+  const { isLogin } = useSelector((state: RootState) => state.userAuth);
+  const router = useRouter();
 
-  const { price, benefit, isInStock } = useMemo(() => {
+  const [mutation] = usePostCartItemMutation();
+
+  useEffect(() => {
+    setPriceList(() => {
+      const oldList = [...product.priceLists].sort(
+        (a, b) => b.minQty - a.minQty
+      );
+
+      return oldList;
+    });
+  }, [product]);
+
+  const { benefit, isInStock } = useMemo(() => {
     let price: IPriceForTpl | undefined,
       benefit: number | null = null;
     if (selectedVariant) {
@@ -36,44 +58,63 @@ export default function ProductPriceAndBuy({
         price = { price: sellingPrice.value, oldPrice: sellingPrice.old };
       }
     } else {
-      const sellingPrice = findSellingPrice(product.prices);
-      if (sellingPrice) {
-        price = getPriceForTpl(sellingPrice);
-      }
+      // const sellingPrice = findSellingPrice(product.prices);
+      // if (sellingPrice) {
+      //   price = getPriceForTpl(sellingPrice);
+      // }
     }
 
     if (price && price.price && price.oldPrice) {
       benefit = new currency(price.oldPrice).subtract(price.price).toJSON();
     }
 
-    const isInStock = selectedVariant
-      ? selectedVariant.in_stock
-      : product.in_stock;
+    // const isInStock = selectedVariant
+    //   ? selectedVariant.in_stock
+    //   : product.in_stock;
+    const isInStock = true;
 
     return { price, benefit, isInStock };
   }, [product, selectedVariant]);
 
-  const onBuyBtnClicked = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const { price } = useMemo(() => {
+    let price;
 
-    if (product.has_variants && !selectedVariant) {
-      setError("Please, choose a variant.");
-      return;
+    for (const element of priceList) {
+      if (qty >= element.minQty) {
+        price = element.price;
+        break;
+      }
     }
 
-    const itemId = selectedVariant
-      ? selectedVariant.inventoryItem.item_id
-      : product.item_id;
-    dispatch(addItem2Cart(itemId, qty, true));
+    return { price };
+  }, [qty, priceList, product]);
 
-    if (onAddedToCart) {
-      onAddedToCart(itemId, qty);
+  const onBuyBtnClicked = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    // if (product.has_variants && !selectedVariant) {
+    //   setError("Please, choose a variant.");
+    //   return;
+    // }
+
+    if (isLogin) {
+      const result = await mutation({
+        productId: product.id,
+        qty,
+      });
+      if ("error" in result) {
+        dispatch(showErrorAlert("Error loading cart"));
+      } else {
+        dispatch(hideVariantModal());
+        dispatch(showCall2Order({ item: product, qty: qty, price: price }));
+      }
+    } else {
+      router.push("/login");
     }
   };
 
   return (
     <div className="price-and-buy">
-      {price?.price && (
+      {/* {price?.price && (
         <p className={"price-and-buy__price"}>
           {price.isFrom && <span className={"price-and-buy__from"}>From:</span>}
           <span
@@ -89,16 +130,45 @@ export default function ProductPriceAndBuy({
             </span>
           )}
         </p>
+      )} */}
+      <p
+        className={"price-and-buy__price"}
+        style={{ marginBottom: price && "0" }}
+      >
+        <span
+          className={clsx("price-and-buy__current", {
+            "has-old": false,
+          })}
+        >
+          {price
+            ? `${formatRupiah(price)} Each`
+            : `Minimal Order: ${
+                priceList.length > 0
+                  ? priceList[priceList.length - 1].minQty
+                  : 0
+              }`}
+        </span>
+      </p>
+      {price && (
+        <p className={"price-and-buy__price"}>
+          <span
+            className={clsx("price-and-buy__current", {
+              "has-old": true,
+            })}
+          >
+            {`Total: ${formatRupiah(price * qty)}`}
+          </span>
+        </p>
       )}
-      {benefit && (
+      {/* {benefit && (
         <p className={"price-and-buy__benefit"}>
           <label className={"price-and-buy__benefit-label"}>You save:</label>
           <span className={"price-and-buy__benefit-value"}>
             {formatCurrency(benefit)}
           </span>
         </p>
-      )}
-      {(!product.has_variants || selectedVariant) && (
+      )} */}
+      {/* {(!product.has_variants || selectedVariant) && (
         <>
           <p
             className={clsx("price-and-buy__stock", {
@@ -118,30 +188,36 @@ export default function ProductPriceAndBuy({
             </p>
           )}
         </>
-      )}
-      {isInStock !== false && (
-        <div className={"price-and-buy__2-cart"}>
-          <PriceAndBuyQty qty={qty} setQty={setQty} />
-          <div className={"price-and-buy__btns"}>
-            <button
-              type={"button"}
-              className={"btn btn-action btn-anim btn-lg"}
-              onClick={onBuyBtnClicked}
-            >
-              <FontAwesomeIcon icon={faCartPlus as IconProp} /> Buy
-            </button>
-          </div>
+      )} */}
+      <p
+        className={clsx("price-and-buy__stock", {
+          in: product.stock > 0,
+          out: product.stock === 0,
+        })}
+      >
+        {product.stock > 0 && `In stock: ${product.stock}`}
+        {product.stock === 0 && "Out of stock"}
+      </p>
+
+      <div className={"price-and-buy__2-cart"}>
+        <PriceAndBuyQty qty={qty} setQty={setQty} />
+        <div className={"price-and-buy__btns"}>
+          <button
+            type={"button"}
+            className={"btn btn-action btn-anim btn-lg"}
+            onClick={onBuyBtnClicked}
+            disabled={!price || product.stock === 0 || qty > product.stock}
+          >
+            <FontAwesomeIcon icon={faCartPlus as IconProp} /> Buy
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
 interface IPriceAndBuyProps {
-  product: Pick<
-    IProductItem,
-    "prices" | "has_variants" | "in_stock" | "item_id" | "sku"
-  >;
+  product: ListProdutData;
   selectedVariant?: IVariant | null;
   setError: (error: null | string) => void;
   onAddedToCart?: (itemId: number, qty: number) => void;

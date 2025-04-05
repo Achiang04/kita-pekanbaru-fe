@@ -3,13 +3,18 @@ import PaymentMethodForm from "../../../components/checkoutComponents/PaymentMet
 import { paymentDataDummy } from "../../../dummy/data";
 import { ICheckoutPaymentPageData } from "../../../@types/payment";
 import CheckoutLayout from "../../../layouts/CheckoutLayout";
+import ProtectedLayout from "../../../layouts/ProtectedLayout";
 
 export default function CheckoutPaymentPage() {
   const paymentData: ICheckoutPaymentPageData = paymentDataDummy;
 
+  return null;
+
   return (
-    <CheckoutLayout>
-      <PaymentMethodForm paymentPage={paymentData} />
-    </CheckoutLayout>
+    <ProtectedLayout>
+      <CheckoutLayout>
+        <PaymentMethodForm paymentPage={paymentData} />
+      </CheckoutLayout>
+    </ProtectedLayout>
   );
 }

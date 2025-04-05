@@ -8,6 +8,7 @@ import { Item, Gallery, useGallery } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
 import { IProductItem } from "../../@types/product";
 import { TThumbRatio } from "../../@types/image";
+import { ListProdutData } from "../../@types/newTypes/newTypes";
 
 const ImagesSlider = dynamic(() => import("./ImagesSlider"), {
   ssr: false,
@@ -17,7 +18,7 @@ const ImagesSlider = dynamic(() => import("./ImagesSlider"), {
 export default function ProductImagesWrapper({
   product,
 }: {
-  product: IProductItem;
+  product: ListProdutData;
 }) {
   return (
     <Gallery>
@@ -26,9 +27,9 @@ export default function ProductImagesWrapper({
   );
 }
 
-function ProductImages({ product }: { product: IProductItem }) {
+function ProductImages({ product }: { product: ListProdutData }) {
   const [activeImg, setActiveImg] = useState(0);
-  const images = product.images;
+  const images = product.medias;
   const { open: openLighBox } = useGallery();
 
   const onImageClick = (index: number, e: React.MouseEvent) => {
@@ -44,11 +45,11 @@ function ProductImages({ product }: { product: IProductItem }) {
         <ul className="product-gallery__thumbs list-unstyled">
           {images.map((image, i) => (
             <Item
-              original={image.image.path}
-              width={image.image.width}
-              height={image.image.height}
-              id={image.image.image_id}
-              key={image.image.image_id}
+              original={image.fileUrl}
+              // width={image.image.width}
+              // height={image.image.height}
+              id={image.id}
+              key={image.id}
             >
               {({ ref }) => (
                 <li
@@ -56,7 +57,7 @@ function ProductImages({ product }: { product: IProductItem }) {
                   className={clsx("product-gallery__thumb", {
                     active: activeImg === i,
                   })}
-                  key={image.image.image_id}
+                  key={image.id}
                   onMouseEnter={() => setActiveImg(i)}
                   onClick={() => setActiveImg(i)}
                 >
@@ -68,13 +69,13 @@ function ProductImages({ product }: { product: IProductItem }) {
                     }}
                   >
                     <ProductImage
-                      image={image.image}
+                      image={image}
                       maxSize={100}
-                      alt={image.alt || product.title}
+                      alt={product.name}
                       preserveRatio={true}
                     />
                   </a>
-                  <meta itemProp="image" content={image.image.path} />
+                  <meta itemProp="image" content={image.fileUrl} />
                 </li>
               )}
             </Item>
@@ -83,13 +84,13 @@ function ProductImages({ product }: { product: IProductItem }) {
         <figure className="product-gallery__big-img">
           <a href="#" onClick={onImageClick.bind(null, activeImg)}>
             <ProductImage
-              image={images[activeImg].image}
+              image={images[activeImg]}
               maxSize={800}
-              alt={images[activeImg].alt || images[activeImg].description!}
+              alt={images[activeImg].fileType || images[activeImg].fileType!}
             />
           </a>
-          <meta itemProp="image" content={images[activeImg].image.path} />
-          <figcaption>{images[activeImg].description!}</figcaption>
+          <meta itemProp="image" content={images[activeImg].fileUrl} />
+          {/* <figcaption>{images[activeImg].fileUrl}</figcaption> */}
         </figure>
       </div>
 

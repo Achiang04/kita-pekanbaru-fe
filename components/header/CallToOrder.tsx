@@ -15,11 +15,11 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 export default function CallToOrder() {
   const dispatch = useAppDispatch();
-  const { formatCurrency } = useFormatCurrency();
+  const { formatRupiah } = useFormatCurrency();
 
   const show = useAppSelector((state: RootState) => state.cart.showCall2Order);
   const [hiding, setHiding] = useState(false);
-  const { item, qty } = useAppSelector(
+  const { item, qty, price } = useAppSelector(
     (state: RootState) => state.cart.call2OrderData
   );
 
@@ -57,10 +57,10 @@ export default function CallToOrder() {
             <>
               <div className="call-to-order__item mb-3">
                 <div className="call-to-order__img-wrapper">
-                  {item.image ? (
+                  {item.medias ? (
                     <ProductImage
-                      image={item.image}
-                      alt={item.product.title}
+                      image={{ path: item.medias[0].fileUrl }}
+                      alt={item.name}
                       maxSize={100}
                     />
                   ) : (
@@ -68,20 +68,18 @@ export default function CallToOrder() {
                   )}
                 </div>
                 <div className={"desc"}>
-                  <div>{item.product.title}</div>
-                  {item.variant && (
+                  <div>{item.name}</div>
+                  {/* {item.variant && (
                     <div className={"text-muted variant mt-1"}>
                       {item.variant.title}
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
-              {item.prices.length > 0 && item.prices[0].value && qty && (
+              {price && qty && (
                 <div className="mb-3">
-                  {`${formatCurrency(
-                    item.prices[0].value
-                  )} x ${qty} = ${formatCurrency(
-                    calcTotalPrice(item.prices[0].value, qty)
+                  {`${formatRupiah(price)} x ${qty} = ${formatRupiah(
+                    price * qty
                   )}`}
                 </div>
               )}

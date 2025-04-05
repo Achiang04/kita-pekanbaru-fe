@@ -15,13 +15,26 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/faShoppingCart
 import { useRouter } from "next/router";
 import { ICartItem } from "../../@types/cart";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import {
+  CheckoutItemType,
+  GetCartResponse,
+} from "../../@types/newTypes/newTypes";
+import { Checkbox } from "@mui/material";
+import useFormatCurrency from "../../hooks/useFormatCurrency";
+import { usePostCheckoutMutation } from "../../services/cart";
+import { setCheckoutItem } from "../../redux/reducers/cart";
 
 export default function CartItems({ items, setItems, total }: ICartItemsProps) {
   const dispatch = useAppDispatch();
   const submits = useRef<Promise<any>[]>([]);
   const mounted = useRef(false);
-  const cartId = useAppSelector((state: RootState) => state.cart.cartId);
+  const cartId = useAppSelector((state: RootState) => state.cart);
   const [submitting, setSubmitting] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<
+    { id: string; qty: number; total: number }[]
+  >([]);
+  const { formatRupiah } = useFormatCurrency();
+  const [checkoutMutation] = usePostCheckoutMutation();
   const router = useRouter();
 
   const checkBgSubmits = () => {
@@ -37,7 +50,7 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
     });
   };
 
-  const rmItem = (itemId: number) => {
+  const rmItem = (itemId: string) => {
     if (!cartId) return;
     if (!confirm("Are you sure?")) return;
 
@@ -47,7 +60,7 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
     //   dispatch(showErrorAlert("Error to delete item from cart"));
     // }
 
-    setItems((prevItems) => prevItems.filter((el) => el.item_id !== itemId));
+    // setItems((prevItems) => prevItems.filter((el) => el.item_id !== itemId));
   };
 
   const submitQty = async (itemId: number, newQty: number) => {
@@ -64,18 +77,18 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
     []
   ); // eslint-disable-line
 
-  const onQtyChange = (itemId: number, newQty: number) => {
+  const onQtyChange = (itemId: string, newQty: number) => {
     setSubmitting(true);
-    debouncedSubmitQty(itemId, newQty);
+    // debouncedSubmitQty(itemId, newQty);
 
-    setItems((prevFiltered) => {
-      const out = [...prevFiltered];
-      const index = out.findIndex((el) => el.item_id === itemId);
-      if (index >= 0) {
-        out[index].qty = newQty;
-      }
-      return out;
-    });
+    // setItems((prevFiltered) => {
+    //   const out = [...prevFiltered];
+    //   const index = out.findIndex((el) => el.item_id === itemId);
+    //   if (index >= 0) {
+    //     out[index].qty = newQty;
+    //   }
+    //   return out;
+    // });
   };
 
   useEffect(() => {
@@ -98,9 +111,9 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
         {items.map((item) => (
           <CartRow
             item={item}
-            rmItem={() => rmItem(item.item_id)}
-            key={item.item_id}
-            onQtyChange={(qty: number) => onQtyChange(item.item_id, qty)}
+            key={item.id}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
           />
         ))}
         <div className="cart-items__total-row row">
@@ -109,19 +122,42 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
           </div>
           <div className="cart-items__total-cell col-md-2">
             <span className="cart-items__label">Qty: </span>
-            {total.qty}
+            {selectedItem.reduce((sum, item) => sum + item.qty, 0)}
           </div>
           <div className="cart-items__total-cell col-md-2">
             <span className="cart-items__label">Price: </span>
-            {total.price}
+            {formatRupiah(
+              selectedItem.reduce((sum, item) => sum + item.total, 0)
+            )}
           </div>
         </div>
       </div>
       <div className="cart-items__actions">
         <button
           className="btn btn-action btn-lg btn-anim"
-          disabled={submitting}
-          onClick={() => router.push("/checkout")}
+          disabled={selectedItem.length === 0}
+          onClick={async () => {
+            const result = await checkoutMutation({
+              cart: selectedItem.map((val) => val.id),
+            });
+            if ("error" in result) {
+              // TODO: handle error
+            } else {
+              // TODO: handle success
+              const data = result.data;
+
+              const checkoutData: CheckoutItemType = {
+                id: data.id,
+                orderItems: data.orderItems,
+                total: data.total,
+                cartId: data.cartIDs,
+              };
+
+              await dispatch(setCheckoutItem(checkoutData));
+
+              router.push("/checkout/shipping-address");
+            }
+          }}
         >
           Proceed to checkout{" "}
           <FontAwesomeIcon icon={faShoppingCart as IconProp} />
@@ -132,7 +168,7 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
 }
 
 interface ICartItemsProps {
-  items: ICartItem[];
-  setItems: Dispatch<SetStateAction<ICartItem[]>>;
+  items: GetCartResponse[];
+  setItems: Dispatch<SetStateAction<GetCartResponse[]>>;
   total: { qty: number; price: string };
 }

@@ -31,6 +31,7 @@ module.exports = {
       "BOUNDLESS_INSTANCE_ID",
       "BOUNDLESS_PRODUCTS_IMAGE_PROPORTION",
       "BOUNDLESS_MEDIA_SERVER",
+      "API_URL",
     ].forEach(
       (key) =>
         (defineMap[`process.env.${key}`] = JSON.stringify(process.env[key]))
@@ -45,6 +46,7 @@ module.exports = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  transpilePackages: ["mui-one-time-password-input"],
 };
 
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({

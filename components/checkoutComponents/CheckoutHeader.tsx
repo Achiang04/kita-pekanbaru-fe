@@ -19,7 +19,7 @@ export default function CheckoutHeader() {
     <header className={"bdl-header"}>
       <Container>
         <div className={"bdl-header__body"}>
-          <Link href={"/"} className={"bdl-header__to-cart"}>
+          <Link href={"/cart"} className={"bdl-header__to-cart"}>
             <ChevronLeftIcon /> {"Back to The Cart"}
           </Link>
           <div className={"bdl-header__logo-wrapper"}>

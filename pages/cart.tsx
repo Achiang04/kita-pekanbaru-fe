@@ -19,6 +19,9 @@ import {
   cartTotalData,
   categoryTree,
 } from "../dummy/data";
+import ProtectedLayout from "../layouts/ProtectedLayout";
+import { Category, GetCartResponse } from "../@types/newTypes/newTypes";
+import { useGetCartItemQuery } from "../services/cart";
 
 export default function CartPage({
   mainMenu,
@@ -27,55 +30,65 @@ export default function CartPage({
 }: ICartPageProps) {
   const { cartInited } = useCart();
   const router = useRouter();
-  const { items, setItems, loading, total } = useCartItems();
+  const { loading, total } = useCartItems();
+  const [items, setItems] = useState<GetCartResponse[]>([]);
+  const { data, isLoading } = useGetCartItemQuery(undefined);
+
+  useEffect(() => {
+    if (data) {
+      setItems(data);
+    }
+  }, [data]);
 
   return (
-    <MainLayout
-      mainMenu={mainMenu}
-      footerMenu={footerMenu}
-      basicSettings={basicSettings}
-      noIndex
-    >
-      <div className="container">
-        <div className="cart-page row">
-          <div className="col-lg-8 offset-lg-2">
-            {router.query.error && (
-              <div className={"alert alert-danger"} role={"alert"}>
-                {router.query.error}
-              </div>
-            )}
-            <h1 className="page-heading page-heading_h1  page-heading_m-h1">
-              Shopping cart
-            </h1>
-            <div className="cart-page__content">
-              {loading || cartInited === TCartInited.processing ? (
-                <CartLoader />
-              ) : items.length > 0 ? (
-                <CartItems items={items} setItems={setItems} total={total} />
-              ) : (
-                <>
-                  <p className="cart-page__warning">
-                    Your shopping cart is empty.
-                  </p>
-                  <p className="cart-page__warning">
-                    <Link href="/" className="btn btn-success">
-                      Go shopping!
-                    </Link>
-                  </p>
-                </>
+    <ProtectedLayout>
+      <MainLayout
+        mainMenu={mainMenu}
+        footerMenu={footerMenu}
+        basicSettings={basicSettings}
+        noIndex
+      >
+        <div className="container">
+          <div className="cart-page row">
+            <div className="col-lg-8 offset-lg-2">
+              {router.query.error && (
+                <div className={"alert alert-danger"} role={"alert"}>
+                  {router.query.error}
+                </div>
               )}
+              <h1 className="page-heading page-heading_h1  page-heading_m-h1">
+                Shopping cart
+              </h1>
+              <div className="cart-page__content">
+                {isLoading ? (
+                  <CartLoader />
+                ) : items && items.length > 0 ? (
+                  <CartItems items={items} setItems={setItems} total={total} />
+                ) : (
+                  <>
+                    <p className="cart-page__warning">
+                      Your shopping cart is empty.
+                    </p>
+                    <p className="cart-page__warning">
+                      <Link href="/" className="btn btn-success">
+                        Go shopping!
+                      </Link>
+                    </p>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </ProtectedLayout>
   );
 }
 
 export const getServerSideProps: GetServerSideProps<
   ICartPageProps
 > = async () => {
-  const { mainMenu, footerMenu } = makeAllMenus({ categoryTree });
+  const { mainMenu, footerMenu } = await makeAllMenus({ categoryTree });
 
   return {
     props: {
@@ -87,7 +100,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 interface ICartPageProps {
-  mainMenu: IMenuItem[];
+  mainMenu: Category[];
   footerMenu: IMenuItem[];
   basicSettings: IBasicSettings;
 }

@@ -8,27 +8,38 @@ import OrderTotalRow from "./OrderTotalRow";
 import currency from "currency.js";
 import OrderTaxes from "./OrderTaxes";
 import { IDetailedOrder } from "../../@types/order";
+import { OrderItemType } from "../../@types/newTypes/newTypes";
 
-export default function OrderItems({ order }: { order: IDetailedOrder }) {
-  const { items, total_price } = order;
-  const hasTaxes = order.tax_amount !== null;
-  const showSubtotal =
-    order.services?.length ||
-    order.discounts.length ||
-    order.paymentMethod ||
-    hasTaxes;
+export default function OrderItems({ order }: { order: OrderItemType }) {
+  const { orderItems, total } = order;
 
-  const itemsSubTotal = useMemo(() => {
-    let totalQty = 0,
-      totalPrice = "0";
-    items.forEach(({ qty, total_price }) => {
-      totalQty += qty;
-      totalPrice = currency(total_price || 0)
-        .add(totalPrice)
-        .toString();
+  const totalQty = useMemo(() => {
+    let total = 0;
+    orderItems.forEach((val) => {
+      total = total + val.qty;
     });
-    return { totalQty, totalPrice };
-  }, [items]);
+
+    return total;
+  }, [orderItems]);
+
+  // const hasTaxes = order.tax_amount !== null;
+  // const showSubtotal =
+  //   order.services?.length ||
+  //   order.discounts.length ||
+  //   order.paymentMethod ||
+  //   hasTaxes;
+
+  // const itemsSubTotal = useMemo(() => {
+  //   let totalQty = 0,
+  //     totalPrice = "0";
+  //   items.forEach(({ qty, total_price }) => {
+  //     totalQty += qty;
+  //     totalPrice = currency(total_price || 0)
+  //       .add(totalPrice)
+  //       .toString();
+  //   });
+  //   return { totalQty, totalPrice };
+  // }, [items]);
 
   return (
     <>
@@ -57,23 +68,21 @@ export default function OrderItems({ order }: { order: IDetailedOrder }) {
             Total
           </Grid>
         </Grid>
-        {items.map((item) => (
-          <OrderRow item={item} key={item.item_id} />
+        {orderItems.map((item) => (
+          <OrderRow item={item} key={item.id} />
         ))}
-        {showSubtotal && (
+        {/* {showSubtotal && (
           <OrderTotalRow
             price={itemsSubTotal.totalPrice}
             qty={itemsSubTotal.totalQty}
             isSubTotal
           />
-        )}
-        <OrderDiscounts order={order} />
-        <OrderShipping services={order.services} customer={order.customer} />
+        )} */}
+        {/* <OrderDiscounts order={order} />
         {order.paymentMethod && <OrderPayment order={order} />}
-        {hasTaxes && <OrderTaxes order={order} />}
-        {total_price && (
-          <OrderTotalRow price={total_price} qty={itemsSubTotal.totalQty} />
-        )}
+        {hasTaxes && <OrderTaxes order={order} />} */}
+        {total && <OrderTotalRow price={total} qty={totalQty} />}
+        <OrderShipping order={order} />
       </div>
     </>
   );

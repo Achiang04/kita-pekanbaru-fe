@@ -6,6 +6,7 @@ import ProductVariantAndBuy from "../product/VariantAndBuy";
 import ProductImage from "../productsList/ProductImage";
 import NoImage from "../NoImage";
 import { TThumbRatio } from "../../@types/image";
+import { IImagePartial } from "../../lib/imgs";
 
 export default function ChooseVariantModal() {
   const dispatch = useAppDispatch();
@@ -17,14 +18,14 @@ export default function ChooseVariantModal() {
   );
 
   const onHide = () => dispatch(hideVariantModal());
-  const image = product
-    ? product.images.find(({ is_default }) => is_default)
+  const image: IImagePartial | undefined = product
+    ? { path: product.medias[0].fileUrl }
     : undefined;
 
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Please, choose a variant:</Modal.Title>
+        <Modal.Title>Please Proceed:</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {product && (
@@ -32,12 +33,12 @@ export default function ChooseVariantModal() {
             <div className={"d-flex mb-3"}>
               <div className={"me-2"} style={{ width: "60px" }}>
                 {image ? (
-                  <ProductImage image={image.image} maxSize={60} />
+                  <ProductImage image={image} maxSize={60} />
                 ) : (
                   <NoImage ratio={TThumbRatio["1-1"]} className={"bg-xs"} />
                 )}
               </div>
-              <h6>{product.title}</h6>
+              <h6>{product.name}</h6>
             </div>
             <ProductVariantAndBuy product={product} onAddedToCart={onHide} />
           </>

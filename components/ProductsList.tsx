@@ -1,4 +1,5 @@
 import { TQuery } from "../@types/common";
+import { ListProdutData } from "../@types/newTypes/newTypes";
 import { IProduct } from "../@types/product";
 import ProductItem from "./productsList/ProductItem";
 
@@ -12,7 +13,7 @@ export default function ProductsList({
       {products.map((product) => (
         <ProductItem
           product={product}
-          key={product.product_id}
+          key={product.id}
           query={query}
           categoryId={categoryId}
         />
@@ -22,7 +23,7 @@ export default function ProductsList({
 }
 
 interface IProductListProps {
-  products: IProduct[];
+  products: ListProdutData[];
   query: TQuery;
-  categoryId?: number;
+  categoryId?: string;
 }

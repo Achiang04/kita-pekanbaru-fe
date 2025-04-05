@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import ProductImage from "./ProductImage";
 import { IProductImage } from "../../@types/image";
+import { Media } from "../../@types/newTypes/newTypes";
 
 export default function ImagesSlider({ images, onClick }: ImagesSliderProps) {
   const swiper = useRef<SwiperCore | null>(null);
@@ -36,15 +37,8 @@ export default function ImagesSlider({ images, onClick }: ImagesSliderProps) {
           onSwiper={(instance) => (swiper.current = instance)}
         >
           {images.map((image, i) => (
-            <SwiperSlide
-              key={image.image.image_id}
-              onClick={onImageClick.bind(null, i)}
-            >
-              <ProductImage
-                image={image.image}
-                maxSize={800}
-                alt={image.alt || image.description!}
-              />
+            <SwiperSlide key={image.id} onClick={onImageClick.bind(null, i)}>
+              <ProductImage image={image} maxSize={800} alt={image.fileType} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -54,6 +48,6 @@ export default function ImagesSlider({ images, onClick }: ImagesSliderProps) {
 }
 
 interface ImagesSliderProps {
-  images: IProductImage[];
+  images: Media[];
   onClick: (i: number) => void;
 }

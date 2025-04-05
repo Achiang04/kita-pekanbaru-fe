@@ -1,21 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../../components/newComponent/auth/InputField";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import {
+  resetError,
+  userLogin,
+  userValidate,
+} from "../../redux/reducers/userAuth";
+import { useSelector } from "react-redux";
+import OTPModal from "../../components/OTPModal";
+import ErrorSnackbar from "../../components/ErrorSnackbar";
+import { useRouter } from "next/navigation";
+import { useLoginMutation } from "../../services/auth";
 
 const LoginPage = () => {
   const [phoneValue, setPhoneValue] = useState<string>("");
+  const [otpValue, setOtpValue] = useState("");
+
+  const { isLoading, isShowOTPModal, error, isLogin } = useSelector(
+    (state: RootState) => state.userAuth
+  );
+
+  const router = useRouter();
+  const [mutation] = useLoginMutation();
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (isLogin) {
+      router.push("/");
+    }
+  }, [isLogin]);
 
   const phoneInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numericValue = e.target.value.replace(/\D/g, "");
     setPhoneValue(numericValue);
   };
 
-  const formOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const formOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(userLogin({ phoneNumber: phoneValue }));
+    // const result = await mutation({
+    //   phoneNumber: phoneValue,
+    // });
+    // if ("error" in result) {
+    //   // TODO: handle error
+    // } else {
+    //   // TODO: handle success
+    // }
+  };
+
+  const otpInputHandler = (value: string) => {
+    setOtpValue(value);
+  };
+
+  const otpOnSubmit = () => {
+    const data = { phoneNumber: phoneValue, otp: otpValue };
+    dispatch(userValidate(data));
   };
 
   return (
-    <div className="flex justify-center items-center w-full h-screen my-auto mx-auto">
+    <div className="flex items-center justify-center w-full h-screen mx-auto my-auto">
       <div className="flex items-center justify-center w-full lg:px-12">
         <div className="flex items-center xl:px-10">
           <form
@@ -38,13 +83,14 @@ const LoginPage = () => {
             </div>
 
             <button
-              className="w-full py-3 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-600 focus:ring-4 focus:ring-purple-100 bg-purple-500 mb-2"
+              className="w-full py-3 mb-2 text-sm font-bold leading-none text-white transition duration-300 bg-purple-500 md:w-96 rounded-2xl hover:bg-purple-600 focus:ring-4 focus:ring-purple-100 disabled:bg-gray-400"
               type="submit"
+              disabled={isLoading}
             >
               Sign In
             </button>
 
-            <p className="text-sm leading-relaxed text-gray-900 mb-2">
+            <p className="mb-2 text-sm leading-relaxed text-gray-900">
               Not registered yet?{" "}
               <Link href="/register" className="font-bold text-gray-700">
                 Create an Account
@@ -53,6 +99,16 @@ const LoginPage = () => {
           </form>
         </div>
       </div>
+      <OTPModal
+        isOpen={isShowOTPModal}
+        value={otpValue}
+        onChange={otpInputHandler}
+        handleSubmit={otpOnSubmit}
+        handleResendButton={() =>
+          dispatch(userLogin({ phoneNumber: phoneValue }))
+        }
+      />
+      <ErrorSnackbar error={error} onClose={() => dispatch(resetError())} />
     </div>
   );
 };

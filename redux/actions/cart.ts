@@ -11,6 +11,8 @@ import { AppThunk } from "../store";
 import Cookie from "js-cookie";
 import { showErrorAlert } from "../reducers/alert";
 import { addedCallOrderData, selectedVariantData } from "../../dummy/data";
+import { getProductDataById } from "../../lib/apiFunction";
+import { ListProdutData } from "../../@types/newTypes/newTypes";
 
 export const initCart = (): AppThunk => async (dispatch, getState) => {
   const { cartInited } = getState().cart;
@@ -45,35 +47,42 @@ export const getCartByCookieOrRetrieve = async () => {
 };
 
 export const addItem2Cart =
-  (itemId: number, qty: number = 1, callToOrder: boolean = false): AppThunk =>
+  (itemId: string): AppThunk =>
   async (dispatch, getState) => {
     try {
-      const cartId = getState().cart.cartId;
-      if (!cartId) {
-        dispatch(showErrorAlert("Error loading cart"));
-        return;
-      }
+      const response = await getProductDataById(itemId);
+      let product: ListProdutData | undefined;
 
-      dispatch(setCartSubmitting(true));
-      if (callToOrder) {
-        // TODO: integrate add item to cart API
-
-        // TODO: add error validation when failed to add item to cart
-        // if (error) {
-        //   dispatch(showErrorAlert("Error to add item to cart"));
-        // }
-
-        dispatch(showCall2Order(addedCallOrderData));
-        dispatch(
-          setCartTotal({
-            qty,
-            total: "0", // TODO: adjust total price
-          })
-        );
+      if (response.responseCode === "SUCCESS") {
+        product = response.data;
+        dispatch(showVariantModal({ product: product }));
       } else {
-        dispatch(showVariantModal({ product: selectedVariantData }));
+        dispatch(showErrorAlert("Error loading cart"));
       }
-      dispatch(setCartSubmitting(false));
+
+      // const cartId = getState().cart.cartId;
+      // if (!cartId) {
+      //   dispatch(showErrorAlert("Error loading cart"));
+      //   return;
+      // }
+      // dispatch(setCartSubmitting(true));
+      // if (callToOrder) {
+      //   // TODO: integrate add item to cart API
+      //   // TODO: add error validation when failed to add item to cart
+      //   // if (error) {
+      //   //   dispatch(showErrorAlert("Error to add item to cart"));
+      //   // }
+      // dispatch(showCall2Order(addedCallOrderData));
+      //   dispatch(
+      //     setCartTotal({
+      //       qty,
+      //       total: "0", // TODO: adjust total price
+      //     })
+      //   );
+      // } else {
+      //   dispatch(showVariantModal({ product: selectedVariantData }));
+      // }
+      // dispatch(setCartSubmitting(false));
     } catch (err) {
       console.error(err);
     }

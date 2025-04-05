@@ -27,8 +27,9 @@ import {
   category,
   categoryTree,
   pagination,
-  products,
 } from "../../dummy/data";
+import { Category, ListProdutData } from "../../@types/newTypes/newTypes";
+import { getCategoriesDataById, getProductsData } from "../../lib/apiFunction";
 const FilterForm = dynamic(() => import("../../components/FilterForm"), {
   ssr: false,
 });
@@ -45,21 +46,31 @@ export default function CategoryPage({
     (state: RootState) => state.app.isRouteChanging
   );
 
+  const filterData: (
+    productData: ListProdutData[],
+    sort: any
+  ) => ListProdutData[] = (productData: ListProdutData[], sort: any) => {
+    switch (sort) {
+      case "title":
+        return productData.sort((a, b) => a.name.localeCompare(b.name));
+      case "-title":
+        return productData.sort((a, b) => b.name.localeCompare(a.name));
+      case "price":
+        return productData.sort(
+          (a, b) => a.priceLists[0].price - b.priceLists[0].price
+        );
+      case "-price":
+        return productData.sort(
+          (a, b) => b.priceLists[0].price - a.priceLists[0].price
+        );
+      default:
+        return data.collection.products;
+    }
+  };
+
   const onCollectionChange = async (newParams: TQuery) => {
-    // TODO: Integrate to get data by sortby filter and pagination changes
-    const filteredQuery = filterProductsQuery(newParams);
-    // const { collection, filteredQuery } = await fetchCollection(
-    //   category.category_id,
-    //   newParams
-    // );
-
-    setShowModal(false);
-    setCollection(collection);
-
-    // This is for change the collection
-    setProductsQuery(filteredQuery);
-
-    changeUrl(router, filteredQuery);
+    const filteredData = filterData(collection.products, newParams.sort);
+    setCollection({ ...collection, products: filteredData });
   };
 
   useEffect(() => {
@@ -71,27 +82,19 @@ export default function CategoryPage({
     setProductsQuery(data.productsQuery);
   }, [data]);
 
-  const breadcrumbItems = useMemo(
-    () =>
-      makeBreadCrumbsFromCats(category.parents!, ({ category_id }) => ({
-        isActive: category_id === category.category_id,
-      })),
-    [category.parents, category.category_id]
-  );
-
   return (
     <MainLayout
       footerMenu={footerMenu}
       mainMenu={mainMenu}
       metaData={getCategoryMetaData(category)}
-      title={category.seo.title}
+      title={category.name}
       basicSettings={basicSettings}
     >
       <div className="container">
         <div className="row">
           <div className="category-sidebar__wrapper col-md-4 col-lg-3">
-            <CategorySidebar category={category} />
-            {category.filter &&
+            <CategorySidebar category={category} categoryList={mainMenu} />
+            {/* {category.filter &&
               Array.isArray(category.filter?.fields) &&
               category.filter.fields.length > 0 && (
                 <FilterForm
@@ -101,21 +104,21 @@ export default function CategoryPage({
                   onSearch={onCollectionChange}
                   idsPrefix="desk_"
                 />
-              )}
+              )} */}
           </div>
           <div className="col-md-8 col-lg-9">
-            <BreadCrumbs items={breadcrumbItems} />
+            <BreadCrumbs items={category} />
             <h1 className="page-heading page-heading_h1 page-heading_m-h1">
-              {category.title}
+              {category.name}
             </h1>
-            {category.text?.description_top && (
+            {/* {category.text?.description_top && (
               <div
                 className={"mb-3"}
                 dangerouslySetInnerHTML={{
                   __html: category.text.description_top,
                 }}
               />
-            )}
+            )} */}
 
             {collection && (
               <>
@@ -127,28 +130,28 @@ export default function CategoryPage({
                 <ProductsList
                   products={collection.products}
                   query={productsQuery}
-                  categoryId={category.category_id}
+                  categoryId={category.id}
                 />
-                <Pagination
+                {/* <Pagination
                   pagination={collection.pagination}
                   params={productsQuery}
                   onChange={onCollectionChange}
-                />
+                /> */}
               </>
             )}
-            {category.text?.description_bottom && (
+            {/* {category.text?.description_bottom && (
               <div
                 dangerouslySetInnerHTML={{
                   __html: category.text.description_bottom,
                 }}
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>
       <FiltersModal show={showModal} setShow={setShowModal}>
-        <CategorySidebar category={category} />
-        {category.filter &&
+        <CategorySidebar category={category} categoryList={mainMenu} />
+        {/* {category.filter &&
           Array.isArray(category.filter?.fields) &&
           category.filter.fields.length > 0 && (
             <FilterForm
@@ -158,16 +161,50 @@ export default function CategoryPage({
               onSearch={onCollectionChange}
               idsPrefix="mobile_"
             />
-          )}
+          )} */}
       </FiltersModal>
     </MainLayout>
   );
 }
 
+const fetchProductData = async (id: string | undefined) => {
+  const response = await getProductsData({
+    categoryId: id,
+  });
+  let products: ListProdutData[];
+
+  if (response.responseCode === "SUCCESS") {
+    products = response.data.products;
+  } else {
+    products = [];
+  }
+
+  return products;
+};
+
+const fetchCategoryDataById = async (id: string) => {
+  const response = await getCategoriesDataById(id);
+  let category: Category;
+
+  if (response.responseCode === "SUCCESS") {
+    category = response.data;
+  } else {
+    category = { createdAt: "", id: "", name: "", updatedAt: "" };
+  }
+
+  return category;
+};
+
 export const getServerSideProps: GetServerSideProps<
   ICategoryPageProps
 > = async ({ req, params }) => {
-  const menus = makeAllMenus({ categoryTree });
+  const menus = await makeAllMenus({ categoryTree });
+
+  const products = await fetchProductData(
+    params ? `${params.slug}` : undefined
+  );
+
+  const category = await fetchCategoryDataById(params ? `${params.slug}` : "");
 
   const newData = {
     category,
@@ -199,13 +236,13 @@ interface ICategoryPageProps {
 }
 
 interface ICategoryPageData {
-  category: ICategoryItem;
+  category: Category;
   collection: {
-    products: IProduct[];
+    products: ListProdutData[];
     pagination: IPagination;
   };
   productsQuery: { [key: string]: any };
-  mainMenu: IMenuItem[];
+  mainMenu: Category[];
   footerMenu: IMenuItem[];
   basicSettings: IBasicSettings;
 }

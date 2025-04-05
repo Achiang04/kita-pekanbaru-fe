@@ -5,30 +5,11 @@ import useFormatCurrency from "../../hooks/useFormatCurrency";
 import { IOrderService } from "../../@types/order";
 import { ICustomer } from "../../@types/customer";
 import { IAddress, TAddressType } from "../../@types/delivery";
+import { NewShipping, OrderItemType } from "../../@types/newTypes/newTypes";
+import { Button } from "@mui/material";
+import { Stack } from "@mui/system";
 
-export default function OrderShipping({
-  services,
-  customer,
-}: {
-  services: IOrderService[];
-  customer: ICustomer | null;
-}) {
-  const delivery = useMemo(
-    () => services.find((service) => service.is_delivery),
-    [services]
-  );
-  const shippingAddress = useMemo(
-    () =>
-      customer?.addresses?.find(
-        (address) => address.type === TAddressType.shipping
-      ) || null,
-    [customer]
-  );
-
-  const { formatCurrency } = useFormatCurrency();
-
-  if (!delivery) return null;
-
+export default function OrderShipping({ order }: { order: OrderItemType }) {
   return (
     <div className="bdl-order-items__service-row">
       <h5 className="bdl-order-items__service-heading">
@@ -43,69 +24,46 @@ export default function OrderShipping({
           size={{ xs: 12, sm: 8 }}
           className="bdl-order-items__service-cell bdl-order-items__service-cell_title"
         >
-          <div>{delivery.serviceDelivery?.delivery?.title || ""}</div>
-          {shippingAddress && <ShippingAddress address={shippingAddress} />}
+          <ShippingAddress
+            address={order.shippingAddress}
+            phone={order.customer.gsm}
+          />
         </Grid>
         <Grid
-          size={{ xs: 12, sm: 2 }}
-          className="bdl-order-items__service-cell"
-        ></Grid>
-        <Grid
-          size={{ xs: 12, sm: 2 }}
-          className="bdl-order-items__service-cell"
+          size={{ xs: 12, sm: 4 }}
+          container
+          justifyContent="flex-end"
+          alignItems="flex-end"
         >
-          <span className="bdl-order-items__label">Shipping total: </span>
-          <span className="bdl-order-items__value">
-            {delivery.total_price && formatCurrency(delivery.total_price)}
-          </span>
+          <Stack>
+            <Button variant="contained">Receipt</Button>
+          </Stack>
         </Grid>
       </Grid>
     </div>
   );
 }
 
-const ShippingAddress = ({ address }: { address: IAddress }) => {
-  const fullName = [address.first_name || "", address.last_name || ""]
-    .join(" ")
-    .trim();
-  const cityCountry = [
-    address.city,
-    address.state,
-    address.vwCountry?.title,
-    address.zip,
-  ]
-    .filter((el) => el)
-    .join(", ");
-
+const ShippingAddress = ({
+  address,
+  phone,
+}: {
+  address: NewShipping;
+  phone: string;
+}) => {
   return (
     <>
       <p className="bdl-order-items__address-heading">Ship to:</p>
       <address className="bdl-order-items__address">
-        {fullName && (
-          <p className="bdl-order-items__address-lane">{fullName}</p>
-        )}
-        {address.address_line_1 && (
-          <p className="bdl-order-items__address-lane">
-            {address.address_line_1}
-          </p>
-        )}
-        {address.address_line_2 && (
-          <p className="bdl-order-items__address-lane">
-            {address.address_line_2}
-          </p>
-        )}
-        {cityCountry && (
-          <p className="bdl-order-items__address-lane">{cityCountry}</p>
-        )}
-        {address.company && (
-          <p className="bdl-order-items__address-lane">{address.company}</p>
-        )}
-        {address.phone && (
-          <p className="bdl-order-items__address-lane">
-            <abbr title="Phone">P:</abbr>
-            {address.phone}
-          </p>
-        )}
+        <p className="bdl-order-items__address-lane">{address.name}</p>
+
+        <p className="bdl-order-items__address-lane">
+          {address.fullAddress}, {address.regency.name},{" "}
+          {address.subDistrict.name}, {address.district.name},{" "}
+          {address.province.name}
+        </p>
+
+        <p className="bdl-order-items__address-lane">{phone}</p>
       </address>
     </>
   );
