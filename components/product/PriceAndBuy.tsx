@@ -255,6 +255,7 @@ const PriceAndBuyQty = ({
         type={"button"}
         className={"btn btn-outline-secondary text-center"}
         onClick={onBtnClicked.bind(null, -1)}
+        disabled={stock === 0}
       >
         <FontAwesomeIcon icon={faMinus as IconProp} />
       </button>
@@ -265,11 +266,13 @@ const PriceAndBuyQty = ({
         min={1}
         max={stock}
         onChange={onChange}
+        disabled={stock === 0}
       />
       <button
         type={"button"}
         className={"btn btn-outline-secondary text-center"}
         onClick={onBtnClicked.bind(null, 1)}
+        disabled={stock === 0}
       >
         <FontAwesomeIcon icon={faPlus as IconProp} />
       </button>
