@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Form, Formik, FormikHelpers } from "formik";
 import ExtraErrors from "./ExtraErrors";
-import { Button, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { IShippingFormValues } from "../../@types/shipping";
 import CheckoutDeliverySelector from "./CheckoutDeliverySelector";
@@ -30,8 +30,10 @@ import { useDispatch } from "react-redux";
 
 export default function CheckoutShippingForm({
   isSetting,
+  withButton = false,
 }: {
   isSetting?: boolean;
+  withButton?: boolean;
 }) {
   const [isAddAddress, setIsAddAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -68,19 +70,43 @@ export default function CheckoutShippingForm({
         selectedAddress={selectedAddress}
         setSelectedAddress={setSelectedAddress}
       />
-      <Stack direction="column" alignItems="center" sx={{ paddingTop: "16px" }}>
-        <Button
-          onClick={() => setIsAddAddress(!isAddAddress)}
-          color={!isAddAddress ? "primary" : "error"}
+      {withButton && (
+        <Stack
+          direction="column"
+          alignItems="center"
+          sx={{ paddingTop: "16px" }}
         >
-          {!isAddAddress ? "Add New Address" : "Close Form"}
-        </Button>
-      </Stack>
-      {isAddAddress && (
+          <Button
+            onClick={() => setIsAddAddress(!isAddAddress)}
+            color={!isAddAddress ? "primary" : "error"}
+          >
+            {!isAddAddress ? "Add New Address" : "Close Form"}
+          </Button>
+        </Stack>
+      )}
+
+      {withButton && isAddAddress && (
         <Box sx={{ paddingTop: "16px", paddingBottom: "16px" }}>
           <AddressForm setIsAddAddress={setIsAddAddress} />
         </Box>
       )}
+
+      {!withButton && (
+        <>
+          <div
+            style={{
+              width: "100%",
+              height: "1px",
+              backgroundColor: "lightgray",
+              marginTop: "16px",
+            }}
+          ></div>
+          <Box sx={{ paddingTop: "16px", paddingBottom: "16px" }}>
+            <AddressForm setIsAddAddress={setIsAddAddress} />
+          </Box>
+        </>
+      )}
+
       {!isSetting && (
         <Stack sx={{ paddingTop: "16px" }}>
           <Button
