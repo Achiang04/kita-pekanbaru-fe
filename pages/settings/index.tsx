@@ -83,7 +83,7 @@ export default function SettingsPage({
                 />
               </Grid>
             </Grid>
-            <CheckoutShippingForm isSetting />
+            <CheckoutShippingForm isSetting withButton />
             <Stack sx={{ paddingTop: "16px" }}>
               <Button
                 color="error"

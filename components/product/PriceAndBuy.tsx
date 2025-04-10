@@ -200,7 +200,7 @@ export default function ProductPriceAndBuy({
       </p>
 
       <div className={"price-and-buy__2-cart"}>
-        <PriceAndBuyQty qty={qty} setQty={setQty} />
+        <PriceAndBuyQty qty={qty} setQty={setQty} stock={product.stock} />
         <div className={"price-and-buy__btns"}>
           <button
             type={"button"}
@@ -226,9 +226,11 @@ interface IPriceAndBuyProps {
 const PriceAndBuyQty = ({
   qty,
   setQty,
+  stock = 0,
 }: {
   qty: number;
   setQty: (value: number) => void;
+  stock?: number;
 }) => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) =>
     setQty(parseInt(e.target.value) || 1);
@@ -240,6 +242,10 @@ const PriceAndBuyQty = ({
       newQty = 1;
     }
 
+    if (newQty > stock) {
+      newQty = stock;
+    }
+
     setQty(newQty);
   };
 
@@ -249,6 +255,7 @@ const PriceAndBuyQty = ({
         type={"button"}
         className={"btn btn-outline-secondary text-center"}
         onClick={onBtnClicked.bind(null, -1)}
+        disabled={stock === 0}
       >
         <FontAwesomeIcon icon={faMinus as IconProp} />
       </button>
@@ -257,12 +264,15 @@ const PriceAndBuyQty = ({
         className={"form-control"}
         value={qty}
         min={1}
+        max={stock}
         onChange={onChange}
+        disabled={stock === 0}
       />
       <button
         type={"button"}
         className={"btn btn-outline-secondary text-center"}
         onClick={onBtnClicked.bind(null, 1)}
+        disabled={stock === 0}
       >
         <FontAwesomeIcon icon={faPlus as IconProp} />
       </button>

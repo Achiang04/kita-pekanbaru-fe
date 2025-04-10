@@ -50,19 +50,6 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
     });
   };
 
-  const rmItem = (itemId: string) => {
-    if (!cartId) return;
-    if (!confirm("Are you sure?")) return;
-
-    // TODO: integrate delete cart API
-    // TODO: add error validation when failed to delete item from cart
-    // if (error) {
-    //   dispatch(showErrorAlert("Error to delete item from cart"));
-    // }
-
-    // setItems((prevItems) => prevItems.filter((el) => el.item_id !== itemId));
-  };
-
   const submitQty = async (itemId: number, newQty: number) => {
     if (!cartId) return;
 
@@ -76,20 +63,6 @@ export default function CartItems({ items, setItems, total }: ICartItemsProps) {
       }),
     []
   ); // eslint-disable-line
-
-  const onQtyChange = (itemId: string, newQty: number) => {
-    setSubmitting(true);
-    // debouncedSubmitQty(itemId, newQty);
-
-    // setItems((prevFiltered) => {
-    //   const out = [...prevFiltered];
-    //   const index = out.findIndex((el) => el.item_id === itemId);
-    //   if (index >= 0) {
-    //     out[index].qty = newQty;
-    //   }
-    //   return out;
-    // });
-  };
 
   useEffect(() => {
     mounted.current = true;
