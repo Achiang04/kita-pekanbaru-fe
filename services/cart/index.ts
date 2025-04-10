@@ -31,7 +31,6 @@ export const cartApi = api.injectEndpoints({
           body: { qty: body.qty },
         };
       },
-      invalidatesTags: ["Cart"],
     }),
     removeCartItem: build.mutation<any, { cartId: string }>({
       query: (body) => {

@@ -40,6 +40,7 @@ export interface GetCartResponse {
     name: string;
     priceLists: ListPrice[];
     medias: Media[];
+    stock: number;
   };
   qty: number;
 }
