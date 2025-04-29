@@ -2,7 +2,7 @@ import { MouseEvent } from "react";
 import Link from "next/link";
 import HeaderCart from "./cart/HeaderCart";
 import ChooseVariantModal from "./header/ChooseVariantModal";
-import logoImg from "../assets/logo.svg";
+import logoImg from "../assets/logoUkCrop.png";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppDispatch } from "../hooks/redux";
@@ -32,7 +32,7 @@ export default function Header({ companyTitle }: { companyTitle?: string }) {
             <Link href="/">
               <img
                 src={logoImg.src}
-                width={logoImg.width}
+                width={150}
                 height={logoImg.height}
                 alt={title}
               />

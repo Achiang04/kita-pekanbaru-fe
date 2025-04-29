@@ -12,23 +12,23 @@ export default function FooterContacts() {
         <span className="icon">
           <FontAwesomeIcon icon={faWhatsapp as IconProp} />
         </span>
-        <a className="link" href="tel:+18001234567">
-          +1 (800) 123-45-67
+        <a className="link" href="https://wa.me/6282289898977" target="_blank">
+          +62 822-8989-8977
         </a>
       </p>
-      <p className="page-footer__icon-w-link">
+      {/* <p className="page-footer__icon-w-link">
         <span className="icon">
           <FontAwesomeIcon icon={faMapMarkerAlt as IconProp} />
         </span>
         <a className="link" href="#">
           1 infinite loop, Cupertino, CA 95014
         </a>
-      </p>
+      </p> */}
       <p className="page-footer__icon-w-link">
         <span className="icon">
           <FontAwesomeIcon icon={faClock as IconProp} />
         </span>
-        9:00am &mdash; 6:00pm
+        08:00 AM - 17:00 PM
       </p>
     </>
   );

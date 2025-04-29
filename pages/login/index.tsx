@@ -13,6 +13,7 @@ import OTPModal from "../../components/OTPModal";
 import ErrorSnackbar from "../../components/ErrorSnackbar";
 import { useRouter } from "next/navigation";
 import { useLoginMutation } from "../../services/auth";
+import logo from "../../assets/logoUkCrop.png";
 
 const LoginPage = () => {
   const [phoneValue, setPhoneValue] = useState<string>("");
@@ -67,6 +68,9 @@ const LoginPage = () => {
             className="flex flex-col w-full h-full pb-6 text-center bg-white rounded-3xl"
             onSubmit={formOnSubmit}
           >
+            <div className="flex items-center justify-center mb-2">
+              <img src={logo.src} width={150} alt="" />
+            </div>
             <h3 className="mb-3 text-4xl font-extrabold text-dark-gray-900">
               Login
             </h3>

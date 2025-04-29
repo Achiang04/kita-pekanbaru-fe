@@ -1,7 +1,7 @@
 import React, { MouseEvent } from "react";
 import Container from "@mui/material/Container";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import logoImg from "../../assets/logo.svg";
+import logoImg from "../../assets/logoUkCrop.png";
 import Link from "next/link";
 
 export default function CheckoutHeader() {
@@ -26,7 +26,7 @@ export default function CheckoutHeader() {
             <Link href={"/"} className={"bdl-header__logo"}>
               <img
                 src={logoImg.src}
-                width={logoImg.width}
+                width={150}
                 height={logoImg.height}
                 alt={title}
               />

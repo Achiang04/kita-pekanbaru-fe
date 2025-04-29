@@ -96,8 +96,8 @@ export default function ProductPage({
               <ProductVariantAndBuy product={product} />
               <hr className="product-page__hr" />
               <ProductCharacteristics product={product} />
-              <hr className="product-page__hr" />
-              <ProductShipping />
+              {/* <hr className="product-page__hr" />
+              <ProductShipping /> */}
             </div>
           </div>
           {product.description && (
