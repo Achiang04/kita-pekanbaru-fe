@@ -27,7 +27,7 @@ export default function CharacteristicItem({
         <dd className="product-attrs__item-value">
           {priceList &&
             priceList.map((val) => (
-              <div>
+              <div key={val.id}>
                 min Qty {val.minQty} for {formatRupiah(val.price)}
               </div>
             ))}

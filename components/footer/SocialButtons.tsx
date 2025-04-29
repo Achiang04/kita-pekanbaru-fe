@@ -1,7 +1,7 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons/faFacebook";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons/faInstagram";
-import { faTwitter } from "@fortawesome/free-brands-svg-icons/faTwitter";
+import { faTiktok } from "@fortawesome/free-brands-svg-icons/faTiktok";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function SocialButtons() {
@@ -13,19 +13,7 @@ export default function SocialButtons() {
           <a
             className="page-footer__social-link"
             target="_blank"
-            href="https://fb.com"
-          >
-            <FontAwesomeIcon
-              className="social-icon"
-              icon={faFacebook as IconProp}
-            />
-          </a>
-        </div>
-        <div className="page-footer__social-button">
-          <a
-            className="page-footer__social-link"
-            target="_blank"
-            href="https://instagram.com"
+            href="https://www.instagram.com/undangankitaofficial/"
           >
             <FontAwesomeIcon
               className="social-icon"
@@ -37,16 +25,16 @@ export default function SocialButtons() {
           <a
             className="page-footer__social-link"
             target="_blank"
-            href="https://twitter.com"
+            href="https://www.tiktok.com/@undangankita.official"
           >
             <FontAwesomeIcon
               className="social-icon"
-              icon={faTwitter as IconProp}
+              icon={faTiktok as IconProp}
             />
           </a>
         </div>
       </div>
-      <p className="text-muted">All rights reserved. © Commerce</p>
+      <p className="text-muted">All rights reserved. © Undangan Kita</p>
     </>
   );
 }
