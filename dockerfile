@@ -4,17 +4,17 @@ FROM node:18-alpine AS build
 # Step 2: Set working directory inside the container
 WORKDIR /app
 
-# Step 3: Copy package.json and yarn.lock for caching dependencies
-COPY package.json yarn.lock ./
+# Step 3: Copy package.json and package-lock.json for caching dependencies
+COPY package.json package-lock.json ./
 
-# Step 4: Install dependencies using Yarn
-RUN yarn install
+# Step 4: Install dependencies using npm
+RUN npm install
 
 # Step 5: Copy the rest of the application code
 COPY . .
 
 # Step 6: Build the Next.js app
-RUN yarn build
+RUN npm run build
 
 # Step 7: Use a smaller image for production environment
 FROM node:18-alpine
@@ -29,4 +29,4 @@ COPY --from=build /app ./
 EXPOSE 3000
 
 # Step 11: Run the app in production mode
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
