@@ -29,16 +29,6 @@ export default function OrderShipping({ order }: { order: OrderItemType }) {
             phone={order.customer.gsm}
           />
         </Grid>
-        <Grid
-          size={{ xs: 12, sm: 4 }}
-          container
-          justifyContent="flex-end"
-          alignItems="flex-end"
-        >
-          <Stack>
-            <Button variant="contained">Receipt</Button>
-          </Stack>
-        </Grid>
       </Grid>
     </div>
   );

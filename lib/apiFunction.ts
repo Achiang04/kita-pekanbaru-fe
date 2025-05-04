@@ -51,6 +51,13 @@ export const getProductsData = async ({
     .catch((err) => err);
 };
 
+export const getPopularProductsData = async () => {
+  return api
+    .get(`/api/v1/products/popular`)
+    .then((res) => res.data)
+    .catch((err) => err);
+};
+
 export const getProductDataById = async (id: string) => {
   return api
     .get(`/api/v1/products/${id}`)

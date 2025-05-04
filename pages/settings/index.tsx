@@ -17,7 +17,7 @@ import { RootState } from "../../redux/store";
 import { ICheckoutShippingPageData } from "../../@types/delivery";
 import { Formik, useFormikContext } from "formik";
 import { IShippingFormValues } from "../../@types/shipping";
-import { Category } from "../../@types/newTypes/newTypes";
+import { Category, ListProdutData } from "../../@types/newTypes/newTypes";
 import CheckoutShippingForm from "../../components/checkoutComponents/CheckoutShippingForm";
 import { useDispatch } from "react-redux";
 import { setIsLogin } from "../../redux/reducers/userAuth";
@@ -120,6 +120,6 @@ export const getServerSideProps: GetServerSideProps<
 
 interface ISettingsPageProps {
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
   basicSettings: IBasicSettings;
 }

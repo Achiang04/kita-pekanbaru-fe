@@ -3,12 +3,13 @@ import SocialButtons from "./footer/SocialButtons";
 import FooterContacts from "./footer/Contacts";
 import FooterAbout from "./footer/About";
 import { IMenuItem } from "../@types/components";
+import { ListProdutData } from "../@types/newTypes/newTypes";
 
 export default function Footer({
   menuList,
   companyTitle,
 }: {
-  menuList: IMenuItem[];
+  menuList: ListProdutData[];
   companyTitle?: string;
 }) {
   return (
@@ -19,7 +20,7 @@ export default function Footer({
             <FooterAbout companyTitle={companyTitle} />
           </div>
           <div className="page-footer__item col-sm-12 col-md-6 col-lg-3 order-lg-2 order-md-1 order-1">
-            {/* <FooterMenu menuList={menuList} /> */}
+            <FooterMenu menuList={menuList} />
           </div>
           <div className="page-footer__item col-sm-12 col-md-6 col-lg-3 order-lg-3 order-md-2 order-2">
             <FooterContacts />

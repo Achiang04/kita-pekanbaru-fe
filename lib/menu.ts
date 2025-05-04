@@ -1,8 +1,8 @@
 import { getCategoryUrl } from "./urls";
 import { IMenuItem } from "../@types/components";
 import { ICategory } from "../@types/category";
-import { getCategoriesData } from "./apiFunction";
-import { Category } from "../@types/newTypes/newTypes";
+import { getCategoriesData, getPopularProductsData } from "./apiFunction";
+import { Category, ListProdutData } from "../@types/newTypes/newTypes";
 
 export const makeMenuByCategoryTree = ({
   categoryTree,
@@ -66,9 +66,15 @@ export const makeAllMenus = async ({
     mainMenu = [];
   }
 
-  const footerMenu = makeMenuByCategoryTree({
-    categoryTree: categoryTree.filter(({ level }) => level === 0),
-  });
+  const popularProductsResponse = await getPopularProductsData();
+
+  let footerMenu: ListProdutData[];
+
+  if (popularProductsResponse.responseCode === "CREATED") {
+    footerMenu = popularProductsResponse.data;
+  } else {
+    footerMenu = [];
+  }
 
   return {
     mainMenu,
@@ -78,5 +84,5 @@ export const makeAllMenus = async ({
 
 interface IMenus {
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
 }

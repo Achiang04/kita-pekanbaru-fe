@@ -24,6 +24,8 @@ export type ListProdutData = {
   priceLists: ListPrice[];
   medias: Media[];
   stock: number;
+  sku: string;
+  isMostPopular?: boolean;
 };
 
 export interface Category {
@@ -160,4 +162,5 @@ export interface OrderItemType {
   redirectUrl: string;
   createdAt: string;
   updatedAt: string;
+  shippingSerialNumber: string;
 }

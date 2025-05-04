@@ -20,7 +20,11 @@ import {
   categoryTree,
 } from "../dummy/data";
 import ProtectedLayout from "../layouts/ProtectedLayout";
-import { Category, GetCartResponse } from "../@types/newTypes/newTypes";
+import {
+  Category,
+  GetCartResponse,
+  ListProdutData,
+} from "../@types/newTypes/newTypes";
 import { useGetCartItemQuery } from "../services/cart";
 
 export default function CartPage({
@@ -101,7 +105,7 @@ export const getServerSideProps: GetServerSideProps<
 
 interface ICartPageProps {
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
   basicSettings: IBasicSettings;
 }
 
