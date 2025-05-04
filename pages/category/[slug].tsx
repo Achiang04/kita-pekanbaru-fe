@@ -243,6 +243,6 @@ interface ICategoryPageData {
   };
   productsQuery: { [key: string]: any };
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
   basicSettings: IBasicSettings;
 }

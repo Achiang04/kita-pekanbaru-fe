@@ -6,7 +6,7 @@ import { IMenuItem } from "../../@types/components";
 import { categoryTree } from "../../dummy/data";
 import OrderInfo from "../../components/orderComponents/OrderInfo";
 import ProtectedLayout from "../../layouts/ProtectedLayout";
-import { Category } from "../../@types/newTypes/newTypes";
+import { Category, ListProdutData } from "../../@types/newTypes/newTypes";
 import { useGetOrderItemByIdQuery } from "../../services/cart";
 
 export default function DetailsPurchasePage({ mainMenu, footerMenu }: IProps) {
@@ -53,5 +53,5 @@ export const getServerSideProps: GetServerSideProps<IProps> = async () => {
 
 interface IProps {
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
 }

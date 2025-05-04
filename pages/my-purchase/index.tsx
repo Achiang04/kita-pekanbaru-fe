@@ -6,7 +6,11 @@ import { IMenuItem } from "../../@types/components";
 import { categoryTree } from "../../dummy/data";
 import OrderInfo from "../../components/orderComponents/OrderInfo";
 import ProtectedLayout from "../../layouts/ProtectedLayout";
-import { Category, OrderListItemType } from "../../@types/newTypes/newTypes";
+import {
+  Category,
+  ListProdutData,
+  OrderListItemType,
+} from "../../@types/newTypes/newTypes";
 import { useGetOrderItemQuery } from "../../services/cart";
 import Grid from "@mui/material/Grid2";
 import { Paper, Stack } from "@mui/material";
@@ -220,5 +224,5 @@ export const getServerSideProps: GetServerSideProps<IProps> = async () => {
 
 interface IProps {
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
 }

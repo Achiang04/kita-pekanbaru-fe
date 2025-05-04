@@ -52,6 +52,11 @@ const OrderInfoComponent = ({
         <Typography variant="subtitle1" gutterBottom>
           Order status: {order.status}
         </Typography>
+        {order.shippingSerialNumber.length > 0 && (
+          <Typography variant="subtitle1" gutterBottom>
+            shippingSerialNumber: {order.shippingSerialNumber}
+          </Typography>
+        )}
         {order.status === "DONE" && (
           <Typography variant="subtitle1" gutterBottom>
             Payment status: Paid

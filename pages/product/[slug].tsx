@@ -143,6 +143,7 @@ const fetchProductData = async (id: string) => {
       priceLists: [],
       medias: [],
       stock: 0,
+      sku: "",
     };
   }
 
@@ -191,6 +192,6 @@ interface IProductPageData {
   product: ListProdutData;
   categoryParents: ICategoryFlatItem[] | null;
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
   basicSettings: IBasicSettings;
 }

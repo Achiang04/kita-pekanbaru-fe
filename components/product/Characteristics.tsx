@@ -14,7 +14,11 @@ export default function ProductCharacteristics({
     <div className="product-attrs">
       <div className="product-attrs__group">
         <h3 className="product-attrs__group-header">Product Specification</h3>
+        <CharacteristicItem title="SKU" value={product.sku} />
         <CharacteristicItem title="Category" value={product.category.name} />
+        {product.isMostPopular && (
+          <CharacteristicItem title="Most Popular" value="Yes" />
+        )}
         <CharacteristicItem title="Price List" priceList={product.priceLists} />
       </div>
     </div>

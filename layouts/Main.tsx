@@ -18,7 +18,7 @@ import { IBasicSettings } from "../@types/settings";
 import { useDispatch } from "react-redux";
 import { setBasicSettings } from "../redux/reducers/app";
 import { useSelector } from "react-redux";
-import { Category } from "../@types/newTypes/newTypes";
+import { Category, ListProdutData } from "../@types/newTypes/newTypes";
 import { removeCheckoutItem } from "../redux/reducers/cart";
 
 const shopBaseUrl = process.env.BOUNDLESS_BASE_URL || "";
@@ -75,34 +75,31 @@ export default function MainLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+        <title>{title || "Undangan Kita"}</title>
+
+        {/* {canonicalUrl && <link rel="canonical" href={canonicalUrl} />} */}
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
 
         <meta property="og:type" content="website" />
-        <meta
-          property="og:title"
-          content={title || "Boundless-Commerce Shop Example"}
-        />
-        <meta property="og:url" content={canonicalUrl || shopBaseUrl} />
-        <meta
+        <meta property="og:title" content={title || "Undangan Kita"} />
+        {/* <meta property="og:url" content={canonicalUrl || shopBaseUrl} /> */}
+        {/* <meta
           property="og:image"
           content={imgUrl || shopBaseUrl + "/og.jpeg"}
-        />
-        {description && (
+        /> */}
+        {/* {description && (
           <meta property="og:description" content={description} />
-        )}
+        )} */}
 
-        <title>{title || "Boundless-Commerce Shop Example"}</title>
-
-        <link
+        {/* <link
           rel="preconnect"
           href={
             process.env.BOUNDLESS_API_BASE_URL ||
             "https://api.boundless-commerce.com"
           }
           crossOrigin={"use-credentials"}
-        />
+        /> */}
         {noIndex && <meta name="robots" content="noindex" />}
       </Head>
       <AlertWidget />
@@ -128,7 +125,7 @@ interface IMainLayoutProps {
   title?: string;
   metaData?: IMetaData;
   mainMenu: Category[];
-  footerMenu: IMenuItem[];
+  footerMenu: ListProdutData[];
   noIndex?: boolean;
   basicSettings?: IBasicSettings;
 }
