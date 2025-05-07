@@ -9,35 +9,33 @@ export default function FooterMenu({
 }: {
   menuList: ListProdutData[];
 }) {
-  return (
-    menuList.length > 0 && (
-      <>
-        <h3 className="page-footer__header">Most popular</h3>
-        <ul
-          className="page-footer-menu list-unstyled"
-          itemScope
-          itemType="//schema.org/ItemList"
-        >
-          {menuList.map((item, i) => (
-            <li
-              className={clsx("page-footer-menu__list-element", {
-                active: false,
-              })}
-              key={item.id}
+  return menuList.length > 0 ? (
+    <>
+      <h3 className="page-footer__header">Most popular</h3>
+      <ul
+        className="page-footer-menu list-unstyled"
+        itemScope
+        itemType="//schema.org/ItemList"
+      >
+        {menuList.map((item, i) => (
+          <li
+            className={clsx("page-footer-menu__list-element", {
+              active: false,
+            })}
+            key={item.id}
+          >
+            <div
+              itemProp="itemListElement"
+              itemScope
+              itemType="//schema.org/ListItem"
             >
-              <div
-                itemProp="itemListElement"
-                itemScope
-                itemType="//schema.org/ListItem"
-              >
-                <ListElement item={item} position={i} />
-              </div>
-            </li>
-          ))}
-        </ul>
-      </>
-    )
-  );
+              <ListElement item={item} position={i} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : null;
 }
 
 function ListElement({
