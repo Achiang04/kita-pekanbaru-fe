@@ -16,6 +16,7 @@ export default function ProductImage({
         quality={100}
         alt={alt}
         priority
+        unoptimized
       />
     </>
   );

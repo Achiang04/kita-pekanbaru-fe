@@ -19,6 +19,7 @@ export default function ProductListImage({
         quality={100}
         itemProp="image"
         alt={alt}
+        unoptimized
       />
     </div>
   );
