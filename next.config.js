@@ -13,10 +13,14 @@ module.exports = {
       {
         protocol: "https",
         hostname: "**", // This matches all hostnames for HTTPS
+        port: "",
+        pathname: "**",
       },
       {
         protocol: "http",
         hostname: "**", // This matches all hostnames for HTTP
+        port: "",
+        pathname: "**",
       },
     ],
   },
